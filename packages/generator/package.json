@@ -1,0 +1,11 @@
+{
+  "name": "@devcontainer/generator",
+  "version": "0.0.9",
+  "description": "generates custorm devcontainer Dockerfiles",
+  "main": "index.js",
+  "license": "MIT",
+  "repository": "git@github.com:zerdos/devcontainer.git",
+  "publishConfig": {
+    "access": "public"
+  }
+}
