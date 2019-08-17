@@ -7,6 +7,9 @@
       "examples/*"
     ]
   },
+  "scripts": {
+    "release": "lerna publish"
+  },
   "name": "devcontainer",
   "devDependencies": {
     "lerna": "^3.16.4"
