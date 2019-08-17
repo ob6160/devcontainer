@@ -1,9 +1,9 @@
 {
   "name": "devcontainer",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "main": "index.js",
   "repository": "git@github.com:zerdos/devcontainer.git",
   "author": "Zoltan Erdos <zolika84@gmail.com>",
-  "license" : "BSD-3-Clause",
+  "license": "BSD-3-Clause",
   "gitHead": "95ee3f79431e1943880c848aa79c1bc04245b17d"
 }
