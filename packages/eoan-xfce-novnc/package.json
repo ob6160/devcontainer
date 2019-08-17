@@ -3,7 +3,7 @@
   "scripts": {
     "crete:devhome": "docker create volume devhome-eoan-xfce-novnc"
   },
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "devcontainer vscode docker xfce novnc",
   "main": "index.js",
   "repository": "git@github.com:zerdos/devcontainer.git",

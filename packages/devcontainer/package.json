@@ -1,6 +1,6 @@
 {
   "name": "devcontainer",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "main": "index.js",
   "repository": "git@github.com:zerdos/devcontainer.git",
   "author": "Zoltan Erdos <zolika84@gmail.com>",
