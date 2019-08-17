@@ -2,9 +2,9 @@
   "private": true,
   "workspaces": {
     "packages": [
+      "@devcontainer/*",
       "packages/*",
-      "website",
-      "examples/*"
+      "website"
     ]
   },
   "scripts": {

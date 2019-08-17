@@ -1,7 +1,11 @@
 {
   "name": "@devcontainer/eoan-xfce-novnc",
   "scripts": {
-    "crete:devhome": "docker create volume devhome-eoan-xfce-novnc"
+    "create:devhome": "docker create volume devhome-eoan-xfce-novnc"
+  },
+  "devDependencies": {
+    "@devcontainer/dockerfiles": "0.0.8",
+    "load-text-file": "^1.2.0"
   },
   "version": "0.0.8",
   "description": "devcontainer vscode docker xfce novnc",
