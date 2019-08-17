@@ -1,0 +1,4 @@
+{
+    "key": "{DISTRO}",
+    "values": ["buster", "stretch", "disco", "eoan"]
+}

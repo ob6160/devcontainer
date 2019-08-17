@@ -1,0 +1,17 @@
+version: "3.7"
+services:
+  devcontainer:
+    image: zolika84/deb-buster-node-12.7.0-docker-xfce4-novnc-zsh:1.8.2
+    privileged: true
+    ports:
+      - "6080:6080"
+    user: developer
+    command: sleep infinity
+    volumes: 
+      - devhome:/home/developer:rw
+      - ~/.gitconfig:/etc/gitconfig:ro
+      - ~/.ssh:/home/developer/.ssh:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+volumes:
+  devhome:
+    external: true

@@ -1,0 +1,12 @@
+{
+    "name": "dockerfiles",
+    "dockerComposeFile": "../docker-compose.yml",   
+    "service": "devcontainer",
+    "workspaceFolder": "/home/developer/app",
+    "extensions": [
+        "peterjausovec.vscode-docker",
+        "ms-vscode.vscode-typescript-tslint-plugin",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode"
+    ]
+}

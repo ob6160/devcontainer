@@ -1,0 +1,6 @@
+{
+    "dockerComposeFile": "../docker-compose.yml",
+    "service": "devcontainer",
+    "workspaceFolder": "/home/developer",
+    "postCreateCommand": "supervisord"
+}

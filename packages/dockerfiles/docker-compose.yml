@@ -1,0 +1,13 @@
+version: "3.6"
+services:
+  devcontainer:
+    build: .
+    privileged: true
+    command: sleep infinity
+    volumes: 
+      - ~/.gitconfig:/etc/gitconfig:ro
+      - ~/.ssh:/home/developer/.ssh:ro
+      - vscode_insiders_cache:/home/developer/.vscode-server-insiders
+      - /var/run/docker.sock:/var/run/docker.sock
+volumes:
+  vscode_insiders_cache:

@@ -1,0 +1,9 @@
+{
+  "name": "project1",
+  "version": "1.0.0",
+  "description": "project1 for vscode for running cypress",
+  "main": "index.js",
+  "repository": "git@github.com:zerdos/docker-node-xfce-novnc.git",
+  "author": "Zoltan Erdos <zolika84@gmail.com>",
+  "license": "MIT"
+}
