@@ -8,7 +8,7 @@
     ]
   },
   "scripts": {
-    "release": "lerna publish"
+    "release": "lerna publish --access public"
   },
   "publicConfig": {
     "access": "public"

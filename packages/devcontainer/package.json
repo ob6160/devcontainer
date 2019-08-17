@@ -5,5 +5,8 @@
   "repository": "git@github.com:zerdos/devcontainer.git",
   "author": "Zoltan Erdos <zolika84@gmail.com>",
   "license": "BSD-3-Clause",
-  "gitHead": "8b6d758f502df637f7bbb6451e85b7134821a410"
+  "gitHead": "4efa20a45088e3cccde06115ecf12e59cccde9ab",
+  "publishConfig": {
+    "access": "public"
+  }
 }
