@@ -8,5 +8,7 @@
   "main": "index.js",
   "repository": "git@github.com:zerdos/devcontainer-eoan-xfce-novnc.git",
   "author": "Zoltan Erdos <zolika84@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "private": false,
+  "gitHead": "64efba9c5bc1442d0d178aafc7ecde4f64d4a865"
 }
