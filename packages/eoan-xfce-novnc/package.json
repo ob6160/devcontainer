@@ -3,7 +3,7 @@
   "scripts": {
     "crete:devhome": "docker create volume devhome-eoan-xfce-novnc"
   },
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "devcontainer for vscode xfce-4.1.4 for running cypress",
   "main": "index.js",
   "repository": "git@github.com:zerdos/devcontainer-eoan-xfce-novnc.git",
