@@ -14,7 +14,8 @@ const getDistro = (b: Base) => (b === "stretch" || b=== "buster") ? "Debian" : "
 export class DevcontainerGenerator {
     private _dockerfile: string = "";
     private _templates: {[key: string]: string} = {};
-    private _templateInputs = ['base'];
+    private _templateInputs = ['base', 'node'];
+    private _nodeVesion = '';
    
 
     constructor(private base: string) {
@@ -29,11 +30,20 @@ export class DevcontainerGenerator {
         return this._templates;
     }
 
+    public setNodeVersion(nodeVersion: string) {
+        this._nodeVesion=nodeVersion;
+    }
+
+
+
     public async generate() {
         const templates = await this.init();
         
         this._dockerfile += templates ['base'].replace('{DISTRO}', this.base);
-
+        
+        if (this._nodeVesion){
+        this._dockerfile += templates ['base'].replace('{NODE_VERSION}', this._nodeVesion);
+        }
 
         return this._dockerfile;
     }
