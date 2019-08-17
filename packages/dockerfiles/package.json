@@ -1,11 +1,11 @@
 {
   "name": "@devcontainer/dockerfiles",
-  "main": "index.js",
+  "version": "0.0.3",
   "directories": {
     "dist": "./dist"
   },
   "repository": "https://github.com/zerdos/dockerfiles",
-  "license": "MIT",
+  "main": "index.js",
   "scripts": {
     "postinstall": "yarn generate",
     "generate": "ts-node src/run.ts && find ./dist -type d | xargs rmdir -p 2>/dev/null | echo done"
@@ -20,5 +20,6 @@
     "@types/node": "^12.7.2",
     "ts-node": "^8.3.0",
     "typescript": "^3.5.3"
-  }
+  },
+  "license": "MIT"
 }
