@@ -4,7 +4,6 @@
   "directories": {
     "dist": "./dist"
   },
-  "repository": "https://github.com/zerdos/dockerfiles",
   "main": "index.js",
   "private": false,
   "scripts": {
@@ -13,7 +12,7 @@
   },
   "dependencies": {
     "dotenv": "^8.0.0",
-    "jest": "^24.8.0",
+    "jest": "^24.9.0",
     "ts-jest": "^24.0.2"
   },
   "devDependencies": {
@@ -23,7 +22,8 @@
     "typescript": "^3.5.3"
   },
   "license": "MIT",
-  "gitHead": "4efa20a45088e3cccde06115ecf12e59cccde9ab",
+  "gitHead": "bd6ec0b86b4753d7ff5c7c4a4b3457d62984545a",
+  "repository": "git@github.com:zerdos/devcontainer.git",
   "publishConfig": {
     "access": "public"
   }
