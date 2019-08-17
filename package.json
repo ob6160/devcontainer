@@ -6,5 +6,9 @@
       "website",
       "examples/*"
     ]
+  },
+  "name": "devcontainer",
+  "devDependencies": {
+    "lerna": "^3.16.4"
   }
 }

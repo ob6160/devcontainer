@@ -1,0 +1,16 @@
+version: "3.7"
+services:
+  devcontainer:
+    image: zolika84/devcontainer:1.0.6-deb-eoan-node-12.8.1-cypress-3.4.1-dotnet_buster-xfce4-novnc-zsh
+    privileged: true
+    ports:
+      - "6080:6080"
+    user: developer
+    shm_size: 1gb
+    command: bash -c "supervisord && sleep infinity"
+    volumes: 
+      - devhome:/home/developer:rw
+      # - /var/run/docker.sock:/var/run/docker.sock
+volumes:
+  devhome:
+    external: true
