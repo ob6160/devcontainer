@@ -10,7 +10,6 @@ const run = async () => {
 
     await writeFile(`${__dirname}/Dockerfile`, await devGenerator.generate());
    
-    console.log(dockerFile);
 }
 
 run();

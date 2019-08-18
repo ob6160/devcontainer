@@ -1,7 +1,7 @@
 # @devcontainer/eoan-xfce-novnc
 Devcontainer for [VS Code Remote - Containers](https://code.visualstudio.com/docs/remote/containers)
 
-## Installatioon
+## Installation
 
 With yarn:
 ```bash

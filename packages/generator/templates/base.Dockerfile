@@ -1,3 +1,4 @@
+### base.Dockerfile
 FROM buildpack-deps:{DISTRO}
 
 LABEL maintainer=zoltan.erdos@me.com
@@ -8,7 +9,6 @@ ARG SUPERVISORCONF=/etc/supervisor/supervisord.conf
 ARG HOMEDIR=/home/$USERNAME
 ARG APPSDIR=/opt/$USERNAME
 ENV HOME ${HOMEDIR}
-ENV FORCE_TO_UPDATE 11
 
 RUN groupadd --gid 1001 $USERNAME && \
     useradd --uid 1001 --gid $USERNAME --shell /bin/bash --create-home $USERNAME && \
