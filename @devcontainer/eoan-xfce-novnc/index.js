@@ -8,9 +8,7 @@ const run = async () => {
 
     devGenerator.setNodeVersion('12.8.1');
 
-    // devGenerator
-    const dockerFile = await devGenerator.generate();
-    await writeFile(`${__dirname}/Dockerfile`, dockerFile);
+    await writeFile(`${__dirname}/Dockerfile`, await devGenerator.generate());
    
     console.log(dockerFile);
 }
