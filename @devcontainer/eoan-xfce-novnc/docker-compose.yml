@@ -1,17 +1,15 @@
 version: "3.7"
 services:
   devcontainer:
-    build: ./node_modules/@devcontainer/dockerfiles/dist/deb-eoan/node-12.8.1/xfce4/novnc/zsh
-    image: "zolika84/devcontainer:${VERSION}-eoan-xfce-novnc"
+    build: .
+    image: zolika84/devcontainer:${VERSION}-eoan-xfce-novnc
     privileged: true
     ports:
       - "6080:6080"
-    user: developer
     shm_size: 1gb
     command: bash -c "supervisord && sleep infinity"
     volumes: 
-      - devhome:/home/developer:rw
-      # - /var/run/docker.sock:/var/run/docker.sock
+      - eoan-xfce-novnc:/home/developer:rw
 volumes:
-  devhome:
+  eoan-xfce-novnc:
     external: true

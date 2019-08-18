@@ -2,24 +2,18 @@
   "name": "@devcontainer/generator",
   "version": "0.0.10",
   "description": "generates custorm devcontainer Dockerfiles",
-  "main": "index.js",
-  "license": "MIT",
+  "files": ["lib/**/*"],
   "scripts": {
-    "postinstall": "yarn generate",
-    "generate": "ts-node src/run.ts && find ./dist -type d | xargs rmdir -p 2>/dev/null | echo done"
+    "build": "yarn tsc"
   },
   "dependencies": {
-    "dotenv": "^8.0.0",
-    "jest": "^24.9.0",
-    "ts-jest": "^24.0.2"
   },
   "devDependencies": {
-    "@types/jest": "^24.0.17",
     "@types/node": "^12.7.2",
-    "ts-node": "^8.3.0",
     "typescript": "^3.5.3"
   },
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "license": "MIT"
 }

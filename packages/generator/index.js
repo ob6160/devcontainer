@@ -1,5 +1,7 @@
 const {DevcontainerGenerator} = require('./dist/devcontainerGenerator');
 
+
+
 const run = async () => {
 
     const devGenerator = new DevcontainerGenerator('eoan');
@@ -9,9 +11,7 @@ const run = async () => {
     // devGenerator
     const dockerFile = await devGenerator.generate();
    
-
     console.log(dockerFile);
-
 }
 
 run();

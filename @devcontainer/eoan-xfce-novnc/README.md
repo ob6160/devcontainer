@@ -1,6 +1,7 @@
 # @devcontainer/eoan-xfce-novnc
 
     - Ubuntu 19.10 (Eoan)
+    - Git 2.3.0
     - Node 12.8.1
     - Xfce 4.1.4
     - noVNC 

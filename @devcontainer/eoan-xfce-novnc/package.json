@@ -4,7 +4,7 @@
     "create:devhome": "docker create volume devhome-eoan-xfce-novnc"
   },
   "devDependencies": {
-    "@devcontainer/dockerfiles": "0.0.8",
+    "@devcontainer/generator": "0.0.10",
     "load-text-file": "^1.2.0"
   },
   "version": "0.0.8",
