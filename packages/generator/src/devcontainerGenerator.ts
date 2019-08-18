@@ -13,10 +13,13 @@ import * as softwareVersions from "../versions.json";
 export class DevcontainerGenerator {
     private _dockerfile: string = "";
     private _templates: { [key: string]: string } = {};
-    private _templateInputs = ['base', 'node', 'git'];
+    private _templateInputs = ['base', 'node', 'git','xfce','noVNC','zsh'];
     private _nodeVesion = '';
     private _gitVersion = '';
-
+    private _xfce = false;
+    private _noVNC = false;
+    private _zsh = false;
+    
 
     constructor(private base: string) {
     };
@@ -38,19 +41,42 @@ export class DevcontainerGenerator {
         this._gitVersion = softwareVersions.git;
     }
 
+    public setXfce() {
+        this._xfce = true
+    }
+
+    public setNoVNC() {
+        this._noVNC = true
+    }
+
+    public setZsh() {
+        this._zsh = true
+    }
+
     public async generate() {
         const templates = await this.init();
 
         this._dockerfile += templates['base'].replace('{DISTRO}', this.base);
         
         if (this._gitVersion) {
-            this._dockerfile += templates['git'].replace('{NODE_VERSION}', this._nodeVesion)
-                .replace('{YARN_VERSION}', softwareVersions.yarn);
+            this._dockerfile += templates['git'].replace('{GIT_VERSION}', this._gitVersion)
         }
 
         if (this._nodeVesion) {
             this._dockerfile += templates['node'].replace('{NODE_VERSION}', this._nodeVesion)
                 .replace('{YARN_VERSION}', softwareVersions.yarn);
+        }
+
+        if (this._xfce) {
+            this._dockerfile += templates['xfce'];
+        }
+
+        if (this._noVNC) {
+            this._dockerfile += templates['noVNC'];
+        }
+
+        if (this._zsh) {
+            this._dockerfile += templates['zsh'];
         }
 
         return this._dockerfile;

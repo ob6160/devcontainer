@@ -139,11 +139,6 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
-"@devcontainer/generator@0.0.11":
-  version "0.0.11"
-  resolved "https://registry.yarnpkg.com/@devcontainer/generator/-/generator-0.0.11.tgz#ae6c8633d9429fb6d08a510a4aea3e2b142a5df8"
-  integrity sha512-CrE3MJtqe3zdcySQSfK8hOxH5rPaKfhs1Nu3rXJ/DpDpnT3Xm+MmcR2oA3DQzmi80DvAeEYpFCcoSYemmrq6dg==
-
 "@evocateur/libnpmaccess@^3.1.2":
   version "3.1.2"
   resolved "https://registry.yarnpkg.com/@evocateur/libnpmaccess/-/libnpmaccess-3.1.2.tgz#ecf7f6ce6b004e9f942b098d92200be4a4b1c845"

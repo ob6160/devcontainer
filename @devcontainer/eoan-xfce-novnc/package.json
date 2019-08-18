@@ -5,7 +5,7 @@
     "install": "node index.js"
   },
   "devDependencies": {
-    "@devcontainer/generator": "0.0.11",
+    "@devcontainer/generator": "0.0.13",
     "load-text-file": "^1.2.0"
   },
   "version": "0.0.8",
