@@ -1,12 +1,12 @@
 {
   "name": "@devcontainer/generator",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "generates custorm devcontainer Dockerfiles",
-  "files": ["lib/**/*"],
+  "files": [
+    "lib/**/*"
+  ],
   "scripts": {
     "build": "yarn tsc"
-  },
-  "dependencies": {
   },
   "devDependencies": {
     "@types/node": "^12.7.2",
