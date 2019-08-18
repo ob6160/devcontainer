@@ -48,5 +48,5 @@ export class DevcontainerGenerator {
         return this._dockerfile;
     }
 
-    private loadTemplate = async (filename: string) => await fs.readFile(`./templates/${filename}.Dockerfile`)
+    private loadTemplate = async (filename: string) => await fs.readFile(`${__dirname}/../templates/${filename}.Dockerfile`)
 }
