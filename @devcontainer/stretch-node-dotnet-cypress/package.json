@@ -9,10 +9,10 @@
     "push": "docker-compose push"
   },
   "devDependencies": {
-    "@devcontainer/generator": "^0.1.0",
+    "@devcontainer/generator": "^0.1.2",
     "load-text-file": "^1.2.0"
   },
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "devcontainer vscode docker xfce novnc",
   "main": "index.js",
   "repository": "git@github.com:zerdos/devcontainer.git",
