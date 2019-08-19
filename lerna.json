@@ -3,6 +3,7 @@
   "version": "0.0.13",
   "npmClient": "yarn",
   "packages": [
-    "packages/*"
+    "packages/*",
+    "@devcontainer/*"
   ]
 }

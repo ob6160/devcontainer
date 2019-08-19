@@ -57,7 +57,8 @@ RUN sudo apt-get update && DEBIAN_FRONTEND=noninteractive sudo apt-get install -
 	sudo dpkg-reconfigure -f noninteractive tzdata && \
 	sudo apt-get autoremove -y && \
     sudo apt-get clean -y && \
-    sudo rm -rf /var/lib/apt/lists/*### node.Dockerfile
+    sudo rm -rf /var/lib/apt/lists/*
+    ### node.Dockerfile
 RUN sudo groupadd --gid 1000 node \
   && sudo useradd --uid 1000 --gid node --shell /bin/bash --create-home node
 
@@ -124,16 +125,18 @@ RUN set -ex \
 
 USER ${USERNAME}
 
-RUN sudo chown -R $USERNAME:$USERNAME /usr/local/lib/node_modules ### xfce.Dockerfile
+RUN sudo chown -R $USERNAME:$USERNAME /usr/local/lib/node_modules 
+### xfce.Dockerfile
 RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add - && \
-    sudo sh -c 'echo "deb https://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list' && \
+    sudo sh -c 'echo "deb https://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list' && \
     sudo apt-get update && \
     sudo apt-get install -y --no-install-recommends \
         xfce4 \
         xfce4-goodies \
         google-chrome-stable && \
     sudo apt-get clean -y && \
-    sudo rm -rf /var/lib/apt/lists/* ### noVNC.Dockerfile
+    sudo rm -rf /var/lib/apt/lists/* 
+    ### noVNC.Dockerfile
 EXPOSE 6080
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
@@ -174,7 +177,8 @@ RUN  sudo apt-get update && \
     sudo apt-get clean -y  && \
     sudo rm -rf /var/lib/apt/lists/*
 
-SHELL [ "/bin/sh", "-c" ]### zsh.Dockerfile
+SHELL [ "/bin/sh", "-c" ]
+### zsh.Dockerfile
 RUN sudo apt-get update && sudo apt-get install -y --no-install-recommends zsh
 RUN sh -c "$(wget -O- https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)" && \
     echo "export LC_ALL=en_US.UTF-8" >>  ~/.zshrc && \

@@ -2,7 +2,7 @@ version: "3.7"
 services:
   devcontainer:
     build: .
-    image: zolika84/devcontainer:${VERSION}-eoan-xfce-novnc
+    image: zolika84/devcontainer:eoan-xfce-novnc
     privileged: true
     ports:
       - "6080:6080"
@@ -10,6 +10,9 @@ services:
     command: bash -c "supervisord && sleep infinity"
     volumes: 
       - eoan-xfce-novnc:/home/developer:rw
+  devcontainer-semver:
+    build: .
+    image: zolika84/devcontainer:eoan-xfce-novnc-${npm_package_version}
 volumes:
   eoan-xfce-novnc:
     external: true

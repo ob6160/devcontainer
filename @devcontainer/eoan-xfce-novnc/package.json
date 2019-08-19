@@ -2,13 +2,16 @@
   "name": "@devcontainer/eoan-xfce-novnc",
   "scripts": {
     "create:devhome": "docker create volume devhome-eoan-xfce-novnc",
-    "install": "node index.js"
+    "test:haha": "echo $npm_package_version",
+    "install": "node index.js",
+    "build": "docker-compose build",
+    "push": "docker-compose push"
   },
   "devDependencies": {
     "@devcontainer/generator": "0.0.13",
     "load-text-file": "^1.2.0"
   },
-  "version": "0.0.8",
+  "version": "0.0.13",
   "description": "devcontainer vscode docker xfce novnc",
   "main": "index.js",
   "repository": "git@github.com:zerdos/devcontainer.git",
