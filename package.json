@@ -8,7 +8,7 @@
     ]
   },
   "scripts": {
-    "release": "yarn workspaces build && lerna publish"
+    "release": "yarn install && lerna publish"
   },
   "publicConfig": {
     "access": "public"
