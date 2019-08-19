@@ -1,8 +1,7 @@
 {
   "name": "@devcontainer/eoan-xfce-novnc",
   "scripts": {
-    "create:devhome": "docker create volume devhome-eoan-xfce-novnc",
-    "test:haha": "echo $npm_package_version",
+    "create:devhome": "docker volume create devhome-eoan-xfce-novnc",
     "install": "node index.js",
     "build": "docker-compose build",
     "push": "docker-compose push"

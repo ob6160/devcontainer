@@ -136,7 +136,7 @@ RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo ap
         google-chrome-stable && \
     sudo apt-get clean -y && \
     sudo rm -rf /var/lib/apt/lists/* 
-    ### noVNC.Dockerfile
+### noVNC.Dockerfile
 EXPOSE 6080
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
