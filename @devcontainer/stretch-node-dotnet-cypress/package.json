@@ -1,8 +1,8 @@
 {
-  "name": "@devcontainer/eoan-xfce-novnc",
-  "tagName": "eoan-xfce-novnc",
+  "name": "@devcontainer/stretch-node-dotnet-cypress",
+  "tagName": "stretch-node-dotnet-cypress",
   "scripts": {
-    "create:devhome": "docker volume create devhome-eoan-xfce-novnc",
+    "create:devhome": "docker volume create devhome-${tagName}",
     "prepublish": "yarn generate:dockerfile && docker-compose build && docker-compose push",
     "generate:dockerfile": "node index.js",
     "build": "docker-compose build",

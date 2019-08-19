@@ -13,15 +13,16 @@ import * as softwareVersions from "../versions.json";
 export class DevcontainerGenerator {
     private _dockerfile: string = "";
     private _templates: { [key: string]: string } = {};
-    private _templateInputs = ['base', 'node', 'git','xfce','noVNC','zsh'];
+    private _templateInputs = ['base', 'git', 'node', 'dotnet', 'xfce', 'noVNC', 'zsh',];
     private _nodeVesion = '';
     private _gitVersion = '';
+    private _dotnet = false;
     private _xfce = false;
     private _noVNC = false;
     private _zsh = false;
-    
 
-    constructor(private base: string) {
+
+    constructor(private base: Base) {
     };
 
     private async init() {
@@ -53,11 +54,15 @@ export class DevcontainerGenerator {
         this._zsh = true
     }
 
+    public setDotnet() {
+        this._dotnet = true
+    }
+
     public async generate() {
         const templates = await this.init();
 
         this._dockerfile += templates['base'].replace('{DISTRO}', this.base);
-        
+
         if (this._gitVersion) {
             this._dockerfile += templates['git'].replace('{GIT_VERSION}', this._gitVersion)
         }
@@ -65,6 +70,10 @@ export class DevcontainerGenerator {
         if (this._nodeVesion) {
             this._dockerfile += templates['node'].replace('{NODE_VERSION}', this._nodeVesion)
                 .replace('{YARN_VERSION}', softwareVersions.yarn);
+        }
+
+        if (this._dotnet) {
+            this._dockerfile += templates['dotnet'];
         }
 
         if (this._xfce) {
