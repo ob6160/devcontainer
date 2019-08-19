@@ -5,6 +5,7 @@
     "create:devhome": "docker volume create devhome-eoan-xfce-novnc",
     "prepublish": "yarn generate:dockerfile && docker-compose build && docker-compose push",
     "generate:dockerfile": "node index.js",
+    "install": "yarn generate:dockerfile",
     "build": "docker-compose build",
     "push": "docker-compose push"
   },
@@ -19,7 +20,7 @@
   "author": "Zoltan Erdos <zolika84@gmail.com>",
   "license": "BSD-3-Clause",
   "private": false,
-  "gitHead": "dcd19e4e33fa8150ed28dc207b456f44fccdeded",
+  "gitHead": "b43b64a42e4b40271f6573010f0d49971c4c3932",
   "publishConfig": {
     "access": "public"
   }

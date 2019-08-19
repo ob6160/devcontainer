@@ -58,7 +58,31 @@ RUN sudo apt-get update && DEBIAN_FRONTEND=noninteractive sudo apt-get install -
 	sudo apt-get autoremove -y && \
     sudo apt-get clean -y && \
     sudo rm -rf /var/lib/apt/lists/*
-    ### node.Dockerfile
+    ### git.Dockerfile
+USER ${USERNAME}
+
+ENV GIT_VERION=2.23.0
+
+RUN sudo apt-get update && \ 
+    sudo apt-get install -y --no-install-recommends \ 
+        make \
+        libssl-dev \
+        libghc-zlib-dev \
+        libcurl4-gnutls-dev \
+        libexpat1-dev \
+        gettext \
+        unzip 
+
+WORKDIR /usr/src
+
+RUN sudo wget https://github.com/git/git/archive/v${GIT_VERION}.tar.gz -O git.tar.gz && \
+    sudo tar -xf git.tar.gz && cd git-* && \
+    sudo make prefix=/usr/local all && \
+    sudo make prefix=/usr/local install && \
+    git --version
+
+WORKDIR $HOMEDIR
+### node.Dockerfile
 RUN sudo groupadd --gid 1000 node \
   && sudo useradd --uid 1000 --gid node --shell /bin/bash --create-home node
 

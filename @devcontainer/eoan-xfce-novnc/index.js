@@ -6,7 +6,7 @@ const run = async () => {
     const devGenerator = new DevcontainerGenerator('eoan');
 
     devGenerator.setNodeVersion('12.8.1');
-    //devGenerator.updateGit();
+    devGenerator.updateGit();
     devGenerator.setXfce();
     devGenerator.setNoVNC();
     devGenerator.setZsh();
