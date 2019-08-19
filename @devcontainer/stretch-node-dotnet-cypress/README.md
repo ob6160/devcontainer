@@ -15,13 +15,13 @@ npm install @devcontainer/stretch-node-dotnet-cypress --save-dev
 
 Make sure, that your VScode istance contains the [Remote Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) plugin.
 
-## Instaled components on @devcontainer/eoan-xfce-novnc
+## Instaled components on @devcontainer/stretch-node-dotnet-cypress
 
     - Debian 9 (Stretch)
     - Git 2.23.0
     - Node 12.8.1
-    - Xfce 4.1.2
+    - .NET Core SDK 2.2
     - noVNC 
     - Zsh + Oh my zsh
 
-After the devcontainer started, you can access the XFCE window from the browser on the [http://localhost:6080](http://localhost:6080)
+After the devcontainer started, you can access the noVNC window from the browser on the [http://localhost:6080](http://localhost:6080)
