@@ -9,7 +9,7 @@
     "build": "docker-compose build",
     "push": "docker-compose push"
   },
-  "devDependencies": {
+  "dependencies": {
     "@devcontainer/generator": "^0.1.4",
     "load-text-file": "^1.2.0"
   },
