@@ -18,10 +18,10 @@ Make sure, that your VScode istance contains the [Remote Containers](https://mar
 ## Instaled components on @devcontainer/eoan-xfce-novnc
 
     - Ubuntu 19.10 (Eoan)
-    - Git 2.3.0
+    - Git 2.23.0
     - Node 12.8.1
     - Xfce 4.1.4
     - noVNC 
-    - Zsh + Oh my zs
+    - Zsh + Oh my zsh
 
 After the devcontainer started, you can access the XFCE window from the browser on the [http://localhost:6080](http://localhost:6080)
