@@ -9,6 +9,7 @@
   ],
   "main": "lib/src/index.js",
   "scripts": {
+    "prepublish": "yarn build",
     "build": "yarn tsc"
   },
   "devDependencies": {
@@ -18,5 +19,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "gitHead": "dcd19e4e33fa8150ed28dc207b456f44fccdeded"
 }
