@@ -61,7 +61,7 @@ RUN sudo apt-get update && DEBIAN_FRONTEND=noninteractive sudo apt-get install -
     ### git.Dockerfile
 USER ${USERNAME}
 
-ENV GIT_VERION=2.2.3
+ENV GIT_VERION=2.23.0
 
 RUN sudo apt-get update && \ 
     sudo apt-get install -y --no-install-recommends \ 
