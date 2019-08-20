@@ -88,7 +88,7 @@ RUN sudo groupadd --gid 1000 node \
 
 USER root
 
-ENV NODE_VERSION 12.8.1
+ENV NODE_VERSION 12.9.0
 
 RUN ARCH= && dpkgArch="$(dpkg --print-architecture)" \
   && case "${dpkgArch##*-}" in \
