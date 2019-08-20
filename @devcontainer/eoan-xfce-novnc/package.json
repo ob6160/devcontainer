@@ -9,6 +9,12 @@
     "build": "docker-compose build",
     "push": "docker-compose push"
   },
+  "files": [
+    ".devcontainer/**/*",
+    "docker-compose.yml",
+    "Dockerfile",
+    "README.md"
+  ],
   "dependencies": {
     "@devcontainer/generator": "^0.2.0",
     "load-text-file": "^1.2.0"

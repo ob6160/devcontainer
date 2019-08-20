@@ -2,6 +2,8 @@ import { promises as fs, Dirent } from 'fs';
 
 type Base = "stretch" | "buster" | "disco" | "eoan";
 
+type NodeVesion = "lts" | "current" ; 
+
 const getVersion = (b: Base) => b === "stretch" ? '9' :
     b === "buster" ? '10' :
         b === "disco" ? '19.04' : '19.10';
@@ -14,7 +16,7 @@ export class DevcontainerGenerator {
     private _dockerfile: string = "";
     private _templates: { [key: string]: string } = {};
     private _templateInputs = ['base', 'git', 'node', 'dotnet', 'xfce', 'noVNC', 'zsh',];
-    private _nodeVesion = '';
+    private _nodeVesion: NodeVesion | null = null
     private _gitVersion = '';
     private _dotnet = false;
     private _xfce = false;
@@ -34,7 +36,7 @@ export class DevcontainerGenerator {
         return this._templates;
     }
 
-    public setNodeVersion(nodeVersion: 'lts' | 'current') {
+    public setNodeVersion(nodeVersion: NodeVesion) {
         this._nodeVesion = nodeVersion;
     }
 
@@ -58,7 +60,7 @@ export class DevcontainerGenerator {
         this._dotnet = true
     }
 
-    public async generate() {
+    public async generateDockerfile() {
         const templates = await this.init();
 
         this._dockerfile += templates['base'].replace('{DISTRO}', this.base);
@@ -68,7 +70,7 @@ export class DevcontainerGenerator {
         }
 
         if (this._nodeVesion) {
-            this._dockerfile += templates['node'].replace('{NODE_VERSION}', this._nodeVesion)
+            this._dockerfile += templates['node'].replace('{NODE_VERSION}', softwareVersions.node[this._nodeVesion])
                 .replace('{YARN_VERSION}', softwareVersions.yarn);
         }
 
