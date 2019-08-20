@@ -150,6 +150,7 @@ RUN set -ex \
 USER ${USERNAME}
 
 RUN sudo chown -R $USERNAME:$USERNAME /usr/local/lib/node_modules 
+### cypress.Dockerfile
 ARG CYPRESS_VERION=3.4.1
 
 RUN sudo apt-get update && \
@@ -168,6 +169,7 @@ RUN sudo apt-get update && \
   sudo rm -rf /var/lib/apt/lists/* && \
   yarn global add cypress@$CYPRESS_VERION --no-cache && \
   yarn cache clean
+  ### dotnet.Dockerfile
 USER root
 
 RUN apt-get update \
