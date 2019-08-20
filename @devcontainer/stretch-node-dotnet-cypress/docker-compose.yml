@@ -2,8 +2,9 @@ version: "3.7"
 services:
   devcontainer:
     build: .
-    working_dir: .
-    image: zolika84/devcontainer:${npm_package_tagName}
+    image: zolika84/devcontainer:stretch-node-dotnet-cypress
+    working_dir: /home/developer/
+    user: developer
     privileged: true
     ports:
       - "6080:6080"
@@ -11,9 +12,6 @@ services:
     command: bash -c "supervisord && sleep infinity"
     volumes: 
       - devcontainer-home:/home/developer:rw
-  devcontainer-semver:
-    build: .
-    image: zolika84/devcontainer:${npm_package_tagName}-${npm_package_version}
 volumes:
   devcontainer-home:
     external: true
