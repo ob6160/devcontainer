@@ -2,7 +2,7 @@ version: "3.7"
 services:
   devcontainer:
     build: .
-    image: zolika84/devcontainer:eoan-xfce-novnc
+    image: devimages/eoan-xfce-novnc
     working_dir: /home/developer/
     user: developer
     privileged: true
