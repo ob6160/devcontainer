@@ -1,5 +1,0 @@
-image: zolika84/node-12.4.0-vscode-docker-bash:latest
-tasks:
-- command: yarn
-checkoutLocation: /dockerfiles
-workspaceLocation: /dockerfiles

@@ -1,1 +1,0 @@
-dotnet for debian buster

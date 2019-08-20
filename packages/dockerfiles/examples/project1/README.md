@@ -1,3 +1,0 @@
-### Open this project with vscode 
-
-# ....

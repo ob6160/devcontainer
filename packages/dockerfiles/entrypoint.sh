@@ -1,1 +1,0 @@
-sudo chown -R developer:developer /home/developer
