@@ -15,14 +15,14 @@ import * as softwareVersions from "../versions.json";
 export class DevcontainerGenerator {
     private _dockerfile: string = "";
     private _templates: { [key: string]: string } = {};
-    private _templateInputs = ['base', 'git', 'node', 'dotnet', 'xfce', 'noVNC', 'zsh',];
-    private _nodeVesion: NodeVesion | null = null
+    private _templateInputs = ['base', 'git', 'node', 'cypress', 'dotnet', 'xfce', 'noVNC', 'zsh'];
+    private _nodeVesion: NodeVesion | null = null;
     private _gitVersion = '';
+    private _cypressVersion = '';
     private _dotnet = false;
     private _xfce = false;
     private _noVNC = false;
     private _zsh = false;
-
 
     constructor(private base: Base) {
     };
@@ -60,6 +60,10 @@ export class DevcontainerGenerator {
         this._dotnet = true
     }
 
+    public setCypress() {
+        this._cypressVersion = softwareVersions.cypress;
+    }
+
     public async generateDockerfile() {
         const templates = await this.init();
 
@@ -73,6 +77,11 @@ export class DevcontainerGenerator {
             this._dockerfile += templates['node'].replace('{NODE_VERSION}', softwareVersions.node[this._nodeVesion])
                 .replace('{YARN_VERSION}', softwareVersions.yarn);
         }
+
+        if (this._cypressVersion) {
+            this._dockerfile += templates['cypress'].replace('{CYPRESS_VERION}', this._cypressVersion)
+        }
+
 
         if (this._dotnet) {
             this._dockerfile += templates['dotnet'];
