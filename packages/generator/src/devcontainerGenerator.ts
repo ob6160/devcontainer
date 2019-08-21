@@ -15,11 +15,11 @@ import * as softwareVersions from "../versions.json";
 export class DevcontainerGenerator {
     private _dockerfile: string = "";
     private _templates: { [key: string]: string } = {};
-    private _templateInputs = ['base', 'git', 'node', 'cypress', 'dotnet', 'xfce', 'noVNC', 'zsh'];
+    private _templateInputs = ['base', 'git', 'node', 'cypress', 'dotnet', 'dotnet3', 'xfce', 'noVNC', 'zsh'];
     private _nodeVesion: NodeVesion | null = null;
     private _gitVersion = '';
     private _cypressVersion = '';
-    private _dotnet = false;
+    private _dotnet: null | "2" | "3" = null;
     private _xfce = false;
     private _noVNC = false;
     private _zsh = false;
@@ -56,8 +56,8 @@ export class DevcontainerGenerator {
         this._zsh = true
     }
 
-    public setDotnet() {
-        this._dotnet = true
+    public setDotnet(version: "2" | "3" = "2") {
+        this._dotnet = version;
     }
 
     public setCypress() {
@@ -82,9 +82,14 @@ export class DevcontainerGenerator {
             this._dockerfile += templates['cypress'].replace('{CYPRESS_VERION}', this._cypressVersion)
         }
 
-
         if (this._dotnet) {
-            this._dockerfile += templates['dotnet'];
+            if (this._dotnet === "2") 
+                this._dockerfile += templates['dotnet'].replace('{DOTNET_VERSION}', softwareVersions.dotnet)
+                    .replace('{dotnet_sha512}', softwareVersions.sha.dotnet_sha512["2.2.401"]);
+            else {
+                this._dockerfile += templates['dotnet'].replace('{DOTNET_VERSION}', softwareVersions.dotnet3)
+                .replace('{dotnet_sha512}', softwareVersions.sha.dotnet_sha512["3.0.100-preview8-013656"]);
+            }
         }
 
         if (this._xfce) {
