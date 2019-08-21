@@ -19,7 +19,7 @@ Make sure, that your VScode istance contains the [Remote Containers](https://mar
 
     - Ubuntu 19.10 (Eoan)
     - Git 2.23.0
-    - Node 12.8.1
+    - Node 12.9.0
     - Xfce 4.1.4
     - noVNC 
     - Zsh + Oh my zsh

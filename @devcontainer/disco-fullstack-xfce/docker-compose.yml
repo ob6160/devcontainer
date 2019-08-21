@@ -1,0 +1,17 @@
+version: "3.7"
+services:
+  devcontainer:
+    build: .
+    image: devimages/disco-fullstack-xfce
+    working_dir: /home/developer/
+    user: developer
+    privileged: true
+    ports:
+      - "6080:6080"
+    shm_size: 1gb
+    command: bash -c "supervisord && sleep infinity"
+    volumes: 
+      - devcontainer-home:/home/developer:rw
+volumes:
+  devcontainer-home:
+    external: true
