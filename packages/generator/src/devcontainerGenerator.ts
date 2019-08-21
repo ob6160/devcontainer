@@ -84,10 +84,10 @@ export class DevcontainerGenerator {
 
         if (this._dotnet) {
             if (this._dotnet === "2") 
-                this._dockerfile += templates['dotnet'].replace('{DOTNET_VERSION}', softwareVersions.dotnet)
+                this._dockerfile += templates['dotnet'].replace('{DOTNET_SDK_VERSION}', softwareVersions.dotnet)
                     .replace('{dotnet_sha512}', softwareVersions.sha.dotnet_sha512["2.2.401"]);
             else {
-                this._dockerfile += templates['dotnet'].replace('{DOTNET_VERSION}', softwareVersions.dotnet3)
+                this._dockerfile += templates['dotnet'].replace('{DOTNET_SDK_VERSION}', softwareVersions.dotnet3)
                 .replace('{dotnet_sha512}', softwareVersions.sha.dotnet_sha512["3.0.100-preview8-013656"]);
             }
         }
