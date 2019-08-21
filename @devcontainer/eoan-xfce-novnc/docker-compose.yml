@@ -2,7 +2,7 @@ version: "3.7"
 services:
   devcontainer:
     build: .
-    image: devimages/eoan-xfce-novnc:{npm_package_version}
+    image: devimages/eoan-xfce-novnc:${npm_package_version}
     working_dir: /home/developer/
     user: developer
     privileged: true
