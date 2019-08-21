@@ -2,13 +2,13 @@
 USER root
 
 RUN apt-get update \
+    && (apt-get install -y --no-install-recommends libicu57 libssl1.0.2 \
+    || apt-get install -y --no-install-recommends libicu63 libssl1.1 )\
     && apt-get install -y --no-install-recommends \
         libc6 \
         libgcc1 \
         libgssapi-krb5-2 \
-        libicu57 \
         liblttng-ust0 \
-        libssl1.0.2 \
         libstdc++6 \
         zlib1g \
     && rm -rf /var/lib/apt/lists/*
