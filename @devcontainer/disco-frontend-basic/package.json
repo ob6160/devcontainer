@@ -1,8 +1,8 @@
 {
-  "name": "@devcontainer/disco-fullstack-xfce",
-  "tagName": "disco-fullstack-xfce",
+  "name": "@devcontainer/disco-frontend-basic",
+  "tagName": "disco-frontend-basic",
   "scripts": {
-    "create:devhome": "docker volume create devhome-${tagName}",
+    "create:devhome": "docker volume create devcontainer-home",
     "prepublish": "yarn generate:dockerfile && docker-compose build && docker-compose push",
     "install": "yarn generate:dockerfile",
     "generate:dockerfile": "node index.js",
@@ -20,7 +20,7 @@
     "load-text-file": "^1.2.0"
   },
   "version": "0.5.3",
-  "description": "devcontainer vscode docker cypress xfce novnc",
+  "description": "devcontainer vscode node zsh",
   "main": "index.js",
   "repository": "git@github.com:zerdos/devcontainer.git",
   "author": "Zoltan Erdos <zolika84@gmail.com>",

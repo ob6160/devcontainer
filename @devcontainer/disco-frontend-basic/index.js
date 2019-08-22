@@ -6,10 +6,6 @@ const run = async () => {
 
   devGenerator.updateGit();
   devGenerator.setNodeVersion('current');
-  devGenerator.setCypress();
-  devGenerator.setDotnet();
-  devGenerator.setXfce();
-  devGenerator.setNoVNC();
   devGenerator.setZsh();
 
   await writeFile(
