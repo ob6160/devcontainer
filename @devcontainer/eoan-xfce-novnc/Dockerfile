@@ -1,4 +1,6 @@
 ### base.Dockerfile
+### Generator: https://github.com/zerdos/devcontainer/
+
 FROM buildpack-deps:eoan
 
 LABEL maintainer=zoltan.erdos@me.com
