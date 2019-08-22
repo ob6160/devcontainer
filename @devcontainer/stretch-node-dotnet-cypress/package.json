@@ -3,11 +3,9 @@
   "tagName": "stretch-node-dotnet-cypress",
   "scripts": {
     "create:devhome": "docker volume create devhome-${tagName}",
-    "prepublish": "yarn generate:dockerfile && docker-compose build && docker-compose push",
+    "prepublish": "yarn generate:dockerfile",
     "install": "yarn generate:dockerfile",
-    "generate:dockerfile": "node index.js",
-    "build": "docker-compose build",
-    "push": "docker-compose push"
+    "generate:dockerfile": "node index.js"
   },
   "files": [
     ".devcontainer/**/*",
