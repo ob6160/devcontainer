@@ -3,11 +3,8 @@
   "tagName": "disco-frontend-basic",
   "scripts": {
     "create:devhome": "docker volume create devcontainer-home",
-    "prepublish": "yarn generate:dockerfile && docker-compose build && docker-compose push",
-    "install": "yarn generate:dockerfile",
-    "generate:dockerfile": "node index.js",
-    "build": "docker-compose build",
-    "push": "docker-compose push"
+    "prepublish": "yarn generate:dockerfile",
+    "generate:dockerfile": "node index.js"
   },
   "files": [
     ".devcontainer/**/*",
