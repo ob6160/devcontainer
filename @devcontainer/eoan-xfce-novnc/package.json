@@ -16,7 +16,7 @@
     "README.md"
   ],
   "dependencies": {
-    "@devcontainer/generator": "^0.7.1",
+    "@devcontainer/generator": "^0.7.2",
     "load-text-file": "^1.2.0"
   },
   "version": "0.7.2",
