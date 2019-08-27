@@ -15,12 +15,13 @@ import * as softwareVersions from "../versions.json";
 export class DevcontainerGenerator {
     private _dockerfile: string = "";
     private _templates: { [key: string]: string } = {};
-    private _templateInputs = ['base', 'git', 'node', 'cypress', 'dotnet', 'dotnet3', 'xfce', 'noVNC', 'zsh'];
+    private _templateInputs = ['base', 'git', 'node', 'cypress', 'dotnet', 'docker', 'dotnet3', 'xfce', 'noVNC', 'zsh'];
     private _nodeVesion: NodeVesion | null = null;
     private _gitVersion = '';
     private _cypressVersion = '';
     private _dotnet: null | "2" | "3" = null;
     private _xfce = false;
+    private _docker = false;
     private _noVNC = false;
     private _zsh = false;
 
@@ -56,6 +57,10 @@ export class DevcontainerGenerator {
         this._zsh = true
     }
 
+    public setDocker() {
+        this._docker = true
+    }
+
     public setDotnet(version: "2" | "3" = "2") {
         this._dotnet = version;
     }
@@ -80,6 +85,10 @@ export class DevcontainerGenerator {
 
         if (this._cypressVersion) {
             this._dockerfile += templates['cypress'].replace('{CYPRESS_VERION}', this._cypressVersion)
+        }
+
+        if (this._docker) {
+            this._dockerfile += templates['docker'];
         }
 
         if (this._dotnet) {
