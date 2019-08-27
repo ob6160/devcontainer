@@ -15,7 +15,7 @@ import * as softwareVersions from "../versions.json";
 export class DevcontainerGenerator {
     private _dockerfile: string = "";
     private _templates: { [key: string]: string } = {};
-    private _templateInputs = ['base', 'upgrade', 'git', 'node', 'cypress', 'dotnet', 'docker', 'dotnet3', 'xfce', 'noVNC', 'zsh'];
+    private _templateInputs = ['base', 'upgrade', 'git', 'gitUbuntu', 'node', 'cypress', 'dotnet', 'docker', 'dotnet3', 'xfce', 'noVNC', 'zsh'];
     private _nodeVesion: NodeVesion | null = null;
     private _gitVersion = '';
     private _cypressVersion = '';
@@ -84,7 +84,10 @@ export class DevcontainerGenerator {
         }
 
         if (this._gitVersion) {
-            this._dockerfile += templates['git'].replace('{GIT_VERSION}', this._gitVersion)
+            if (getDistro(this.base)==="Ubuntu") {this._dockerfile += templates['gitUbuntu']}
+            else {
+                this._dockerfile += templates['git'].replace('{GIT_VERSION}', this._gitVersion)
+            }
         }
 
         if (this._nodeVesion) {

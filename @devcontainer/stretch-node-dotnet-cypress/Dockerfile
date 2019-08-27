@@ -17,6 +17,7 @@ RUN groupadd --gid 1001 $USERNAME && \
     apt-get update && \
     apt-get install -y --no-install-recommends \
       sudo \
+      software-properties-common \
       supervisor && \
     echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME && \
     chmod 0440 /etc/sudoers.d/$USERNAME && \
@@ -81,6 +82,7 @@ RUN sudo wget https://github.com/git/git/archive/v${GIT_VERION}.tar.gz -O git.ta
     sudo tar -xf git.tar.gz && cd git-* && \
     sudo make prefix=/usr/local all && \
     sudo make prefix=/usr/local install && \
+    sudo rm -rf /usr/src/* && \
     git --version
 
 WORKDIR $HOMEDIR
