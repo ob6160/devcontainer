@@ -80,7 +80,8 @@ export class DevcontainerGenerator {
         this._dockerfile += templates['base'].replace('{DISTRO}', this.base);
 
         if(this._upgrade) {
-            this._dockerfile += templates['upgrade'].replace('{DEV_VERSION}', process.env.npm_package_version!);
+            const now = new Date();
+            this._dockerfile += templates['upgrade'].replace('{DEV_VERSION}', `${now.getFullYear()}-${now.getMonth()}-${now.getDate()}`);
         }
 
         if (this._gitVersion) {

@@ -17,6 +17,7 @@ RUN groupadd --gid 1001 $USERNAME && \
     apt-get update && \
     apt-get install -y --no-install-recommends \
       sudo \
+      software-properties-common \
       supervisor && \
     echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME && \
     chmod 0440 /etc/sudoers.d/$USERNAME && \
@@ -60,31 +61,14 @@ RUN sudo apt-get update && DEBIAN_FRONTEND=noninteractive sudo apt-get install -
 	sudo apt-get autoremove -y && \
     sudo apt-get clean -y && \
     sudo rm -rf /var/lib/apt/lists/*
-    ### git.Dockerfile
-USER ${USERNAME}
+    ### git for Ubuntu
 
-ENV GIT_VERION=2.23.0
-
-RUN sudo apt-get update && \ 
-    sudo apt-get install -y --no-install-recommends \ 
-        make \
-        libssl-dev \
-        libghc-zlib-dev \
-        libcurl4-gnutls-dev \
-        libexpat1-dev \
-        gettext \
-        unzip 
-
-WORKDIR /usr/src
-
-RUN sudo wget https://github.com/git/git/archive/v${GIT_VERION}.tar.gz -O git.tar.gz && \
-    sudo tar -xf git.tar.gz && cd git-* && \
-    sudo make prefix=/usr/local all && \
-    sudo make prefix=/usr/local install && \
-    sudo rm -rf /usr/src/* && \
-    git --version
-
-WORKDIR $HOMEDIR
+RUN sudo add-apt-repository ppa:git-core/ppa && sudo apt-get update && \
+    sudo apt-get install --no-install-recommends -y \
+    git && \
+  sudo apt-get autoremove -y && \
+  sudo apt-get clean -y && \
+  sudo rm -rf /var/lib/apt/lists/* 
 ### node.Dockerfile
 RUN sudo groupadd --gid 1000 node \
   && sudo useradd --uid 1000 --gid node --shell /bin/bash --create-home node

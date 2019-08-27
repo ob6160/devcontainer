@@ -64,14 +64,17 @@ RUN sudo apt-get update && DEBIAN_FRONTEND=noninteractive sudo apt-get install -
     ### upgrade.Dockerfile
 USER root
 
-ENV DEV_VERSION=0.7.3
+ENV DEV_VERSION=0.7.4
 
 RUN apt-get update && apt-get dist-upgrade -y && \
 	apt-get autoremove -y && \
     apt-get clean -y && \
     rm -rf /var/lib/apt/lists/*
 
-USER USER ${USERNAME}### git for Ubuntu
+USER ${USERNAME}
+
+
+### git for Ubuntu
 
 RUN sudo add-apt-repository ppa:git-core/ppa && sudo apt-get update && \
     sudo apt-get install --no-install-recommends -y \
