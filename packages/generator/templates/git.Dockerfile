@@ -19,6 +19,7 @@ RUN sudo wget https://github.com/git/git/archive/v${GIT_VERION}.tar.gz -O git.ta
     sudo tar -xf git.tar.gz && cd git-* && \
     sudo make prefix=/usr/local all && \
     sudo make prefix=/usr/local install && \
+    sudo rm -rf /usr/src/* && \
     git --version
 
 WORKDIR $HOMEDIR
