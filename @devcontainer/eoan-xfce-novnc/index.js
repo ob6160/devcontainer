@@ -7,6 +7,7 @@ const run = async () => {
   devGenerator.setNodeVersion('current');
   devGenerator.updateGit();
   devGenerator.setDotnet();
+  devGenerator.setDocker();
   devGenerator.setCypress();
   devGenerator.setXfce();
   devGenerator.setNoVNC();
