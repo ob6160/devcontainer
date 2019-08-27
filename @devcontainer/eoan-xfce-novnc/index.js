@@ -5,6 +5,7 @@ const run = async () => {
   const devGenerator = new DevcontainerGenerator('eoan');
 
   devGenerator.setNodeVersion('current');
+  devGenerator.setUpgraded();
   devGenerator.updateGit();
   devGenerator.setDotnet();
   devGenerator.setDocker();

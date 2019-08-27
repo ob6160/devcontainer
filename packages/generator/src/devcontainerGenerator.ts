@@ -15,11 +15,12 @@ import * as softwareVersions from "../versions.json";
 export class DevcontainerGenerator {
     private _dockerfile: string = "";
     private _templates: { [key: string]: string } = {};
-    private _templateInputs = ['base', 'git', 'node', 'cypress', 'dotnet', 'docker', 'dotnet3', 'xfce', 'noVNC', 'zsh'];
+    private _templateInputs = ['base', 'upgrade', 'git', 'node', 'cypress', 'dotnet', 'docker', 'dotnet3', 'xfce', 'noVNC', 'zsh'];
     private _nodeVesion: NodeVesion | null = null;
     private _gitVersion = '';
     private _cypressVersion = '';
     private _dotnet: null | "2" | "3" = null;
+    private _upgrade = false;
     private _xfce = false;
     private _docker = false;
     private _noVNC = false;
@@ -53,6 +54,10 @@ export class DevcontainerGenerator {
         this._noVNC = true
     }
 
+    public setUpgraded(){
+        this._upgrade = true;
+    }
+
     public setZsh() {
         this._zsh = true
     }
@@ -73,6 +78,10 @@ export class DevcontainerGenerator {
         const templates = await this.init();
 
         this._dockerfile += templates['base'].replace('{DISTRO}', this.base);
+
+        if(this._upgrade) {
+            this._dockerfile += templates['upgrade'].replace('{DEV_VERSION}', process.env.npm_package_version!);
+        }
 
         if (this._gitVersion) {
             this._dockerfile += templates['git'].replace('{GIT_VERSION}', this._gitVersion)

@@ -60,7 +60,17 @@ RUN sudo apt-get update && DEBIAN_FRONTEND=noninteractive sudo apt-get install -
 	sudo apt-get autoremove -y && \
     sudo apt-get clean -y && \
     sudo rm -rf /var/lib/apt/lists/*
-    ### git.Dockerfile
+    ### upgrade.Dockerfile
+USER root
+
+ENV DEV_VERSION=0.7.2
+
+RUN apt-get update && apt-get dist-upgrade -y && \
+	apt-get autoremove -y && \
+    apt-get clean -y && \
+    rm -rf /var/lib/apt/lists/*
+
+USER USER ${USERNAME}### git.Dockerfile
 USER ${USERNAME}
 
 ENV GIT_VERION=2.23.0
