@@ -1,3 +1,7 @@
 image: gitpod/workspace-full:latest
 tasks:
   - command: yarn
+
+vscode:
+  extensions:
+    - dbaeumer.vscode-eslint@1.9.1:YVcwmzKVVl+zZ+wMB02GjQ==
