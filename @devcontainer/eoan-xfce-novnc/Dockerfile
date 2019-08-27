@@ -269,13 +269,13 @@ RUN  sudo apt-get update && \
             terminator \
             procps \  
             vnc4server && \
-      sudo cp /usr/share/novnc/noVNC/vnc.html /usr/share/novnc/noVNC/index.html && \
+      sudo cp /usr/share/novnc/vnc.html /usr/share/novnc/index.html && \
       echo "[program:vncserver]"                                                >> $SUPERVISORCONF && \
       echo "command=vncserver -SecurityTypes none -cleanstale -useold"          >> $SUPERVISORCONF && \
       echo "autostart=true"                                                     >> $SUPERVISORCONF && \
       echo ""                                                                   >> $SUPERVISORCONF && \
       echo "[program:novnc]"                                                    >> $SUPERVISORCONF && \
-      echo "command=websockify -D --web=/usr/share/novnc/ 6080 localhost:5901" >> $SUPERVISORCONF && \
+      echo "command=websockify -D --web=/usr/share/novnc/ 6080 localhost:5901"  >> $SUPERVISORCONF && \
       echo "autostart=true"                                                     >> $SUPERVISORCONF && \
       echo ""                                                                   >> $SUPERVISORCONF && \
     sudo sed -i -e '1 aautocutsel -fork' /etc/X11/Xvnc-session && \
