@@ -58,6 +58,7 @@ RUN sudo apt-get update && DEBIAN_FRONTEND=noninteractive sudo apt-get install -
     sudo dpkg-reconfigure --frontend=noninteractive locales && \
     sudo update-locale LANG=en_US.UTF-8 && \
 	sudo dpkg-reconfigure -f noninteractive tzdata && \
+    sudo apt-get install --no-install-recommends -y ntp && \
 	sudo apt-get autoremove -y && \
     sudo apt-get clean -y && \
     sudo rm -rf /var/lib/apt/lists/*
