@@ -6,41 +6,23 @@ FROM buildpack-deps:eoan
 LABEL maintainer=zoltan.erdos@me.com
 
 ARG DISTRO={DISTRO}
-ARG USERNAME=developer
 ARG SUPERVISORCONF=/etc/supervisor/supervisord.conf
-ARG HOMEDIR=/home/$USERNAME
-ARG APPSDIR=/opt/$USERNAME
-ENV HOME ${HOMEDIR}
 
-RUN groupadd --gid 1001 $USERNAME && \
-    useradd --uid 1001 --gid $USERNAME --shell /bin/bash --create-home $USERNAME && \
-    apt-get update && \
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-      sudo \
       software-properties-common \
       supervisor && \
-    echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME && \
-    chmod 0440 /etc/sudoers.d/$USERNAME && \
-    mkdir /opt/developer && \
-    apt-get autoremove -y && \
-    apt-get clean -y && \
-    rm -rf /var/lib/apt/lists/* && \
     touch $SUPERVISORCONF && \
-    chown -R $USERNAME:$USERNAME \
-              ${HOMEDIR} \
-              ${APPSDIR} \
-              /usr/local/bin \
-              /tmp && \
-    chown $USERNAME:$USERNAME $SUPERVISORCONF && \
     echo "[supervisord]"                     >  $SUPERVISORCONF && \
-    echo "logfile=$HOMEDIR/supervisord.log"  >> $SUPERVISORCONF && \
-    echo "nodemon=false"                     >> $SUPERVISORCONF && \
+    echo "logfile=$HOME/supervisord.log"     >> $SUPERVISORCONF && \
+    echo "nodemon=true"                      >> $SUPERVISORCONF && \
     echo ""                                  >> $SUPERVISORCONF
 
-USER ${USERNAME}
 
-RUN sudo ln -fs /usr/share/zoneinfo/Europe/London /etc/localtime 
-RUN sudo apt-get update && DEBIAN_FRONTEND=noninteractive sudo apt-get install --no-install-recommends  -y \
+RUN ln -fs /usr/share/zoneinfo/Europe/London /etc/localtime 
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive  apt-get install --no-install-recommends  -y \
         curl \
 		make \
 		gcc \
@@ -54,18 +36,18 @@ RUN sudo apt-get update && DEBIAN_FRONTEND=noninteractive sudo apt-get install -
 		locales \
 		apt-transport-https \
 		dos2unix && \
-	sudo sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
-    sudo dpkg-reconfigure --frontend=noninteractive locales && \
-    sudo update-locale LANG=en_US.UTF-8 && \
-	sudo dpkg-reconfigure -f noninteractive tzdata && \
-    sudo apt-get install --no-install-recommends -y ntp && \
-	sudo apt-get autoremove -y && \
-    sudo apt-get clean -y && \
-    sudo rm -rf /var/lib/apt/lists/*
+    sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
+    dpkg-reconfigure --frontend=noninteractive locales && \
+    update-locale LANG=en_US.UTF-8 && \
+	dpkg-reconfigure -f noninteractive tzdata && \
+    apt-get install --no-install-recommends -y ntp && \
+	apt-get autoremove -y && \
+    apt-get clean -y && \
+    rm -rf /var/lib/apt/lists/*
     ### upgrade.Dockerfile
 USER root
 
-ENV DEV_VERSION=2019-7-28
+ENV DEV_VERSION=2019-7-30
 
 RUN apt-get update && apt-get dist-upgrade -y && \
 	apt-get autoremove -y && \
@@ -150,10 +132,8 @@ USER ${USERNAME}
 
 RUN sudo chown -R $USERNAME:$USERNAME /usr/local/lib/node_modules 
 ### cypress.Dockerfile
-ARG CYPRESS_VERION=3.4.1
-
-RUN sudo apt-get update && \
-    sudo apt-get install --no-install-recommends -y \
+RUN apt-get update && \
+    apt-get install --no-install-recommends -y \
     libgtk-3-0 \
     libnotify-dev \
     libgconf-2-4 \
@@ -163,27 +143,22 @@ RUN sudo apt-get update && \
     libxtst6 \
     xauth \
     xvfb && \
-  sudo apt-get autoremove -y && \
-  sudo apt-get clean -y && \
-  sudo rm -rf /var/lib/apt/lists/* && \
+  apt-get autoremove -y && \
+  apt-get clean -y && \
+  rm -rf /var/lib/apt/lists/* && \
   yarn global add cypress@$CYPRESS_VERION --no-cache && \
   yarn cache clean
   # docker.Dockerfile
-SHELL ["/bin/bash", "-o", "pipefail", "-c"]
-RUN sudo apt-get update && sudo apt-get install -y \
+RUN apt-get update && sudo apt-get install -y \
+        docker-compose \
         docker.io && \ 
     echo "[program:novnc]"                               >> $SUPERVISORCONF && \
     echo "command=sudo chmod 666 /var/run/docker.sock"   >> $SUPERVISORCONF && \
     echo "autostart=true"                                >> $SUPERVISORCONF && \
     echo ""                                              >> $SUPERVISORCONF && \
-    sudo curl -L "https://github.com/docker/compose/releases/download/1.25.0-rc2/docker-compose-Linux-x86_64" -o /usr/local/bin/docker-compose && \
-    sudo chmod +x /usr/local/bin/docker-compose && \
-    sudo apt-get autoremove -y && \
-    sudo apt-get clean -y  && \
-    sudo rm -rf /var/lib/apt/lists/*
-SHELL ["/bin/sh", "-c"]
-### dotnet.Dockerfile
-USER root
+    apt-get autoremove -y && \
+    apt-get clean -y  && \
+    rm -rf /var/lib/apt/lists/*### dotnet.Dockerfile
 
 RUN apt-get update \
     && (apt-get install -y --no-install-recommends libicu57 libssl1.0.2 \
@@ -227,16 +202,12 @@ RUN apt-get update \
         libunwind-dev \
     && rm -rf /var/lib/apt/lists/*
 
-USER ${USERNAME}
-
-
-
-RUN mkdir -p ${HOME}/tmp/octo && \
-    wget -O ${HOME}/tmp/octo.tar.gz https://download.octopusdeploy.com/octopus-tools/${OCTO_TOOLS_VERSION}/OctopusTools.${OCTO_TOOLS_VERSION}.debian.8-x64.tar.gz && \
-    tar -xf ${HOME}/tmp/octo.tar.gz -C ${HOME}/tmp/octo/ && \
-    sudo mv ${HOME}/tmp/octo /opt/ && \
-    sudo ln -s /opt/octo/Octo /usr/local/bin/octo && \
-    rm -rf ${HOME}/tmp
+RUN mkdir -p /tmp/octo && \
+    wget -O /tmp/octo.tar.gz https://download.octopusdeploy.com/octopus-tools/${OCTO_TOOLS_VERSION}/OctopusTools.${OCTO_TOOLS_VERSION}.debian.8-x64.tar.gz && \
+    tar -xf /tmp/octo.tar.gz -C /tmp/octo/ && \
+    mv /tmp/octo /opt/ && \
+    ln /opt/octo/Octo /usr/local/bin/octo && \
+    rm -rf /tmp/*
 
 ### xfce.Dockerfile
 RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add - && \

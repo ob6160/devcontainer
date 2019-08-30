@@ -1,10 +1,7 @@
 ### git.Dockerfile
-USER ${USERNAME}
 
-ENV GIT_VERION={GIT_VERSION}
-
-RUN sudo apt-get update && \ 
-    sudo apt-get install -y --no-install-recommends \ 
+RUN apt-get update && \ 
+    apt-get install -y --no-install-recommends \ 
         make \
         libssl-dev \
         libghc-zlib-dev \
@@ -13,13 +10,18 @@ RUN sudo apt-get update && \
         gettext \
         unzip 
 
-WORKDIR /usr/src
 
-RUN sudo wget https://github.com/git/git/archive/v${GIT_VERION}.tar.gz -O git.tar.gz && \
-    sudo tar -xf git.tar.gz && cd git-* && \
-    sudo make prefix=/usr/local all && \
-    sudo make prefix=/usr/local install && \
-    sudo rm -rf /usr/src/* && \
-    git --version
-
-WORKDIR $HOMEDIR
+RUN wget https://github.com/git/git/archive/v{GIT_VERSION}.tar.gz -O git.tar.gz && \
+    tar -xf git.tar.gz && cd git-* && \
+    make prefix=/usr/local all && \
+    make prefix=/usr/local install && \
+    rm -rf /usr/src/* && \
+    git --version && \
+    apt-get remove -y  make \
+        libssl-dev \
+        libghc-zlib-dev \
+        libcurl4-gnutls-dev \
+        libexpat1-dev && \
+    apt-get autoremove -y && \
+    apt-get clean -y && \
+    rm -rf /var/lib/apt/lists/*

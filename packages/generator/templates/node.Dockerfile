@@ -1,8 +1,6 @@
 ### node.Dockerfile
-RUN sudo groupadd --gid 1000 node \
-  && sudo useradd --uid 1000 --gid node --shell /bin/bash --create-home node
 
-USER root
+
 
 ENV NODE_VERSION {NODE_VERSION}
 
@@ -62,7 +60,3 @@ RUN set -ex \
   && ln -s /opt/yarn-v$YARN_VERSION/bin/yarnpkg /usr/local/bin/yarnpkg \
   && rm yarn-v$YARN_VERSION.tar.gz.asc yarn-v$YARN_VERSION.tar.gz
 
-
-USER ${USERNAME}
-
-RUN sudo chown -R $USERNAME:$USERNAME /usr/local/lib/node_modules 

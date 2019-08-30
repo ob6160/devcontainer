@@ -1,6 +1,5 @@
 # dotnet3.Dockerfile
-USER root
-WORKDIR /root
+
 # Install .NET CLI dependencies
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
@@ -18,7 +17,7 @@ ENV DOTNET_SDK_VERSION 3.0.100-preview8-013656
 
 RUN curl -SL --output dotnet.tar.gz https://dotnetcli.blob.core.windows.net/dotnet/Sdk/$DOTNET_SDK_VERSION/dotnet-sdk-$DOTNET_SDK_VERSION-linux-x64.tar.gz \
     && dotnet_sha512='' \
-    && echo "$dotnet_sha512 dotnet.tar.gz" | sha512sum -c - \
+    && ecs "$dotnet_sha512 dotnet.tar.gz" | sha512sum -c - \
     && mkdir -p /usr/share/dotnet \
     && tar -zxf dotnet.tar.gz -C /usr/share/dotnet \
     && rm dotnet.tar.gz \
@@ -32,14 +31,6 @@ ENV ASPNETCORE_URLS=http://+:80 \
     DOTNET_USE_POLLING_FILE_WATCHER=true \
     # Skip extraction of XML docs - generally not useful within an image/container - helps performance
     NUGET_XMLDOC_MODE=skip
-
-# Trigger first run experience by running arbitrary cmd
-
-USER $USERNAME
-WORKDIR $HOMEDIR
-RUN dotnet help
-USER root
-WORKDIR /root
 
 # Install PowerShell global tool
 ENV POWERSHELL_VERSION 7.0.0-preview.2
@@ -59,16 +50,11 @@ RUN apt-get update \
         libunwind-dev \
     && rm -rf /var/lib/apt/lists/*
 
-USER $USERNAME
-
-WORKDIR $HOMEDIR
-
-
 ARG OCTO_TOOLS_VERSION=6.12.0
 
-RUN mkdir -p ${HOME}/tmp/octo && \
-    wget -O ${HOME}/tmp/octo.tar.gz https://download.octopusdeploy.com/octopus-tools/${OCTO_TOOLS_VERSION}/OctopusTools.${OCTO_TOOLS_VERSION}.debian.8-x64.tar.gz && \
-    tar -xf ${HOME}/tmp/octo.tar.gz -C ${HOME}/tmp/octo/ && \
-    sudo mv ${HOME}/tmp/octo /opt/ && \
-    sudo ln -s /opt/octo/Octo /usr/local/bin/octo && \
-    rm -rf ${HOME}/tmp
+RUN mkdir -p /tmp/octo && \
+    wget -O /tmp/octo.tar.gz https://download.octopusdeploy.com/octopus-tools/${OCTO_TOOLS_VERSION}/OctopusTools.${OCTO_TOOLS_VERSION}.debian.8-x64.tar.gz && \
+    tar -xf /tmp/octo.tar.gz -C /tmp/octo/ && \
+    mv /tmp/octo /opt/ && \
+    ln -s /opt/octo/Octo /usr/local/bin/octo && \
+    rm -rf /tmp

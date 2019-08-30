@@ -1,9 +1,9 @@
 
 ### git for Ubuntu
 
-RUN sudo add-apt-repository ppa:git-core/ppa && sudo apt-get update && \
-    sudo apt-get install --no-install-recommends -y \
+RUN add-apt-repository ppa:git-core/ppa && apt-get update && \
+    apt-get install --no-install-recommends -y \
     git && \
-  sudo apt-get autoremove -y && \
-  sudo apt-get clean -y && \
-  sudo rm -rf /var/lib/apt/lists/* 
+  apt-get autoremove -y && \
+  apt-get clean -y && \
+  rm -rf /var/lib/apt/lists/* 

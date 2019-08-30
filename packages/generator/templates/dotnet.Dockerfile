@@ -1,5 +1,4 @@
 ### dotnet.Dockerfile
-USER root
 
 RUN apt-get update \
     && (apt-get install -y --no-install-recommends libicu57 libssl1.0.2 \
@@ -43,14 +42,10 @@ RUN apt-get update \
         libunwind-dev \
     && rm -rf /var/lib/apt/lists/*
 
-USER ${USERNAME}
-
-
-
-RUN mkdir -p ${HOME}/tmp/octo && \
-    wget -O ${HOME}/tmp/octo.tar.gz https://download.octopusdeploy.com/octopus-tools/${OCTO_TOOLS_VERSION}/OctopusTools.${OCTO_TOOLS_VERSION}.debian.8-x64.tar.gz && \
-    tar -xf ${HOME}/tmp/octo.tar.gz -C ${HOME}/tmp/octo/ && \
-    sudo mv ${HOME}/tmp/octo /opt/ && \
-    sudo ln -s /opt/octo/Octo /usr/local/bin/octo && \
-    rm -rf ${HOME}/tmp
+RUN mkdir -p /tmp/octo && \
+    wget -O /tmp/octo.tar.gz https://download.octopusdeploy.com/octopus-tools/${OCTO_TOOLS_VERSION}/OctopusTools.${OCTO_TOOLS_VERSION}.debian.8-x64.tar.gz && \
+    tar -xf /tmp/octo.tar.gz -C /tmp/octo/ && \
+    mv /tmp/octo /opt/ && \
+    ln /opt/octo/Octo /usr/local/bin/octo && \
+    rm -rf /tmp/*
 
