@@ -8,9 +8,10 @@
     ]
   },
   "scripts": {
-    "release": "yarn docker:build && lerna publish",
-    "docker:build": "yarn workspaces run build && yarn workspaces run generate:dockerfiles && yarn workspaces run dockerBuild",
-    "docker:push": "yarn workspaces run push"
+    "release": "yarn docker:build && lerna publish && yarn docker:push",
+    "docker:build": "yarn xxx build && yarn xxx generate:dockerfile && yarn xxx docker:build",
+    "docker:push": "yarn xxx docker:spush",
+    "xxx": "yarn wsrun --exclude-missing"
   },
   "publicConfig": {
     "access": "public"
@@ -19,6 +20,7 @@
   "devDependencies": {
     "eslint": "^6.3.0",
     "eslint-config-google": "^0.13.0",
-    "lerna": "^3.16.4"
+    "lerna": "^3.16.4",
+    "wsrun": "^5.0.0"
   }
 }
