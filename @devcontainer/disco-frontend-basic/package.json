@@ -1,7 +1,7 @@
 {
   "name": "@devcontainer/disco-frontend-basic",
   "tagname": "disco-frontend-basic",
-  "scripts": {
+   "scripts": {
     "docker:build": "docker-compose -f tags.yml build",
     "docker:push": "docker-compose -f tags.yml push",
     "generate:dockerfile": "node index.js"

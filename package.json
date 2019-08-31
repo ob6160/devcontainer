@@ -10,7 +10,7 @@
   "scripts": {
     "release": "yarn docker:build && lerna publish && yarn docker:push",
     "docker:build": "yarn xxx build && yarn xxx generate:dockerfile && yarn xxx docker:build",
-    "docker:push": "yarn xxx docker:spush",
+    "docker:push": "yarn docker:build && yarn xxx docker:push",
     "xxx": "yarn wsrun --exclude-missing"
   },
   "publicConfig": {
