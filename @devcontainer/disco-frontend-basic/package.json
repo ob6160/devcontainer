@@ -1,9 +1,11 @@
 {
   "name": "@devcontainer/disco-frontend-basic",
-  "tagName": "disco-frontend-basic",
+  "tagname": "disco-frontend-basic",
   "scripts": {
-    "create:devhome": "docker volume create devcontainer-home",
-    "prepublish": "yarn generate:dockerfile",
+    "postinstall": "yarn generate:dockerfile",
+    "build": "docker-compose -f tags.yml build",
+    "rebuild": "yarn generate:dockerfile && docker-compose -f tags.yml build",
+    "push": "docker-compose -f tags.yml push",
     "generate:dockerfile": "node index.js"
   },
   "files": [

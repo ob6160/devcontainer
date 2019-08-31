@@ -1,0 +1,8 @@
+version: "3.7"
+services:
+  devcontainer-tagged:
+    build: .
+    image: devimages/${npm_package_eoan-tagname}:${npm_package_version}
+  devcontainer-latest:
+    build: .
+    image: devimages/${npm_package_eoan-tagname}:latest

@@ -1,15 +1,14 @@
 version: "3.7"
 services:
   devcontainer:
-    build: .
-    image: devimages/disco-frontend-basic:${npm_package_version}
+    image: devimages/disco-frontend-basic
     privileged: true
     ports:
       - "6080:6080"
     shm_size: 1gb
     command: bash -c "supervisord && sleep infinity"
     volumes: 
-      - devcontainer-home:/home/developer
+      - devhome:/home/developer
 volumes:
-  devcontainer-home:
-    external: true
+  devhome:
+    local: true

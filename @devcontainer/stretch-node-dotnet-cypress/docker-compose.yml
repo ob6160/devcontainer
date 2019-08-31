@@ -1,17 +1,13 @@
 version: "3.7"
 services:
   devcontainer:
-    build: .
-    image: devimages/stretch-node-dotnet-cypress:${npm_package_version}
-    working_dir: /home/developer/
-    user: developer
+    image: devimages/stretch-node-dotnet-cypress
     privileged: true
     ports:
       - "6080:6080"
     shm_size: 1gb
-    command: bash -c "supervisord && sleep infinity"
     volumes: 
-      - devcontainer-home:/home/developer:rw
+      - devhome:/home/developer
 volumes:
-  devcontainer-home:
-    external: true
+  devhome:
+    local: true
