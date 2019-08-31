@@ -6,44 +6,27 @@ FROM buildpack-deps:disco
 LABEL maintainer=zoltan.erdos@me.com
 
 ARG DISTRO={DISTRO}
-ARG USERNAME=developer
 ARG SUPERVISORCONF=/etc/supervisor/supervisord.conf
-ARG HOMEDIR=/home/$USERNAME
-ARG APPSDIR=/opt/$USERNAME
-ENV HOME ${HOMEDIR}
 
-RUN groupadd --gid 1001 $USERNAME && \
-    useradd --uid 1001 --gid $USERNAME --shell /bin/bash --create-home $USERNAME && \
-    apt-get update && \
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-      sudo \
       software-properties-common \
+      apt-utils \
       supervisor && \
-    echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME && \
-    chmod 0440 /etc/sudoers.d/$USERNAME && \
-    mkdir /opt/developer && \
-    apt-get autoremove -y && \
-    apt-get clean -y && \
-    rm -rf /var/lib/apt/lists/* && \
     touch $SUPERVISORCONF && \
-    chown -R $USERNAME:$USERNAME \
-              ${HOMEDIR} \
-              ${APPSDIR} \
-              /usr/local/bin \
-              /tmp && \
-    chown $USERNAME:$USERNAME $SUPERVISORCONF && \
     echo "[supervisord]"                     >  $SUPERVISORCONF && \
-    echo "logfile=$HOMEDIR/supervisord.log"  >> $SUPERVISORCONF && \
-    echo "nodemon=false"                     >> $SUPERVISORCONF && \
+    echo "logfile=$HOME/supervisord.log"     >> $SUPERVISORCONF && \
+    echo "nodemon=true"                      >> $SUPERVISORCONF && \
     echo ""                                  >> $SUPERVISORCONF
 
-USER ${USERNAME}
 
-RUN sudo ln -fs /usr/share/zoneinfo/Europe/London /etc/localtime 
-RUN sudo apt-get update && DEBIAN_FRONTEND=noninteractive sudo apt-get install --no-install-recommends  -y \
+RUN ln -fs /usr/share/zoneinfo/Europe/London /etc/localtime 
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive  apt-get install --no-install-recommends  -y \
         curl \
 		make \
-		gcc \
+		gcc \        
 		g++ \
 		python2.7 \
 		libx11-dev \
@@ -52,30 +35,28 @@ RUN sudo apt-get update && DEBIAN_FRONTEND=noninteractive sudo apt-get install -
 		libsecret-1-dev \
 		xz-utils \
 		locales \
+        ntp \
 		apt-transport-https \
 		dos2unix && \
-	sudo sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
-    sudo dpkg-reconfigure --frontend=noninteractive locales && \
-    sudo update-locale LANG=en_US.UTF-8 && \
-	sudo dpkg-reconfigure -f noninteractive tzdata && \
-    sudo apt-get install --no-install-recommends -y ntp && \
-	sudo apt-get autoremove -y && \
-    sudo apt-get clean -y && \
-    sudo rm -rf /var/lib/apt/lists/*
+    sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
+    dpkg-reconfigure --frontend=noninteractive locales && \
+    update-locale LANG=en_US.UTF-8 && \
+	dpkg-reconfigure -f noninteractive tzdata && \
+	apt-get autoremove -y && \
+    apt-get clean -y && \
+    rm -rf /var/lib/apt/lists/*
     
 ### git for Ubuntu
 
-RUN sudo add-apt-repository ppa:git-core/ppa && sudo apt-get update && \
-    sudo apt-get install --no-install-recommends -y \
+RUN add-apt-repository ppa:git-core/ppa && apt-get update && \
+    apt-get install --no-install-recommends -y \
     git && \
-  sudo apt-get autoremove -y && \
-  sudo apt-get clean -y && \
-  sudo rm -rf /var/lib/apt/lists/* 
+  apt-get autoremove -y && \
+  apt-get clean -y && \
+  rm -rf /var/lib/apt/lists/* 
 ### node.Dockerfile
-RUN sudo groupadd --gid 1000 node \
-  && sudo useradd --uid 1000 --gid node --shell /bin/bash --create-home node
 
-USER root
+
 
 ENV NODE_VERSION 12.9.1
 
@@ -135,18 +116,14 @@ RUN set -ex \
   && ln -s /opt/yarn-v$YARN_VERSION/bin/yarnpkg /usr/local/bin/yarnpkg \
   && rm yarn-v$YARN_VERSION.tar.gz.asc yarn-v$YARN_VERSION.tar.gz
 
-
-USER ${USERNAME}
-
-RUN sudo chown -R $USERNAME:$USERNAME /usr/local/lib/node_modules 
 ### zsh.Dockerfile
-RUN sudo apt-get update && sudo apt-get install -y --no-install-recommends zsh
+
+RUN apt-get update && apt-get install -y --no-install-recommends zsh
 RUN sh -c "$(wget -O- https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)" && \
     echo "export LC_ALL=en_US.UTF-8" >>  ~/.zshrc && \
-    echo "export LANG=en_US.UTF-8" >>  ~/.zshrc  && \
-    sudo chsh -s /usr/bin/zsh $USERNAME
-RUN sudo apt-get install -y --no-install-recommends \
+    echo "export LANG=en_US.UTF-8" >>  ~/.zshrc  
+RUN apt-get install -y --no-install-recommends \
       locales && \
-    sudo apt-get clean -y && \
-    sudo rm -rf /var/lib/apt/lists/*
+    apt-get clean -y && \
+    rm -rf /var/lib/apt/lists/*
 ENV SHELL=/usr/bin/zsh

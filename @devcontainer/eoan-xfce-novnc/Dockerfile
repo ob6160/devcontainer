@@ -13,6 +13,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
       software-properties-common \
+      apt-utils \
       supervisor && \
     touch $SUPERVISORCONF && \
     echo "[supervisord]"                     >  $SUPERVISORCONF && \
@@ -25,7 +26,7 @@ RUN ln -fs /usr/share/zoneinfo/Europe/London /etc/localtime
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive  apt-get install --no-install-recommends  -y \
         curl \
 		make \
-		gcc \
+		gcc \        
 		g++ \
 		python2.7 \
 		libx11-dev \
@@ -34,40 +35,36 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive  apt-get install --no-insta
 		libsecret-1-dev \
 		xz-utils \
 		locales \
+        ntp \
 		apt-transport-https \
 		dos2unix && \
     sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
     dpkg-reconfigure --frontend=noninteractive locales && \
     update-locale LANG=en_US.UTF-8 && \
 	dpkg-reconfigure -f noninteractive tzdata && \
-    apt-get install --no-install-recommends -y ntp && \
 	apt-get autoremove -y && \
     apt-get clean -y && \
     rm -rf /var/lib/apt/lists/*
     ### upgrade.Dockerfile
 USER root
 
-ENV DEV_VERSION=2019-7-30
+ENV DEV_VERSION=2019-7-31
 
 RUN apt-get update && apt-get dist-upgrade -y && \
 	apt-get autoremove -y && \
     apt-get clean -y && \
     rm -rf /var/lib/apt/lists/*
-
-USER ${USERNAME}
 ### git for Ubuntu
 
-RUN sudo add-apt-repository ppa:git-core/ppa && sudo apt-get update && \
-    sudo apt-get install --no-install-recommends -y \
+RUN add-apt-repository ppa:git-core/ppa && apt-get update && \
+    apt-get install --no-install-recommends -y \
     git && \
-  sudo apt-get autoremove -y && \
-  sudo apt-get clean -y && \
-  sudo rm -rf /var/lib/apt/lists/* 
+  apt-get autoremove -y && \
+  apt-get clean -y && \
+  rm -rf /var/lib/apt/lists/* 
 ### node.Dockerfile
-RUN sudo groupadd --gid 1000 node \
-  && sudo useradd --uid 1000 --gid node --shell /bin/bash --create-home node
 
-USER root
+
 
 ENV NODE_VERSION 12.9.1
 
@@ -127,10 +124,6 @@ RUN set -ex \
   && ln -s /opt/yarn-v$YARN_VERSION/bin/yarnpkg /usr/local/bin/yarnpkg \
   && rm yarn-v$YARN_VERSION.tar.gz.asc yarn-v$YARN_VERSION.tar.gz
 
-
-USER ${USERNAME}
-
-RUN sudo chown -R $USERNAME:$USERNAME /usr/local/lib/node_modules 
 ### cypress.Dockerfile
 RUN apt-get update && \
     apt-get install --no-install-recommends -y \
@@ -147,18 +140,19 @@ RUN apt-get update && \
   apt-get clean -y && \
   rm -rf /var/lib/apt/lists/* && \
   yarn global add cypress@$CYPRESS_VERION --no-cache && \
-  yarn cache clean
+  yarn cache clean && \
+  apt-get autoremove -y && \
+  apt-get clean -y && \
+  rm -rf /var/lib/apt/lists/*
+
   # docker.Dockerfile
-RUN apt-get update && sudo apt-get install -y \
+RUN apt-get update && apt-get install -y \
         docker-compose \
         docker.io && \ 
-    echo "[program:novnc]"                               >> $SUPERVISORCONF && \
-    echo "command=sudo chmod 666 /var/run/docker.sock"   >> $SUPERVISORCONF && \
-    echo "autostart=true"                                >> $SUPERVISORCONF && \
-    echo ""                                              >> $SUPERVISORCONF && \
     apt-get autoremove -y && \
-    apt-get clean -y  && \
-    rm -rf /var/lib/apt/lists/*### dotnet.Dockerfile
+    apt-get clean -y && \
+    rm -rf /var/lib/apt/lists/*
+### dotnet.Dockerfile
 
 RUN apt-get update \
     && (apt-get install -y --no-install-recommends libicu57 libssl1.0.2 \
@@ -190,7 +184,9 @@ ENV ASPNETCORE_URLS=http://+:80 \
     # Enable correct mode for dotnet watch (only mode supported in a container)
     DOTNET_USE_POLLING_FILE_WATCHER=true \
     # Skip extraction of XML docs - generally not useful within an image/container - helps performance
-    NUGET_XMLDOC_MODE=skip
+    NUGET_XMLDOC_MODE=skip \
+    # Opting out from telemetry
+    DOTNET_CLI_TELEMETRY_OPTOUT=true
 
 # Trigger first run experience by running arbitrary cmd to populate local package cache
 RUN dotnet help
@@ -210,22 +206,22 @@ RUN mkdir -p /tmp/octo && \
     rm -rf /tmp/*
 
 ### xfce.Dockerfile
-RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add - && \
-    sudo sh -c 'echo "deb https://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list' && \
-    sudo apt-get update && \
-    sudo apt-get install -y --no-install-recommends \
+RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && \
+    sh -c 'echo "deb https://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list' && \
+    apt-get update && \
+    apt-get install -y --no-install-recommends \
         xfce4 \
         xfce4-goodies \
         google-chrome-stable && \
-    sudo apt-get clean -y && \
-    sudo rm -rf /var/lib/apt/lists/* 
+    apt-get clean -y && \
+    rm -rf /var/lib/apt/lists/* 
 ### noVNC.Dockerfile
 EXPOSE 6080
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
-RUN  sudo apt-get update && \
-     sudo apt-get install -y --no-install-recommends \
+RUN  apt-get update && \
+     apt-get install -y --no-install-recommends \
             autocutsel \
             xfwm4 \
             libgtk-3-0 \
@@ -240,7 +236,7 @@ RUN  sudo apt-get update && \
             terminator \
             procps \  
             vnc4server && \
-      sudo cp /usr/share/novnc/vnc.html /usr/share/novnc/index.html && \
+      cp /usr/share/novnc/vnc.html /usr/share/novnc/index.html && \
       echo "[program:vncserver]"                                                >> $SUPERVISORCONF && \
       echo "command=vncserver -SecurityTypes none -cleanstale -useold"          >> $SUPERVISORCONF && \
       echo "autostart=true"                                                     >> $SUPERVISORCONF && \
@@ -249,23 +245,23 @@ RUN  sudo apt-get update && \
       echo "command=websockify -D --web=/usr/share/novnc/ 6080 localhost:5901"  >> $SUPERVISORCONF && \
       echo "autostart=true"                                                     >> $SUPERVISORCONF && \
       echo ""                                                                   >> $SUPERVISORCONF && \
-    sudo sed -i -e '1 aautocutsel -fork' /etc/X11/Xvnc-session && \
-    sudo sed -i -e 's/iconic/nowin/g' /etc/X11/Xvnc-session && \
-    sudo sed -i -e 's/workspace_count=4/workspace_count=1/g' /usr/share/xfwm4/defaults && \
-    sudo sed -i -e 's/use_compositing=true/use_compositing=false/g' /usr/share/xfwm4/defaults && \
-    sudo sed -i -e '1 aterminator &' /etc/X11/Xvnc-session && \
-    sudo apt-get autoremove -y && \
-    sudo apt-get clean -y  && \
-    sudo rm -rf /var/lib/apt/lists/*
+    sed -i -e '1 aautocutsel -fork' /etc/X11/Xvnc-session && \
+    sed -i -e 's/iconic/nowin/g' /etc/X11/Xvnc-session && \
+    sed -i -e 's/workspace_count=4/workspace_count=1/g' /usr/share/xfwm4/defaults && \
+    sed -i -e 's/use_compositing=true/use_compositing=false/g' /usr/share/xfwm4/defaults && \
+    sed -i -e '1 aterminator &' /etc/X11/Xvnc-session && \
+    apt-get autoremove -y && \
+    apt-get clean -y && \
+    rm -rf /var/lib/apt/lists/*
 
 SHELL [ "/bin/sh", "-c" ]### zsh.Dockerfile
-RUN sudo apt-get update && sudo apt-get install -y --no-install-recommends zsh
+
+RUN apt-get update && apt-get install -y --no-install-recommends zsh
 RUN sh -c "$(wget -O- https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)" && \
     echo "export LC_ALL=en_US.UTF-8" >>  ~/.zshrc && \
-    echo "export LANG=en_US.UTF-8" >>  ~/.zshrc  && \
-    sudo chsh -s /usr/bin/zsh $USERNAME
-RUN sudo apt-get install -y --no-install-recommends \
+    echo "export LANG=en_US.UTF-8" >>  ~/.zshrc  
+RUN apt-get install -y --no-install-recommends \
       locales && \
-    sudo apt-get clean -y && \
-    sudo rm -rf /var/lib/apt/lists/*
+    apt-get clean -y && \
+    rm -rf /var/lib/apt/lists/*
 ENV SHELL=/usr/bin/zsh
