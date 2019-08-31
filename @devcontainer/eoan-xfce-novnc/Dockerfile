@@ -14,10 +14,11 @@ RUN apt-get update \
   apt-utils \
   dirmngr \
   supervisor \
+&& touch /opt/supervisord.log && chmod 777 /opt/supervisord.log \
 && touch $SUPERVISORCONF \
 && echo "[supervisord]"                               >  $SUPERVISORCONF \
-&& echo "logfile=/opt/supervisord.log"     >> $SUPERVISORCONF \
-&& echo "nodemon=false"                               >> $SUPERVISORCONF \
+&& echo "logfile=/opt/supervisord.log"                >> $SUPERVISORCONF \
+&& echo "nodemon=true"                                >> $SUPERVISORCONF \
 && echo ""                                            >> $SUPERVISORCONF \
 && ln -fs /usr/share/zoneinfo/Europce/London /etc/localtime \
 && apt-get update &&  apt-get install --no-install-recommends  -y \
@@ -27,19 +28,7 @@ RUN apt-get update \
 && apt-get autoremove -y \
 && apt-get clean -y \
 && rm -rf /var/lib/apt/lists/*
-
-### HAS REALLY BAD INPACT FOR THE IMAGE SIZE!
-###    
-### upgrade.Dockerfile
-
-USER root
-
-ENV DEV_VERSION=2019-7-31
-
-RUN apt-get update && apt-get dist-upgrade -y && \
-	apt-get autoremove -y \
-&& apt-get clean -y \
-&& rm -rf /var/lib/apt/lists/*### git for Ubuntu
+### git for Ubuntu
 
 RUN add-apt-repository ppa:git-core/ppa && apt-get update \
 && apt-get install --no-install-recommends -y \
@@ -131,15 +120,6 @@ RUN apt-get update \
 && apt-get autoremove -y \
 && apt-get clean -y \
 && rm -rf /var/lib/apt/lists/* /root/* /tmp/* 
-
-# docker.Dockerfile
-
-RUN apt-get update && apt-get install --no-install-recommends -y \
-    docker-compose \
-    docker.io \ 
-&& apt-get autoremove -y \
-&& apt-get clean -y \
-&& rm -rf /var/lib/apt/lists/*
 
 ### dotnet.Dockerfile
 
@@ -246,11 +226,9 @@ RUN apt-get update \
     && apt-get clean -y \
     && rm -rf /var/lib/apt/lists/* \
     && groupadd --gid 1000 dev \
-    && useradd --uid 1000 --gid dev --shell /bin/zsh --create-home developer \
-    && touch /opt/supervisord.log && chmod 777 /opt/supervisord.log
+    && useradd --uid 1000 --gid dev --shell /bin/zsh --create-home developer 
 
 USER developer
 RUN curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh
 
-# CMD [ "supervisord" ]
-CMD [ "bash", "-c", "sleep infinity" ]
+CMD exec /bin/bash -c "supervisord && trap : TERM INT; sleep infinity & wait"

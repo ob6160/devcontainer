@@ -4,10 +4,10 @@ services:
     image: devimages/stretch-node-dotnet-cypress
     privileged: true
     ports:
-      - "6080:6080"
+      - "6080"
     shm_size: 1gb
     volumes: 
       - devhome:/home/developer
 volumes:
   devhome:
-    local: true
+    driver: local

@@ -14,10 +14,11 @@ RUN apt-get update \
   apt-utils \
   dirmngr \
   supervisor \
+&& touch /opt/supervisord.log && chmod 777 /opt/supervisord.log \
 && touch $SUPERVISORCONF \
 && echo "[supervisord]"                               >  $SUPERVISORCONF \
-&& echo "logfile=/opt/supervisord.log"     >> $SUPERVISORCONF \
-&& echo "nodemon=false"                               >> $SUPERVISORCONF \
+&& echo "logfile=/opt/supervisord.log"                >> $SUPERVISORCONF \
+&& echo "nodemon=true"                                >> $SUPERVISORCONF \
 && echo ""                                            >> $SUPERVISORCONF \
 && ln -fs /usr/share/zoneinfo/Europce/London /etc/localtime \
 && apt-get update &&  apt-get install --no-install-recommends  -y \
@@ -232,11 +233,9 @@ RUN apt-get update \
     && apt-get clean -y \
     && rm -rf /var/lib/apt/lists/* \
     && groupadd --gid 1000 dev \
-    && useradd --uid 1000 --gid dev --shell /bin/zsh --create-home developer \
-    && touch /opt/supervisord.log && chmod 777 /opt/supervisord.log
+    && useradd --uid 1000 --gid dev --shell /bin/zsh --create-home developer 
 
 USER developer
 RUN curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh
 
-# CMD [ "supervisord" ]
-CMD [ "bash", "-c", "sleep infinity" ]
+CMD exec /bin/bash -c "supervisord && trap : TERM INT; sleep infinity & wait"

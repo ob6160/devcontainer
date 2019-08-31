@@ -1,15 +1,13 @@
 version: "3.7"
 services:
   devcontainer:
-    build: .
+    image: devimages/eoan-xfce-novnc
     privileged: true
     ports:
-      - "6080:6080"
+      - "6080"
     shm_size: 1gb
-    command: sleep infinity
     volumes: 
       - devhome:/home/developer
-      - /var/run/docker.sock:/var/run/docker.sock
 volumes:
   devhome:
     driver: local

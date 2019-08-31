@@ -5,10 +5,8 @@ const run = async () => {
   const devGenerator = new DevcontainerGenerator('ubuntu:eoan');
 
   devGenerator.setNodeVersion('current');
-  devGenerator.setUpgraded();
   devGenerator.updateGit();
   devGenerator.setDotnet();
-  devGenerator.setDocker();
   devGenerator.setCypress();
   devGenerator.setXfce();
   devGenerator.setNoVNC();
