@@ -26,7 +26,7 @@
   "author": "Zoltan Erdos <zolika84@gmail.com>",
   "license": "BSD-3-Clause",
   "private": false,
-  "gitHead": "8dc06c4feeddcae429c64cab35f5c21ccea60f53",
+  "gitHead": "44de6b46bd0970bb69c09f9ed329de6d9bb71741",
   "publishConfig": {
     "access": "public"
   }

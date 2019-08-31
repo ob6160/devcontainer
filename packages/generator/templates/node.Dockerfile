@@ -6,7 +6,7 @@ FROM devimage
 ENV NODE_VERSION {NODE_VERSION} \
     YARN_VERSION {YARN_VERSION}
 
-RUN ARCH= && dpkgArch="$(dpkg --print-architecture)" \
+RUN  ARCH= && dpkgArch="$(dpkg --print-architecture)" \
   && case "${dpkgArch##*-}" in \
     amd64) ARCH='x64';; \
     ppc64el) ARCH='ppc64le';; \
