@@ -1,6 +1,6 @@
 {
   "name": "@devcontainer/generator",
-  "version": "0.9.7",
+  "version": "0.9.8",
   "description": "generates custorm devcontainer Dockerfiles",
   "files": [
     "lib/**/*",
