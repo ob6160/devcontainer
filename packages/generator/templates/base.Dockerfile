@@ -21,8 +21,7 @@ RUN apt-get update && \
     echo "nodemon=false"                               >> $SUPERVISORCONF && \
     echo ""                                            >> $SUPERVISORCONF
 
-
-RUN ln -fs /usr/share/zoneinfo/Europe/London /etc/localtime 
+RUN ln -fs /usr/share/zoneinfo/Europce/London /etc/localtime 
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive  apt-get install --no-install-recommends  -y \
         curl \
 		make \

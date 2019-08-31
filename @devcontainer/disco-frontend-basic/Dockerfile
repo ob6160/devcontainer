@@ -16,10 +16,10 @@ RUN apt-get update && \
       apt-utils \
       supervisor && \
     touch $SUPERVISORCONF && \
-    echo "[supervisord]"                     >  $SUPERVISORCONF && \
-    echo "logfile=$HOME/supervisord.log"     >> $SUPERVISORCONF && \
-    echo "nodemon=true"                      >> $SUPERVISORCONF && \
-    echo ""                                  >> $SUPERVISORCONF
+    echo "[supervisord]"                               >  $SUPERVISORCONF && \
+    echo "logfile=/home/$USERNAME/supervisord.log"     >> $SUPERVISORCONF && \
+    echo "nodemon=false"                               >> $SUPERVISORCONF && \
+    echo ""                                            >> $SUPERVISORCONF
 
 
 RUN ln -fs /usr/share/zoneinfo/Europe/London /etc/localtime 
