@@ -8,7 +8,9 @@
     ]
   },
   "scripts": {
-    "release": "yarn install && lerna publish"
+    "release": "yarn docker:build && lerna publish",
+    "docker:build": "yarn workspaces run build && yarn workspaces run generate:dockerfiles && yarn workspaces run dockerBuild",
+    "docker:push": "yarn workspaces run push"
   },
   "publicConfig": {
     "access": "public"

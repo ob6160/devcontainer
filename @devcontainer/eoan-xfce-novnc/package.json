@@ -2,10 +2,8 @@
   "name": "@devcontainer/eoan-xfce-novnc",
   "tagname": "eoan-xfce-novnc",
   "scripts": {
-    "postinstall": "yarn generate:dockerfile",
-    "build": "docker-compose -f tags.yml build",
-    "rebuild": "yarn generate:dockerfile && docker-compose -f tags.yml build",
-    "push": "docker-compose -f tags.yml push",
+    "docker:build": "docker-compose -f tags.yml build",
+    "docker:push": "docker-compose -f tags.yml push",
     "generate:dockerfile": "node index.js"
   },
   "files": [
