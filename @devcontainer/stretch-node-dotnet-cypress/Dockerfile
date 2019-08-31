@@ -149,15 +149,11 @@ RUN apt-get update && \
     libxtst6 \
     xauth \
     xvfb && \
-  apt-get autoremove -y && \
-  apt-get clean -y && \
-  rm -rf /var/lib/apt/lists/* && \
   yarn global add cypress@$CYPRESS_VERION --no-cache && \
   yarn cache clean && \
   apt-get autoremove -y && \
   apt-get clean -y && \
-  rm -rf /var/lib/apt/lists/*
-
+  rm -rf /var/lib/apt/lists/* /root/* /tmp/* 
   ### dotnet.Dockerfile
 ARG OCTO_TOOLS_VERSION=6.12.0
 
@@ -251,3 +247,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends zsh && \
     rm -rf /var/lib/apt/lists/*
 
 RUN ls -la /root
+USER developer
+
+RUN curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh
+
+ENTRYPOINT [ "supervisord" ]

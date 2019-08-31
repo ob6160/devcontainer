@@ -1,7 +1,10 @@
 ### base.Dockerfile
 ### Generator: https://github.com/zerdos/devcontainer/
 
-FROM buildpack-deps:disco
+FROM ubuntu:disco
+
+RUN groupadd --gid 1000 dev \
+  && useradd --uid 1000 --gid dev --shell /bin/bash --create-home developer
 
 LABEL maintainer=zoltan.erdos@me.com
 
@@ -14,6 +17,7 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends \
       software-properties-common \
       apt-utils \
+      dirmngr \
       supervisor && \
     touch $SUPERVISORCONF && \
     echo "[supervisord]"                               >  $SUPERVISORCONF && \
@@ -117,12 +121,13 @@ RUN set -ex \
 
 ### zsh.Dockerfile
 
-RUN apt-get update && apt-get install -y --no-install-recommends zsh
-RUN sh -c "$(wget -O- https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)" && \
-    echo "export LC_ALL=en_US.UTF-8" >>  ~/.zshrc && \
-    echo "export LANG=en_US.UTF-8" >>  ~/.zshrc  
-RUN apt-get install -y --no-install-recommends \
-      locales && \
+RUN apt-get update && apt-get install -y --no-install-recommends zsh && \
     apt-get clean -y && \
     rm -rf /var/lib/apt/lists/*
-ENV SHELL=/usr/bin/zsh
+
+RUN ls -la /root
+USER developer
+
+RUN curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh
+
+ENTRYPOINT [ "supervisord" ]

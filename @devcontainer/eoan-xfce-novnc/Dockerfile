@@ -1,7 +1,7 @@
 ### base.Dockerfile
 ### Generator: https://github.com/zerdos/devcontainer/
 
-FROM buildpack-deps:eoan-slim
+FROM eoan
 
 RUN groupadd --gid 1000 dev \
   && useradd --uid 1000 --gid dev --shell /bin/bash --create-home developer
@@ -17,6 +17,7 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends \
       software-properties-common \
       apt-utils \
+      dirmngr \
       supervisor && \
     touch $SUPERVISORCONF && \
     echo "[supervisord]"                               >  $SUPERVISORCONF && \
@@ -138,15 +139,11 @@ RUN apt-get update && \
     libxtst6 \
     xauth \
     xvfb && \
-  apt-get autoremove -y && \
-  apt-get clean -y && \
-  rm -rf /var/lib/apt/lists/* && \
   yarn global add cypress@$CYPRESS_VERION --no-cache && \
   yarn cache clean && \
   apt-get autoremove -y && \
   apt-get clean -y && \
-  rm -rf /var/lib/apt/lists/*
-
+  rm -rf /var/lib/apt/lists/* /root/* /tmp/* 
   # docker.Dockerfile
 RUN apt-get update && apt-get install -y \
         docker-compose \
@@ -155,6 +152,10 @@ RUN apt-get update && apt-get install -y \
     apt-get clean -y && \
     rm -rf /var/lib/apt/lists/*
 ### dotnet.Dockerfile
+ARG OCTO_TOOLS_VERSION=6.12.0
+
+ENV DOTNET_SDK_VERSION 2.2.401 \
+
 
 RUN apt-get update \
     && (apt-get install -y --no-install-recommends libicu57 libssl1.0.2 \
@@ -166,20 +167,27 @@ RUN apt-get update \
         liblttng-ust0 \
         libstdc++6 \
         zlib1g \
-    && rm -rf /var/lib/apt/lists/*
-
-# Install .NET Core SDK
-ENV DOTNET_SDK_VERSION 2.2.401
-
-RUN curl -SL --output dotnet.tar.gz https://dotnetcli.blob.core.windows.net/dotnet/Sdk/$DOTNET_SDK_VERSION/dotnet-sdk-$DOTNET_SDK_VERSION-linux-x64.tar.gz \
+        libunwind-dev \
+    && rm -rf /var/lib/apt/lists/* && \ 
+curl -SL --output dotnet.tar.gz  https://dotnetcli.blob.core.windows.net/dotnet/Sdk/$DOTNET_SDK_VERSION/dotnet-sdk-$DOTNET_SDK_VERSION-linux-x64.tar.gz \
     && dotnet_sha512='08e1fcafa4f898c80ff5e88eeb40c7497b4f5651af3b8ec85f65a3daa2f1509a766d833477358d3ff83d179e014034ab0c48120847ef24736c8d1a5b67fec10b' \
     && echo "$dotnet_sha512 dotnet.tar.gz" | sha512sum -c - \
     && mkdir -p /usr/share/dotnet \
     && tar -zxf dotnet.tar.gz -C /usr/share/dotnet \
     && rm dotnet.tar.gz \
-    && ln -s /usr/share/dotnet/dotnet /usr/bin/dotnet
+    && ln -s /usr/share/dotnet/dotnet /usr/bin/dotnet && \
+   dotnet help && \ 
+mkdir -p /tmp/octo && \
+    curl -Lo /tmp/octo.tar.gz https://download.octopusdeploy.com/octopus-tools/${OCTO_TOOLS_VERSION}/OctopusTools.${OCTO_TOOLS_VERSION}.debian.8-x64.tar.gz && \
+    tar -xf /tmp/octo.tar.gz -C /tmp/octo/ && \
+    mv /tmp/octo /opt/ && \
+    ln /opt/octo/Octo /usr/local/bin/octo && \
+    rm -rf /tmp/* && \
+    apt-get autoremove -y && \
+    apt-get clean -y && \
+    rm -rf /var/lib/apt/lists/*
 
-# Configure web servers to bind to port 80 when present
+    # Configure web servers to bind to port 80 when present
 ENV ASPNETCORE_URLS=http://+:80 \
     # Enable detection of running in a container
     DOTNET_RUNNING_IN_CONTAINER=true \
@@ -190,25 +198,8 @@ ENV ASPNETCORE_URLS=http://+:80 \
     # Opting out from telemetry
     DOTNET_CLI_TELEMETRY_OPTOUT=true
 
-# Trigger first run experience by running arbitrary cmd to populate local package cache
-RUN dotnet help
-
-ARG OCTO_TOOLS_VERSION=6.12.0
-
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends \
-        libunwind-dev \
-    && rm -rf /var/lib/apt/lists/*
-
-RUN mkdir -p /tmp/octo && \
-    wget -O /tmp/octo.tar.gz https://download.octopusdeploy.com/octopus-tools/${OCTO_TOOLS_VERSION}/OctopusTools.${OCTO_TOOLS_VERSION}.debian.8-x64.tar.gz && \
-    tar -xf /tmp/octo.tar.gz -C /tmp/octo/ && \
-    mv /tmp/octo /opt/ && \
-    ln /opt/octo/Octo /usr/local/bin/octo && \
-    rm -rf /tmp/*
-
 ### xfce.Dockerfile
-RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && \
+RUN curl -L https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && \
     sh -c 'echo "deb https://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list' && \
     apt-get update && \
     apt-get install -y --no-install-recommends \
@@ -258,12 +249,13 @@ RUN  apt-get update && \
 
 SHELL [ "/bin/sh", "-c" ]### zsh.Dockerfile
 
-RUN apt-get update && apt-get install -y --no-install-recommends zsh
-RUN sh -c "$(wget -O- https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)" && \
-    echo "export LC_ALL=en_US.UTF-8" >>  ~/.zshrc && \
-    echo "export LANG=en_US.UTF-8" >>  ~/.zshrc  
-RUN apt-get install -y --no-install-recommends \
-      locales && \
+RUN apt-get update && apt-get install -y --no-install-recommends zsh && \
     apt-get clean -y && \
     rm -rf /var/lib/apt/lists/*
-ENV SHELL=/usr/bin/zsh
+
+RUN ls -la /root
+USER developer
+
+RUN curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh
+
+ENTRYPOINT [ "supervisord" ]
