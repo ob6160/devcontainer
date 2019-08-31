@@ -1,7 +1,8 @@
+FROM debian:stretch-slim
+
 ### base.Dockerfile
 ### Generator: https://github.com/zerdos/devcontainer/
 
-FROM debian:stretch-slim
 LABEL maintainer=zoltan.erdos@me.com
 
 ENV SUPERVISORCONF=/etc/supervisor/supervisord.conf \
@@ -109,7 +110,9 @@ RUN ARCH= && dpkgArch="$(dpkg --print-architecture)" \
   && ln -s /opt/yarn-v$YARN_VERSION/bin/yarn /usr/local/bin/yarn \
   && ln -s /opt/yarn-v$YARN_VERSION/bin/yarnpkg /usr/local/bin/yarnpkg \
   && rm yarn-v$YARN_VERSION.tar.gz.asc yarn-v$YARN_VERSION.tar.gz
+
 ### cypress.Dockerfile
+
 ENV CYPRESS_INSTALL_BINARY=0
 RUN apt-get update \
 && apt-get install --no-install-recommends -y \
@@ -127,14 +130,18 @@ RUN apt-get update \
 && apt-get autoremove -y \
 && apt-get clean -y \
 && rm -rf /var/lib/apt/lists/* /root/* /tmp/* 
+
 ### dotnet.Dockerfile
+
 ARG OCTO_TOOLS_VERSION=6.12.0
 
 ARG DOTNET_SDK_VERSION=2.2.401 
 
 RUN apt-get update \
-    && (apt-get install --no-install-recommends -y libicu57 libssl1.0.2 \
-    || apt-get install --no-install-recommends -y libicu63 libssl1.1 )\
+    && (apt-get install --no-install-recommends -y \
+        libicu57 libssl1.0.2 \
+    || apt-get install --no-install-recommends -y  \
+        libicu63 libssl1.1 )\
     && apt-get install --no-install-recommends -y \
     libc6 \
     libgcc1 \
