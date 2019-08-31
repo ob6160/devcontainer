@@ -1,7 +1,8 @@
+FROM {DISTRO}
+
 ### base.Dockerfile
 ### Generator: https://github.com/zerdos/devcontainer/
 
-FROM {DISTRO}
 LABEL maintainer=zoltan.erdos@me.com
 
 ENV SUPERVISORCONF=/etc/supervisor/supervisord.conf \

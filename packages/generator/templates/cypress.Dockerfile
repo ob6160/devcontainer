@@ -1,5 +1,7 @@
 FROM devimage
+
 ### cypress.Dockerfile
+
 ENV CYPRESS_INSTALL_BINARY=0
 RUN apt-get update \
 && apt-get install --no-install-recommends -y \

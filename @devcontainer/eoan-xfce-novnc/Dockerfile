@@ -26,7 +26,11 @@ RUN apt-get update \
 && apt-get autoremove -y \
 && apt-get clean -y \
 && rm -rf /var/lib/apt/lists/*
+
+### HAS REALLY BAD INPACT FOR THE IMAGE SIZE!
+###    
 ### upgrade.Dockerfile
+
 USER root
 
 ENV DEV_VERSION=2019-7-31
@@ -42,9 +46,10 @@ RUN add-apt-repository ppa:git-core/ppa && apt-get update \
 && apt-get autoremove -y \
 && apt-get clean -y \
 && rm -rf /var/lib/apt/lists/* 
+
 ### node.Dockerfile
-ENV NODE_VERSION 12.9.1
-ENV YARN_VERSION 1.17.3
+ENV NODE_VERSION 12.9.1 \
+    YARN_VERSION 1.17.3
 
 RUN ARCH= && dpkgArch="$(dpkg --print-architecture)" \
   && case "${dpkgArch##*-}" in \
@@ -98,7 +103,6 @@ RUN ARCH= && dpkgArch="$(dpkg --print-architecture)" \
   && ln -s /opt/yarn-v$YARN_VERSION/bin/yarn /usr/local/bin/yarn \
   && ln -s /opt/yarn-v$YARN_VERSION/bin/yarnpkg /usr/local/bin/yarnpkg \
   && rm yarn-v$YARN_VERSION.tar.gz.asc yarn-v$YARN_VERSION.tar.gz
-
 ### cypress.Dockerfile
 ENV CYPRESS_INSTALL_BINARY=0
 RUN apt-get update \
@@ -117,7 +121,9 @@ RUN apt-get update \
 && apt-get autoremove -y \
 && apt-get clean -y \
 && rm -rf /var/lib/apt/lists/* /root/* /tmp/* 
+
 # docker.Dockerfile
+
 RUN apt-get update && apt-get install --no-install-recommends -y \
     docker-compose \
     docker.io \ 
@@ -169,7 +175,9 @@ ENV ASPNETCORE_URLS=http://+:80 \
     # Opting out from telemetry
     DOTNET_CLI_TELEMETRY_OPTOUT=true
 
+
 ### xfce.Dockerfile
+
 RUN curl -L https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
     && sh -c 'echo "deb https://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list' \
     && apt-get update \
@@ -178,24 +186,26 @@ RUN curl -L https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add 
         xfce4-goodies \
     && apt-get clean -y \
     && rm -rf /var/lib/apt/lists/* /root/*
+
 ### noVNC.Dockerfile
+
 EXPOSE 6080
 
 RUN  apt-get update \
   && apt-get install --no-install-recommends -y \
-    autocutsel \
-    xfwm4 \
-    libgtk-3-0 \
-    xvfb \
-    novnc \
-    websockify \
-    dbus-x11 \
-    nano \
-    mc \
-    htop \
-    terminator \
-    procps \  
-    vnc4server \
+  autocutsel \
+  xfwm4 \
+  libgtk-3-0 \
+  xvfb \
+  novnc \
+  websockify \
+  dbus-x11 \
+  nano \
+  mc \
+  htop \
+  terminator \
+  procps \  
+  vnc4server \
   &&  cp /usr/share/novnc/vnc.html /usr/share/novnc/index.html \
   &&  echo "[program:vncserver]"                                                >> $SUPERVISORCONF \
   &&  echo "command=vncserver -SecurityTypes none -cleanstale -useold"          >> $SUPERVISORCONF \
@@ -213,14 +223,16 @@ RUN  apt-get update \
   && apt-get autoremove -y \
   && apt-get clean -y \
   && rm -rf /var/lib/apt/lists/* /root/*
+
 ### zsh.Dockerfile
 
 RUN apt-get update \ 
-&& apt-get install --no-install-recommends -y zsh \
+    && apt-get install --no-install-recommends -y \ 
+        zsh \
     && apt-get clean -y \
     && rm -rf /var/lib/apt/lists/* \
-&& groupadd --gid 1000 dev \
-&& useradd --uid 1000 --gid dev --shell /bin/zsh --create-home developer
+    && groupadd --gid 1000 dev \
+    && useradd --uid 1000 --gid dev --shell /bin/zsh --create-home developer
 
 USER developer
 RUN curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh

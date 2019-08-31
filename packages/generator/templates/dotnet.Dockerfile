@@ -1,12 +1,16 @@
 FROM devimage
+
 ### dotnet.Dockerfile
+
 ARG OCTO_TOOLS_VERSION=6.12.0
 
 ARG DOTNET_SDK_VERSION={DOTNET_SDK_VERSION} 
 
 RUN apt-get update \
-    && (apt-get install --no-install-recommends -y libicu57 libssl1.0.2 \
-    || apt-get install --no-install-recommends -y libicu63 libssl1.1 )\
+    && (apt-get install --no-install-recommends -y \
+        libicu57 libssl1.0.2 \
+    || apt-get install --no-install-recommends -y  \
+        libicu63 libssl1.1 )\
     && apt-get install --no-install-recommends -y \
     libc6 \
     libgcc1 \
