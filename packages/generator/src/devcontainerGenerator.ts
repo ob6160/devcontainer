@@ -1,14 +1,14 @@
 import { promises as fs, Dirent } from 'fs';
 
-type Base = "stretch" | "buster" | "disco" | "eoan";
+type Base = "debian:stretch-slim" | "debian:buster-slim" | "ubuntu:disco" | "ubuntu:eoan";
 
 type NodeVesion = "lts" | "current" ; 
 
-const getVersion = (b: Base) => b === "stretch" ? '9' :
-    b === "buster" ? '10' :
-        b === "disco" ? '19.04' : '19.10';
+const getVersion = (b: Base) => b === "debian:stretch-slim" ? '9' :
+    b === "debian:buster-slim" ? '10' :
+        b === "ubuntu:disco" ? '19.04' : '19.10';
 
-const getDistro = (b: Base) => (b === "stretch" || b === "buster") ? "Debian" : "Ubuntu"
+const getDistro = (b: Base) => (b === "debian:stretch-slim" || b === "debian:buster-slim") ? "Debian" : "Ubuntu"
 
 import * as softwareVersions from "../versions.json";
 

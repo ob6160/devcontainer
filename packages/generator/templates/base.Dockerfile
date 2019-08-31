@@ -1,7 +1,10 @@
 ### base.Dockerfile
 ### Generator: https://github.com/zerdos/devcontainer/
 
-FROM buildpack-deps:{DISTRO}
+FROM {DISTRO}
+
+RUN groupadd --gid 1000 dev \
+  && useradd --uid 1000 --gid dev --shell /bin/bash --create-home developer
 
 LABEL maintainer=zoltan.erdos@me.com
 
@@ -14,6 +17,7 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends \
       software-properties-common \
       apt-utils \
+      wget \
       supervisor && \
     touch $SUPERVISORCONF && \
     echo "[supervisord]"                               >  $SUPERVISORCONF && \

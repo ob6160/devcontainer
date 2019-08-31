@@ -1,7 +1,10 @@
 ### base.Dockerfile
 ### Generator: https://github.com/zerdos/devcontainer/
 
-FROM buildpack-deps:eoan
+FROM buildpack-deps:eoan-slim
+
+RUN groupadd --gid 1000 dev \
+  && useradd --uid 1000 --gid dev --shell /bin/bash --create-home developer
 
 LABEL maintainer=zoltan.erdos@me.com
 
