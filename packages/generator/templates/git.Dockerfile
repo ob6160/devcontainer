@@ -25,4 +25,4 @@ RUN apt-get update && \
     libexpat1-dev \
 && apt-get autoremove -y \
 && apt-get clean -y \
-&& rm -rf /tmp/* git.tar.gz /var/lib/apt/lists/*
+&& rm -rf /tmp/* /var/lib/apt/lists/* /usr/src/*
