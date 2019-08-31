@@ -42,7 +42,7 @@ RUN add-apt-repository ppa:git-core/ppa && apt-get update \
 ENV NODE_VERSION 12.9.1 \
     YARN_VERSION 1.17.3
 
-RUN ARCH= && dpkgArch="$(dpkg --print-architecture)" \
+RUN  ARCH= && dpkgArch="$(dpkg --print-architecture)" \
   && case "${dpkgArch##*-}" in \
     amd64) ARCH='x64';; \
     ppc64el) ARCH='ppc64le';; \
