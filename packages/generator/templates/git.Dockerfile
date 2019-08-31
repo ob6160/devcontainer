@@ -1,7 +1,8 @@
 ### git.Dockerfile
+WORKDIR /usr/src/
 
 RUN apt-get update && \ 
-    apt-get install -y --no-install-recommends \ 
+    apt-get install --no-install-recommends -y \ 
         make \
         libssl-dev \
         libghc-zlib-dev \
@@ -10,12 +11,11 @@ RUN apt-get update && \
         gettext \
         gpg \
         unzip && \
-curl -Lo git.tar.gz  https://github.com/git/git/archive/v{GIT_VERSION}.tar.gz && \
+    curl -Lo git.tar.gz  https://github.com/git/git/archive/v{GIT_VERSION}.tar.gz && \
     tar -xf git.tar.gz && cd git-* && \
     make prefix=/usr/local all && \
     make prefix=/usr/local install && \
-    rm -rf /usr/src/* && \
-    git --version && \
+    rm -rf * && \
     apt-get remove -y \
         make \
         gpg \

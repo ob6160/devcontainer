@@ -14,7 +14,7 @@ ARG SUPERVISORCONF=/etc/supervisor/supervisord.conf
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
+    apt-get install --no-install-recommends -y \
       software-properties-common \
       apt-utils \
       dirmngr \
@@ -158,9 +158,9 @@ ENV DOTNET_SDK_VERSION 2.2.401 \
 
 
 RUN apt-get update \
-    && (apt-get install -y --no-install-recommends libicu57 libssl1.0.2 \
-    || apt-get install -y --no-install-recommends libicu63 libssl1.1 )\
-    && apt-get install -y --no-install-recommends \
+    && (apt-get install --no-install-recommends -y libicu57 libssl1.0.2 \
+    || apt-get install --no-install-recommends -y libicu63 libssl1.1 )\
+    && apt-get install --no-install-recommends -y \
         libc6 \
         libgcc1 \
         libgssapi-krb5-2 \
@@ -202,7 +202,7 @@ ENV ASPNETCORE_URLS=http://+:80 \
 RUN curl -L https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && \
     sh -c 'echo "deb https://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list' && \
     apt-get update && \
-    apt-get install -y --no-install-recommends \
+    apt-get install --no-install-recommends -y \
         xfce4 \
         xfce4-goodies \
         google-chrome-stable && \
@@ -214,11 +214,10 @@ EXPOSE 6080
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 RUN  apt-get update && \
-     apt-get install -y --no-install-recommends \
+     apt-get install --no-install-recommends -y \
             autocutsel \
             xfwm4 \
             libgtk-3-0 \
-            xfonts-100dpi xfonts-75dpi xfonts-scalable \
             xvfb \
             novnc \
             websockify \
@@ -226,7 +225,6 @@ RUN  apt-get update && \
             nano \
             mc \
             htop \
-            terminator \
             procps \  
             vnc4server && \
       cp /usr/share/novnc/vnc.html /usr/share/novnc/index.html && \
@@ -249,7 +247,7 @@ RUN  apt-get update && \
 
 SHELL [ "/bin/sh", "-c" ]### zsh.Dockerfile
 
-RUN apt-get update && apt-get install -y --no-install-recommends zsh && \
+RUN apt-get update && apt-get install --no-install-recommends -y zsh && \
     apt-get clean -y && \
     rm -rf /var/lib/apt/lists/*
 

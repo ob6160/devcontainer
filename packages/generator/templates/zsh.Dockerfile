@@ -1,6 +1,6 @@
 ### zsh.Dockerfile
 
-RUN apt-get update && apt-get install -y --no-install-recommends zsh && \
+RUN apt-get update && apt-get install --no-install-recommends -y zsh && \
     apt-get clean -y && \
     rm -rf /var/lib/apt/lists/*
 

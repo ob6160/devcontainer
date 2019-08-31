@@ -14,7 +14,7 @@ ARG SUPERVISORCONF=/etc/supervisor/supervisord.conf
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
+    apt-get install --no-install-recommends -y \
       software-properties-common \
       apt-utils \
       dirmngr \
@@ -48,4 +48,6 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive  apt-get install --no-insta
 	apt-get autoremove -y && \
     apt-get clean -y && \
     rm -rf /var/lib/apt/lists/*
+
+
     

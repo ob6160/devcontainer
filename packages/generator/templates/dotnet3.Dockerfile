@@ -2,7 +2,7 @@
 
 # Install .NET CLI dependencies
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
+    apt-get install --no-install-recommends -y \
         libc6 \
         libgcc1 \
         libgssapi-krb5-2 \
@@ -48,7 +48,7 @@ RUN curl -SL --output PowerShell.Linux.x64.$POWERSHELL_VERSION.nupkg https://pws
     && find /usr/share/powershell -print | grep -i '.*[.]nupkg$' | xargs rm
 
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends \
+    && apt-get install --no-install-recommends -y \
         libunwind-dev \
     && rm -rf /var/lib/apt/lists/*
 

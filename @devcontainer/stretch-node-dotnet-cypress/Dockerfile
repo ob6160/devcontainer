@@ -14,7 +14,7 @@ ARG SUPERVISORCONF=/etc/supervisor/supervisord.conf
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
+    apt-get install --no-install-recommends -y \
       software-properties-common \
       apt-utils \
       dirmngr \
@@ -48,10 +48,13 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive  apt-get install --no-insta
 	apt-get autoremove -y && \
     apt-get clean -y && \
     rm -rf /var/lib/apt/lists/*
+
+
     ### git.Dockerfile
+WORKDIR /usr/src/
 
 RUN apt-get update && \ 
-    apt-get install -y --no-install-recommends \ 
+    apt-get install --no-install-recommends -y \ 
         make \
         libssl-dev \
         libghc-zlib-dev \
@@ -60,12 +63,11 @@ RUN apt-get update && \
         gettext \
         gpg \
         unzip && \
-curl -Lo git.tar.gz  https://github.com/git/git/archive/v2.23.0.tar.gz && \
+    curl -Lo git.tar.gz  https://github.com/git/git/archive/v2.23.0.tar.gz && \
     tar -xf git.tar.gz && cd git-* && \
     make prefix=/usr/local all && \
     make prefix=/usr/local install && \
-    rm -rf /usr/src/* && \
-    git --version && \
+    rm -rf * && \
     apt-get remove -y \
         make \
         gpg \
@@ -80,6 +82,7 @@ curl -Lo git.tar.gz  https://github.com/git/git/archive/v2.23.0.tar.gz && \
 
 
 ENV NODE_VERSION 12.9.1
+ENV YARN_VERSION 1.17.3
 
 RUN ARCH= && dpkgArch="$(dpkg --print-architecture)" \
   && case "${dpkgArch##*-}" in \
@@ -116,11 +119,8 @@ RUN ARCH= && dpkgArch="$(dpkg --print-architecture)" \
   && grep " node-v$NODE_VERSION-linux-$ARCH.tar.xz\$" SHASUMS256.txt | sha256sum -c - \
   && tar -xJf "node-v$NODE_VERSION-linux-$ARCH.tar.xz" -C /usr/local --strip-components=1 --no-same-owner \
   && rm "node-v$NODE_VERSION-linux-$ARCH.tar.xz" SHASUMS256.txt.asc SHASUMS256.txt \
-  && ln -s /usr/local/bin/node /usr/local/bin/nodejs
-
-ENV YARN_VERSION 1.17.3
-
-RUN set -ex \
+  && ln -s /usr/local/bin/node /usr/local/bin/nodejs \
+  && set -ex \
   && for key in \
     6A010C5166006599AA17F08146C2130DFD2497F5 \
   ; do \
@@ -161,9 +161,9 @@ ENV DOTNET_SDK_VERSION 2.2.401 \
 
 
 RUN apt-get update \
-    && (apt-get install -y --no-install-recommends libicu57 libssl1.0.2 \
-    || apt-get install -y --no-install-recommends libicu63 libssl1.1 )\
-    && apt-get install -y --no-install-recommends \
+    && (apt-get install --no-install-recommends -y libicu57 libssl1.0.2 \
+    || apt-get install --no-install-recommends -y libicu63 libssl1.1 )\
+    && apt-get install --no-install-recommends -y \
         libc6 \
         libgcc1 \
         libgssapi-krb5-2 \
@@ -207,11 +207,10 @@ EXPOSE 6080
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 RUN  apt-get update && \
-     apt-get install -y --no-install-recommends \
+     apt-get install --no-install-recommends -y \
             autocutsel \
             xfwm4 \
             libgtk-3-0 \
-            xfonts-100dpi xfonts-75dpi xfonts-scalable \
             xvfb \
             novnc \
             websockify \
@@ -235,14 +234,14 @@ RUN  apt-get update && \
     sed -i -e 's/iconic/nowin/g' /etc/X11/Xvnc-session && \
     sed -i -e 's/workspace_count=4/workspace_count=1/g' /usr/share/xfwm4/defaults && \
     sed -i -e 's/use_compositing=true/use_compositing=false/g' /usr/share/xfwm4/defaults && \
-    sed -i -e '1 aterminator &' /etc/X11/Xvnc-session && \
+    sed -i -e '1 axterm &' /etc/X11/Xvnc-session && \
     apt-get autoremove -y && \
     apt-get clean -y && \
-    rm -rf /var/lib/apt/lists/*
+    rm -rf /var/lib/apt/lists/* /root/*
 
 SHELL [ "/bin/sh", "-c" ]### zsh.Dockerfile
 
-RUN apt-get update && apt-get install -y --no-install-recommends zsh && \
+RUN apt-get update && apt-get install --no-install-recommends -y zsh && \
     apt-get clean -y && \
     rm -rf /var/lib/apt/lists/*
 

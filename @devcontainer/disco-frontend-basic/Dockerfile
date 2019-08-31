@@ -14,7 +14,7 @@ ARG SUPERVISORCONF=/etc/supervisor/supervisord.conf
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
+    apt-get install --no-install-recommends -y \
       software-properties-common \
       apt-utils \
       dirmngr \
@@ -121,7 +121,7 @@ RUN set -ex \
 
 ### zsh.Dockerfile
 
-RUN apt-get update && apt-get install -y --no-install-recommends zsh && \
+RUN apt-get update && apt-get install --no-install-recommends -y zsh && \
     apt-get clean -y && \
     rm -rf /var/lib/apt/lists/*
 
