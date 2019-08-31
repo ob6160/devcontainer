@@ -27,8 +27,8 @@ RUN apt-get update \
 && apt-get autoremove -y \
 && apt-get clean -y \
 && rm -rf /var/lib/apt/lists/*
+
 ### git.Dockerfile
-WORKDIR /usr/src/
 
 RUN apt-get update && \ 
     apt-get install --no-install-recommends -y \ 
@@ -39,18 +39,18 @@ RUN apt-get update && \
     libexpat1-dev \
     gettext \
     gpg \
-&& curl -Lo git.tar.gz  https://github.com/git/git/archive/v2.23.0.tar.gz \
-&& tar -xf git.tar.gz && cd git-* \
+&& curl -Lo /usr/src/git.tar.gz  https://github.com/git/git/archive/v2.23.0.tar.gz \
+&& tar -C /usr/src/ -xf /usr/src/git.tar.gz && cd /usr/src/git-* \
 && make prefix=/usr/local all \
 && make prefix=/usr/local install \
-&& rm -rf * \
 && apt-get remove -y \
     make \
-    gpg \
     libssl-dev \
     libghc-zlib-dev \
     libcurl4-gnutls-dev \
     libexpat1-dev \
+    gettext \
+    gpg \
 && apt-get autoremove -y \
 && apt-get clean -y \
 && rm -rf /tmp/* /var/lib/apt/lists/* /usr/src/*
