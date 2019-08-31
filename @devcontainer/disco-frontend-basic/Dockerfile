@@ -13,17 +13,17 @@ ARG SUPERVISORCONF=/etc/supervisor/supervisord.conf
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-RUN apt-get update && \
-    apt-get install --no-install-recommends -y \
+RUN apt-get update \
+&& apt-get install --no-install-recommends -y \
       software-properties-common \
       apt-utils \
       dirmngr \
-      supervisor && \
-    touch $SUPERVISORCONF && \
-    echo "[supervisord]"                               >  $SUPERVISORCONF && \
-    echo "logfile=/home/$USERNAME/supervisord.log"     >> $SUPERVISORCONF && \
-    echo "nodemon=false"                               >> $SUPERVISORCONF && \
-    echo ""                                            >> $SUPERVISORCONF
+      supervisor \
+&& touch $SUPERVISORCONF \
+&& echo "[supervisord]"                               >  $SUPERVISORCONF \
+&& echo "logfile=/home/$USERNAME/supervisord.log"     >> $SUPERVISORCONF \
+&& echo "nodemon=false"                               >> $SUPERVISORCONF \
+&& echo ""                                            >> $SUPERVISORCONF
 
 RUN ln -fs /usr/share/zoneinfo/Europce/London /etc/localtime 
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive  apt-get install --no-install-recommends  -y \
@@ -40,28 +40,31 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive  apt-get install --no-insta
 		locales \
         ntp \
 		apt-transport-https \
-		dos2unix && \
-    sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
-    dpkg-reconfigure --frontend=noninteractive locales && \
-    update-locale LANG=en_US.UTF-8 && \
+		dos2unix \
+&& sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen \
+&& dpkg-reconfigure --frontend=noninteractive locales \
+&& update-locale LANG=en_US.UTF-8 && \
 	dpkg-reconfigure -f noninteractive tzdata && \
-	apt-get autoremove -y && \
-    apt-get clean -y && \
-    rm -rf /var/lib/apt/lists/*
+	apt-get autoremove -y \
+&& apt-get clean -y \
+&& rm -rf /var/lib/apt/lists/*
+
+
     
 ### git for Ubuntu
 
-RUN add-apt-repository ppa:git-core/ppa && apt-get update && \
-    apt-get install --no-install-recommends -y \
-    git && \
-  apt-get autoremove -y && \
-  apt-get clean -y && \
-  rm -rf /var/lib/apt/lists/* 
+RUN add-apt-repository ppa:git-core/ppa && apt-get update \
+&& apt-get install --no-install-recommends -y \
+    git \
+&& apt-get autoremove -y \
+&& apt-get clean -y \
+&& rm -rf /var/lib/apt/lists/* 
 ### node.Dockerfile
 
 
 
 ENV NODE_VERSION 12.9.1
+ENV YARN_VERSION 1.17.3
 
 RUN ARCH= && dpkgArch="$(dpkg --print-architecture)" \
   && case "${dpkgArch##*-}" in \
@@ -98,11 +101,8 @@ RUN ARCH= && dpkgArch="$(dpkg --print-architecture)" \
   && grep " node-v$NODE_VERSION-linux-$ARCH.tar.xz\$" SHASUMS256.txt | sha256sum -c - \
   && tar -xJf "node-v$NODE_VERSION-linux-$ARCH.tar.xz" -C /usr/local --strip-components=1 --no-same-owner \
   && rm "node-v$NODE_VERSION-linux-$ARCH.tar.xz" SHASUMS256.txt.asc SHASUMS256.txt \
-  && ln -s /usr/local/bin/node /usr/local/bin/nodejs
-
-ENV YARN_VERSION 1.17.3
-
-RUN set -ex \
+  && ln -s /usr/local/bin/node /usr/local/bin/nodejs \
+  && set -ex \
   && for key in \
     6A010C5166006599AA17F08146C2130DFD2497F5 \
   ; do \
@@ -121,9 +121,9 @@ RUN set -ex \
 
 ### zsh.Dockerfile
 
-RUN apt-get update && apt-get install --no-install-recommends -y zsh && \
-    apt-get clean -y && \
-    rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install --no-install-recommends -y zsh \
+&& apt-get clean -y \
+&& rm -rf /var/lib/apt/lists/*
 
 RUN ls -la /root
 USER developer

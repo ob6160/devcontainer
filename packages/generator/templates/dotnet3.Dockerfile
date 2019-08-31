@@ -1,8 +1,9 @@
+FROM devimage
 # dotnet3.Dockerfile
 
 # Install .NET CLI dependencies
-RUN apt-get update && \
-    apt-get install --no-install-recommends -y \
+RUN apt-get update \
+    && apt-get install --no-install-recommends -y \
         libc6 \
         libgcc1 \
         libgssapi-krb5-2 \
@@ -33,7 +34,7 @@ ENV ASPNETCORE_URLS=http://+:80 \
     NUGET_XMLDOC_MODE=skip \
     # Opting out from telemetry
     DOTNET_CLI_TELEMETRY_OPTOUT=true
-    
+
 # Install PowerShell global tool
 ENV POWERSHELL_VERSION 7.0.0-preview.2
 
@@ -49,14 +50,14 @@ RUN curl -SL --output PowerShell.Linux.x64.$POWERSHELL_VERSION.nupkg https://pws
 
 RUN apt-get update \
     && apt-get install --no-install-recommends -y \
-        libunwind-dev \
+    libunwind-dev \
     && rm -rf /var/lib/apt/lists/*
 
 ARG OCTO_TOOLS_VERSION=6.12.0
 
-RUN mkdir -p /tmp/octo && \
-    wget -O /tmp/octo.tar.gz https://download.octopusdeploy.com/octopus-tools/${OCTO_TOOLS_VERSION}/OctopusTools.${OCTO_TOOLS_VERSION}.debian.8-x64.tar.gz && \
-    tar -xf /tmp/octo.tar.gz -C /tmp/octo/ && \
-    mv /tmp/octo /opt/ && \
-    ln -s /opt/octo/Octo /usr/local/bin/octo && \
-    rm -rf /tmp
+RUN mkdir -p /tmp/octo \
+    && wget -O /tmp/octo.tar.gz https://download.octopusdeploy.com/octopus-tools/${OCTO_TOOLS_VERSION}/OctopusTools.${OCTO_TOOLS_VERSION}.debian.8-x64.tar.gz \
+    && tar -xf /tmp/octo.tar.gz -C /tmp/octo/ \
+    && mv /tmp/octo /opt/ \
+    && ln -s /opt/octo/Octo /usr/local/bin/octo \
+    && rm -rf /tmp

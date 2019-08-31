@@ -126,7 +126,7 @@ export class DevcontainerGenerator {
             this._dockerfile += templates['zsh'];
         }
 
-        return this._dockerfile;
+        return this._dockerfile.replace(/FROM devimage\n/g, "");
     }
 
     private loadTemplate = async (filename: string) => await fs.readFile(`${__dirname}/../../templates/${filename}.Dockerfile`)

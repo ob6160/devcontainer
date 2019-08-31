@@ -1,9 +1,8 @@
+FROM devimage
+
 ### node.Dockerfile
-
-
-
-ENV NODE_VERSION {NODE_VERSION}
-ENV YARN_VERSION {YARN_VERSION}
+ENV NODE_VERSION {NODE_VERSION} \
+    YARN_VERSION {YARN_VERSION}
 
 RUN ARCH= && dpkgArch="$(dpkg --print-architecture)" \
   && case "${dpkgArch##*-}" in \
@@ -57,4 +56,3 @@ RUN ARCH= && dpkgArch="$(dpkg --print-architecture)" \
   && ln -s /opt/yarn-v$YARN_VERSION/bin/yarn /usr/local/bin/yarn \
   && ln -s /opt/yarn-v$YARN_VERSION/bin/yarnpkg /usr/local/bin/yarnpkg \
   && rm yarn-v$YARN_VERSION.tar.gz.asc yarn-v$YARN_VERSION.tar.gz
-

@@ -13,12 +13,12 @@
     "build": "yarn tsc"
   },
   "devDependencies": {
-    "@types/node": "^12.7.2",
-    "typescript": "^3.5.3"
+    "@types/node": "^12.7.3",
+    "typescript": "^3.6.2"
   },
   "publishConfig": {
     "access": "public"
   },
   "license": "MIT",
-  "gitHead": "f634dc66b41b9bc67b1a74b4075387b7c131b537"
+  "gitHead": "0b5ffb73755a8b3f3651e5730c923c0181fc4def"
 }
