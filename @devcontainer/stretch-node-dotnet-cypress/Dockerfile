@@ -16,10 +16,10 @@ RUN apt-get update && \
       apt-utils \
       supervisor && \
     touch $SUPERVISORCONF && \
-    echo "[supervisord]"                     >  $SUPERVISORCONF && \
-    echo "logfile=$HOME/supervisord.log"     >> $SUPERVISORCONF && \
-    echo "nodemon=true"                      >> $SUPERVISORCONF && \
-    echo ""                                  >> $SUPERVISORCONF
+    echo "[supervisord]"                               >  $SUPERVISORCONF && \
+    echo "logfile=/home/$USERNAME/supervisord.log"     >> $SUPERVISORCONF && \
+    echo "nodemon=false"                               >> $SUPERVISORCONF && \
+    echo ""                                            >> $SUPERVISORCONF
 
 
 RUN ln -fs /usr/share/zoneinfo/Europe/London /etc/localtime 
@@ -71,8 +71,7 @@ RUN wget https://github.com/git/git/archive/v2.23.0.tar.gz -O git.tar.gz && \
         libexpat1-dev && \
     apt-get autoremove -y && \
     apt-get clean -y && \
-    rm -rf /var/lib/apt/lists/*
-### node.Dockerfile
+    rm -rf /tmp/* /var/lib/apt/lists/*### node.Dockerfile
 
 
 
@@ -187,7 +186,9 @@ ENV ASPNETCORE_URLS=http://+:80 \
     # Enable correct mode for dotnet watch (only mode supported in a container)
     DOTNET_USE_POLLING_FILE_WATCHER=true \
     # Skip extraction of XML docs - generally not useful within an image/container - helps performance
-    NUGET_XMLDOC_MODE=skip
+    NUGET_XMLDOC_MODE=skip \
+    # Opting out from telemetry
+    DOTNET_CLI_TELEMETRY_OPTOUT=true
 
 # Trigger first run experience by running arbitrary cmd to populate local package cache
 RUN dotnet help
