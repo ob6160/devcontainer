@@ -2,7 +2,7 @@ const {DevcontainerGenerator} = require('@devcontainer/generator');
 const {writeFile} = require('fs').promises;
 
 const run = async () => {
-  const devGenerator = new DevcontainerGenerator('ubuntu:disco');
+  const devGenerator = new DevcontainerGenerator('ubuntu:eoan');
 
   devGenerator.setNodeVersion('current');
   devGenerator.setUpgraded();
