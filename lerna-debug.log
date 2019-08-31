@@ -1,0 +1,5 @@
+56 error Error: Command failed: git tag v0.10.1 -m v0.10.1
+56 error fatal: tag 'v0.10.1' already exists
+56 error
+56 error     at makeError (/Users/zed/Developer/devcontainer/node_modules/execa/index.js:174:9)
+56 error     at /Users/zed/Developer/devcontainer/node_modules/execa/index.js:278:16
