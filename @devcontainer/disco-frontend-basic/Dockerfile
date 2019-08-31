@@ -16,7 +16,7 @@ RUN apt-get update \
   supervisor \
 && touch $SUPERVISORCONF \
 && echo "[supervisord]"                               >  $SUPERVISORCONF \
-&& echo "logfile=/home/$USERNAME/supervisord.log"     >> $SUPERVISORCONF \
+&& echo "logfile=/opt/supervisord.log"     >> $SUPERVISORCONF \
 && echo "nodemon=false"                               >> $SUPERVISORCONF \
 && echo ""                                            >> $SUPERVISORCONF \
 && ln -fs /usr/share/zoneinfo/Europce/London /etc/localtime \
@@ -108,9 +108,11 @@ RUN apt-get update \
     && apt-get clean -y \
     && rm -rf /var/lib/apt/lists/* \
     && groupadd --gid 1000 dev \
-    && useradd --uid 1000 --gid dev --shell /bin/zsh --create-home developer
+    && useradd --uid 1000 --gid dev --shell /bin/zsh --create-home developer \
+    && touch /opt/supervisord.log && chmod 777 /opt/supervisord.log
 
 USER developer
 RUN curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh
 
-CMD [ "supervisord" ]
+# CMD [ "supervisord" ]
+CMD [ "bash", "-c", "sleep infinity" ]

@@ -14,10 +14,11 @@ RUN apt-get update \
   apt-utils \
   dirmngr \
   supervisor \
+&& touch /opt/supervisord.log && chmod 777 /opt/supervisord.log \
 && touch $SUPERVISORCONF \
 && echo "[supervisord]"                               >  $SUPERVISORCONF \
-&& echo "logfile=/home/$USERNAME/supervisord.log"     >> $SUPERVISORCONF \
-&& echo "nodemon=false"                               >> $SUPERVISORCONF \
+&& echo "logfile=/opt/supervisord.log"                >> $SUPERVISORCONF \
+&& echo "nodemon=true"                                >> $SUPERVISORCONF \
 && echo ""                                            >> $SUPERVISORCONF \
 && ln -fs /usr/share/zoneinfo/Europce/London /etc/localtime \
 && apt-get update &&  apt-get install --no-install-recommends  -y \
