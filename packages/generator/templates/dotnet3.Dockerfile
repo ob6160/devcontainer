@@ -30,8 +30,10 @@ ENV ASPNETCORE_URLS=http://+:80 \
     # Enable correct mode for dotnet watch (only mode supported in a container)
     DOTNET_USE_POLLING_FILE_WATCHER=true \
     # Skip extraction of XML docs - generally not useful within an image/container - helps performance
-    NUGET_XMLDOC_MODE=skip
-
+    NUGET_XMLDOC_MODE=skip \
+    # Opting out from telemetry
+    DOTNET_CLI_TELEMETRY_OPTOUT=true
+    
 # Install PowerShell global tool
 ENV POWERSHELL_VERSION 7.0.0-preview.2
 

@@ -24,4 +24,4 @@ RUN wget https://github.com/git/git/archive/v{GIT_VERSION}.tar.gz -O git.tar.gz 
         libexpat1-dev && \
     apt-get autoremove -y && \
     apt-get clean -y && \
-    rm -rf /var/lib/apt/lists/*
+    rm -rf /tmp/* /var/lib/apt/lists/*
