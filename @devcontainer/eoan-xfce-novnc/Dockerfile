@@ -1,4 +1,4 @@
-FROM ubuntu:disco
+FROM ubuntu:eoan
 
 ### base.Dockerfile
 ### Generator: https://github.com/zerdos/devcontainer/
