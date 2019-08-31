@@ -10,13 +10,9 @@ RUN apt-get update && \
     libxtst6 \
     xauth \
     xvfb && \
-  apt-get autoremove -y && \
-  apt-get clean -y && \
-  rm -rf /var/lib/apt/lists/* && \
   yarn global add cypress@$CYPRESS_VERION --no-cache && \
   yarn cache clean && \
   apt-get autoremove -y && \
   apt-get clean -y && \
-  rm -rf /var/lib/apt/lists/*
-
+  rm -rf /var/lib/apt/lists/* /root/* /tmp/* 
   

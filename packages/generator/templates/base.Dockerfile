@@ -17,7 +17,7 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends \
       software-properties-common \
       apt-utils \
-      wget \
+      dirmngr \
       supervisor && \
     touch $SUPERVISORCONF && \
     echo "[supervisord]"                               >  $SUPERVISORCONF && \
