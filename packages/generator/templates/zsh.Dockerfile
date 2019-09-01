@@ -13,6 +13,7 @@ RUN apt-get update \
     && curl -Lo /opt/install-oh-my-zsh.sh https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh \
     && chmod 555 /opt/install-oh-my-zsh.sh \
     && echo "test -f ~/.zshrc || SHELL=/usr/bin/zsh sh /opt/install-oh-my-zsh.sh; " >  $ENTRY \
+    && echo "supervisord; "                                      >> $ENTRY \
     && echo "trap : TERM INT;"                                   >> $ENTRY \
     && echo "sleep infinity & wait "                             >> $ENTRY \
     && chmod 555 $ENTRY

@@ -1,7 +1,7 @@
 version: "3.7"
 services:
   devcontainer:
-    image: devimages/eoan-xfce-novnc
+    image: devimages/eoan-xfce-novnc:1.0.3
     privileged: true
     ports:
       - "6080:6080"
