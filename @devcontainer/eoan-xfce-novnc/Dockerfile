@@ -15,9 +15,11 @@ RUN apt-get update \
   dirmngr \
   supervisor \
 && touch /opt/supervisord.log && chmod 777 /opt/supervisord.log \
+&& touch /opt/supervisord.pid && chmod 777 /opt/supervisord.pid \
 && touch $SUPERVISORCONF \
 && echo "[supervisord]"                               >  $SUPERVISORCONF \
 && echo "logfile=/opt/supervisord.log"                >> $SUPERVISORCONF \
+&& echo "pidfile=/opt/supervisord.pid"                >> $SUPERVISORCONF \
 && echo "nodemon=true"                                >> $SUPERVISORCONF \
 && echo ""                                            >> $SUPERVISORCONF \
 && ln -fs /usr/share/zoneinfo/Europce/London /etc/localtime \
@@ -219,6 +221,7 @@ RUN  apt-get update \
   && rm -rf /var/lib/apt/lists/* /root/*
 
 ### zsh.Dockerfile
+ARG ENTRY=/opt/devcontainer-entrypoint.sh
 
 RUN apt-get update \ 
     && apt-get install --no-install-recommends -y \ 
@@ -226,9 +229,16 @@ RUN apt-get update \
     && apt-get clean -y \
     && rm -rf /var/lib/apt/lists/* \
     && groupadd --gid 1000 dev \
-    && useradd --uid 1000 --gid dev --shell /bin/zsh --create-home developer 
+    && useradd --uid 1000 --gid dev --shell /usr/bin/zsh --create-home developer \
+    && curl -Lo /opt/install-oh-my-zsh.sh https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh \
+    && chmod 555 /opt/install-oh-my-zsh.sh \
+    && echo "test -f ~/.zshrc || SHELL=/usr/bin/zsh sh /opt/install-oh-my-zsh.sh; " >  $ENTRY \
+    && echo "trap : TERM INT;"                                   >> $ENTRY \
+    && echo "sleep infinity & wait "                             >> $ENTRY \
+    && chmod 555 $ENTRY
 
 USER developer
-RUN curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh
+WORKDIR /home/developer
+ENV SHELL /usr/bin/zsh
 
-CMD exec /bin/bash -c "supervisord && trap : TERM INT; sleep infinity & wait"
+CMD bash /opt/devcontainer-entrypoint.sh

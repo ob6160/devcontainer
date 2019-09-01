@@ -4,7 +4,7 @@ services:
     image: devimages/eoan-xfce-novnc
     privileged: true
     ports:
-      - "6080"
+      - "6080:6080"
     shm_size: 1gb
     volumes: 
       - devhome:/home/developer
