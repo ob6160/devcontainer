@@ -122,8 +122,9 @@ RUN set -ex \
   && ln -s /opt/yarn-v$YARN_VERSION/bin/yarnpkg /usr/local/bin/yarnpkg \
   && rm yarn-v$YARN_VERSION.tar.gz.asc yarn-v$YARN_VERSION.tar.gz
 ### cypress.Dockerfile
+ARG CYPRESS_VERION=3.4.1
 
-ENV CYPRESS_INSTALL_BINARY=0
+ENV CYPRESS_INSTALL_BINARY=$CYPRESS_VERION
 RUN apt-get update \
 && apt-get install --no-install-recommends -y \
   libgtk-3-0 \
