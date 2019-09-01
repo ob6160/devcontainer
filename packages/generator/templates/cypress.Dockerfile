@@ -1,8 +1,9 @@
 FROM devimage
 
 ### cypress.Dockerfile
+ARG CYPRESS_VERION={CYPRESS_VERION}
 
-ENV CYPRESS_INSTALL_BINARY=0
+ENV CYPRESS_INSTALL_BINARY=$CYPRESS_VERION
 RUN apt-get update \
 && apt-get install --no-install-recommends -y \
   libgtk-3-0 \
