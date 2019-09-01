@@ -12,6 +12,7 @@ RUN apt-get update \
     && groupadd --gid 1000 dev \
     && useradd --uid 1000 --gid dev --shell /bin/bash --create-home developer \
     && usermod -aG sudo developer \
+    && echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers \
     && curl -Lo /opt/install-oh-my-zsh.sh https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh \
     && chmod 555 /opt/install-oh-my-zsh.sh \
     && echo 'test -f ~/.zshrc || SHELL=/usr/bin/zsh sh /opt/install-oh-my-zsh.sh; \n\
