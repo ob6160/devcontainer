@@ -12,6 +12,7 @@ RUN apt-get update \
 && apt-get install --no-install-recommends -y \
   software-properties-common \
   apt-utils \
+  ssh-client \
   dirmngr \
   supervisor \
 && touch /opt/supervisord.log && chmod 777 /opt/supervisord.log \
