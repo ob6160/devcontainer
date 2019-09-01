@@ -234,13 +234,11 @@ RUN apt-get update \
     && useradd --uid 1000 --gid dev --shell /usr/bin/zsh --create-home developer \
     && curl -Lo /opt/install-oh-my-zsh.sh https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh \
     && chmod 555 /opt/install-oh-my-zsh.sh \
-    && echo  \
-        "test -f ~/.zshrc \ 
-            (SHELL=/usr/bin/zsh sh /opt/install-oh-my-zsh.sh; \
-                && sed -i -e 's/ZSH_THEME=\"robbyrussell\"/ZSH_THEME=\"sunaku\"/g'); \
-        supervisord; \
-        trap : TERM INT; \
-        sleep infinity & wait "  >> $ENTRY \
+    && echo 'test -f ~/.zshrc || SHELL=/usr/bin/zsh sh /opt/install-oh-my-zsh.sh  \n\
+            supervisord; \n\
+            test -f ~/.zshrc && sleep 10 && sed -i -e '\''s/robbyrussell/sunaku/g'\'' ~/.zshrc \n\    
+            trap : TERM INT; \n\
+            sleep infinity & wait\n' >> $ENTRY \
     && chmod 555 $ENTRY
 
 USER developer
