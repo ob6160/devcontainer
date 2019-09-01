@@ -215,7 +215,7 @@ RUN  apt-get update \
   && sed -i -e 's/iconic/nowin/g' /etc/X11/Xvnc-session \
   && sed -i -e 's/workspace_count=4/workspace_count=1/g' /usr/share/xfwm4/defaults \
   && sed -i -e 's/use_compositing=true/use_compositing=false/g' /usr/share/xfwm4/defaults \
-  && sed -i -e '1 axterm &' /etc/X11/Xvnc-session \
+  && sed -i -e '1 aterminator &' /etc/X11/Xvnc-session \
   && apt-get autoremove -y \
   && apt-get clean -y \
   && rm -rf /var/lib/apt/lists/* /root/*
