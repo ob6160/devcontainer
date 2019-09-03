@@ -2,6 +2,7 @@ FROM devimage
 
 ### cypress.Dockerfile
 ARG CYPRESS_VERION={CYPRESS_VERION}
+ENV CYPRESS_CACHE_FOLDER=/opt/cypress
 
 RUN apt-get update \
 && apt-get install --no-install-recommends -y \

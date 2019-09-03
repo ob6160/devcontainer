@@ -129,6 +129,7 @@ RUN set -ex \
   && rm yarn-v$YARN_VERSION.tar.gz.asc yarn-v$YARN_VERSION.tar.gz
 ### cypress.Dockerfile
 ARG CYPRESS_VERION=3.4.1
+ENV CYPRESS_CACHE_FOLDER=/opt/cypress
 
 RUN apt-get update \
 && apt-get install --no-install-recommends -y \
