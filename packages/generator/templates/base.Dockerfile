@@ -1,4 +1,4 @@
-FROM {DISTRO}
+FROM buildpack-deps:{DISTRO}
 
 ### base.Dockerfile
 ### Generator: https://github.com/zerdos/devcontainer/
@@ -13,6 +13,12 @@ RUN apt-get update \
   software-properties-common \
   apt-utils \
   ssh-client \
+  make \
+  gcc \
+  g++ \
+  python2.7 \
+  xz-utils \
+  libx11-dev \
   dirmngr \
   supervisor \
 && touch /opt/supervisord.log && chmod 777 /opt/supervisord.log \

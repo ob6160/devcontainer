@@ -1,4 +1,4 @@
-FROM ubuntu:eoan
+FROM buildpack-deps:eoan
 
 ### base.Dockerfile
 ### Generator: https://github.com/zerdos/devcontainer/
@@ -13,6 +13,12 @@ RUN apt-get update \
   software-properties-common \
   apt-utils \
   ssh-client \
+  make \
+  gcc \
+  g++ \
+  python2.7 \
+  xz-utils \
+  libx11-dev \
   dirmngr \
   supervisor \
 && touch /opt/supervisord.log && chmod 777 /opt/supervisord.log \
@@ -107,7 +113,6 @@ RUN set -ex \
 ### cypress.Dockerfile
 ARG CYPRESS_VERION=3.4.1
 
-ENV CYPRESS_INSTALL_BINARY=$CYPRESS_VERION
 RUN apt-get update \
 && apt-get install --no-install-recommends -y \
   libgtk-3-0 \
@@ -119,7 +124,7 @@ RUN apt-get update \
   libxtst6 \
   xauth \
   xvfb \
-&& yarn global add cypress@$CYPRESS_VERION --no-cache \
+&& yarn global add cypress@$CYPRESS_VERION stmux --no-cache \
 && yarn cache clean \
 && apt-get autoremove -y \
 && apt-get clean -y \
