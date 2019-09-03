@@ -246,6 +246,7 @@ RUN apt-get update \
             sudo sysctl fs.inotify.max_user_watches=524288 && sudo sysctl -p \n\
             supervisord; \n\
             test -f ~/.zshrc && sleep 10 && sed -i -e '\''s/robbyrussell/sunaku/g'\'' ~/.zshrc \n\    
+            cd /tmp/ && sudo dotnet new console || true \n\
             trap : TERM INT; \n\
             sleep infinity & wait\n' >> $ENTRY \
     && chmod 555 $ENTRY
