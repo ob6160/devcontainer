@@ -135,7 +135,7 @@ RUN apt-get update \
 
 ARG OCTO_TOOLS_VERSION=6.12.0
 
-ARG DOTNET_SDK_VERSION=3.0.100-preview8-013656 
+ARG DOTNET_SDK_VERSION=2.2.401 
 
 RUN apt-get update \
     && (apt-get install --no-install-recommends -y \
@@ -152,7 +152,7 @@ RUN apt-get update \
     libunwind-dev \
     && rm -rf /var/lib/apt/lists/* \
     && curl -SL --output dotnet.tar.gz  https://dotnetcli.blob.core.windows.net/dotnet/Sdk/$DOTNET_SDK_VERSION/dotnet-sdk-$DOTNET_SDK_VERSION-linux-x64.tar.gz \
-    && dotnet_sha512='448c740418f0ab43b3a8d9f7ccb532e71e590692d3b64239c3f21d46df3a46788b5b824e1a10236e5abe51d4a5143c27b90d08b342a683c96bd9abebc2d33017' \
+    && dotnet_sha512='08e1fcafa4f898c80ff5e88eeb40c7497b4f5651af3b8ec85f65a3daa2f1509a766d833477358d3ff83d179e014034ab0c48120847ef24736c8d1a5b67fec10b' \
     && echo "$dotnet_sha512 dotnet.tar.gz" | sha512sum -c - \
     && mkdir -p /usr/share/dotnet \
     && tar -zxf dotnet.tar.gz -C /usr/share/dotnet \
