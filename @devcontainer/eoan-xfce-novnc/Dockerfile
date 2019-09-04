@@ -165,8 +165,9 @@ RUN apt-get update \
     && ln /opt/octo/Octo /usr/local/bin/octo \
     && rm -rf /tmp/* \
     && apt-get autoremove -y \
-    && apt-get clean -y \
-    && rm -rf /var/lib/apt/lists/*
+    && apt-get clean -y \   
+    && rm -rf /var/lib/apt/lists/* \
+    dotnet help
 
 # Configure web servers to bind to port 80 when present
 ENV ASPNETCORE_URLS=http://+:80 \
@@ -178,6 +179,9 @@ ENV ASPNETCORE_URLS=http://+:80 \
     NUGET_XMLDOC_MODE=skip \
     # Opting out from telemetry
     DOTNET_CLI_TELEMETRY_OPTOUT=true
+    
+# Trigger first run experience by running arbitrary cmd to populate local package cache
+RUN dotnet help
 
 
 ### xfce.Dockerfile
@@ -233,27 +237,22 @@ ARG ENTRY=/opt/devcontainer-entrypoint.sh
 
 RUN apt-get update \ 
     && apt-get install --no-install-recommends -y \ 
-        sudo \
         zsh \
     && apt-get clean -y \
     && rm -rf /var/lib/apt/lists/* \
-    && groupadd --gid 1000 dev \
-    && useradd --uid 1000 --gid dev --shell /bin/bash --create-home developer \
-    && usermod -aG sudo developer \
-    && echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers \
     && curl -Lo /opt/install-oh-my-zsh.sh https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh \
     && chmod 555 /opt/install-oh-my-zsh.sh \
     && echo 'test -f ~/.zshrc || SHELL=/usr/bin/zsh sh /opt/install-oh-my-zsh.sh; \n\
-            sudo sysctl fs.inotify.max_user_watches=524288 && sudo sysctl -p \n\
+            sysctl fs.inotify.max_user_watches=524288 && sysctl -p \n\
             supervisord; \n\
             test -f ~/.zshrc && sleep 10 && sed -i -e '\''s/robbyrussell/sunaku/g'\'' ~/.zshrc \n\    
-            cd /tmp/ && sudo dotnet new console || true \n\
+            (apt-get update && apt-get install --no-install-recommends locales) || true \n\
+            echo "export LC_ALL=en_US.UTF-8" >>  ~/.zshrc \n\
+            echo "export LANG=en_US.UTF-8" >>  ~/.zshrc \n\
             trap : TERM INT; \n\
             sleep infinity & wait\n' >> $ENTRY \
     && chmod 555 $ENTRY
 
-USER developer
-WORKDIR /home/developer
 ENV SHELL /usr/bin/zsh
 
 CMD bash /opt/devcontainer-entrypoint.sh

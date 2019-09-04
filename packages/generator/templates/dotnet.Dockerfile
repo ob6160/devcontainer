@@ -34,8 +34,9 @@ RUN apt-get update \
     && ln /opt/octo/Octo /usr/local/bin/octo \
     && rm -rf /tmp/* \
     && apt-get autoremove -y \
-    && apt-get clean -y \
-    && rm -rf /var/lib/apt/lists/*
+    && apt-get clean -y \   
+    && rm -rf /var/lib/apt/lists/* \
+    dotnet help
 
 # Configure web servers to bind to port 80 when present
 ENV ASPNETCORE_URLS=http://+:80 \
@@ -47,4 +48,7 @@ ENV ASPNETCORE_URLS=http://+:80 \
     NUGET_XMLDOC_MODE=skip \
     # Opting out from telemetry
     DOTNET_CLI_TELEMETRY_OPTOUT=true
+    
+# Trigger first run experience by running arbitrary cmd to populate local package cache
+RUN dotnet help
 
