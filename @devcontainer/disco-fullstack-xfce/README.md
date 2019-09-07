@@ -19,7 +19,7 @@ Make sure, that your VScode istance contains the [Remote Containers](https://mar
 
     - Ubuntu 19.04 (Disco)
     - Git 2.23.0
-    - Node 12.9.0
+    - Node 12.10.0
     - Cypress 3.4.1
     - Zsh + Oh my zsh
 

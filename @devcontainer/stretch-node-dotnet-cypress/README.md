@@ -19,7 +19,7 @@ Make sure, that your VScode istance contains the [Remote Containers](https://mar
 
     - Debian 9 (Stretch)
     - Git 2.23.0
-    - Node 12.9.0
+    - Node 12.10.0
     - Cypress 3.4.1
     - .NET Core SDK 2.2
     - noVNC 
