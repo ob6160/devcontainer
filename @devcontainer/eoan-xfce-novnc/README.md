@@ -1,6 +1,11 @@
 # @devcontainer/eoan-xfce-novnc
 Devcontainer for [VS Code Remote - Containers](https://code.visualstudio.com/docs/remote/containers)
 
+
+
+![XFCE with ubuntu Eoan](https://github.com/zerdos/devcontainer/blob/master/%40devcontainer/eoan-xfce-novnc/Screenshot%202019-09-01%20at%2020.41.14.png)
+
+
 ## Installation
 
 With yarn:

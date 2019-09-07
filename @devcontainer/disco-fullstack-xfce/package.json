@@ -1,6 +1,6 @@
 {
-  "name": "@devcontainer/stretch-node-dotnet-cypress",
-  "tagname": "stretch-node-dotnet-cypress",
+  "name": "@devcontainer/disco-fullstack-xfce",
+  "tagname": "disco-fullstack-xfce",
   "scripts": {
     "docker:build": "docker-compose -f tags.yml build",
     "docker:push": "docker-compose -f tags.yml push",
@@ -17,7 +17,7 @@
     "load-text-file": "^1.2.0"
   },
   "version": "1.3.1",
-  "description": "devcontainer vscode docker xfce novnc",
+  "description": "devcontainer vscode node zsh",
   "main": "index.js",
   "repository": "git@github.com:zerdos/devcontainer.git",
   "author": "Zoltan Erdos <zolika84@gmail.com>",

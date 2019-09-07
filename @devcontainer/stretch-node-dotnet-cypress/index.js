@@ -2,7 +2,7 @@ const {DevcontainerGenerator} = require('@devcontainer/generator');
 const {writeFile} = require('fs').promises;
 
 const run = async () => {
-  const devGenerator = new DevcontainerGenerator('debian:stretch-slim');
+  const devGenerator = new DevcontainerGenerator('stretch');
 
   devGenerator.updateGit();
   devGenerator.setNodeVersion('current');

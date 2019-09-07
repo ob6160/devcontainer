@@ -2,13 +2,11 @@ const {DevcontainerGenerator} = require('@devcontainer/generator');
 const {writeFile} = require('fs').promises;
 
 const run = async () => {
-  const devGenerator = new DevcontainerGenerator('ubuntu:eoan');
+  const devGenerator = new DevcontainerGenerator('eoan');
 
   devGenerator.setNodeVersion('current');
-  devGenerator.setUpgraded();
   devGenerator.updateGit();
   devGenerator.setDotnet();
-  devGenerator.setDocker();
   devGenerator.setCypress();
   devGenerator.setXfce();
   devGenerator.setNoVNC();

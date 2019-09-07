@@ -16,7 +16,6 @@ RUN apt-get update && \
 && make prefix=/usr/local all \
 && make prefix=/usr/local install \
 && apt-get remove -y \
-    make \
     libssl-dev \
     libghc-zlib-dev \
     libcurl4-gnutls-dev \

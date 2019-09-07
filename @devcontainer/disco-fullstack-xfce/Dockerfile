@@ -1,4 +1,4 @@
-FROM buildpack-deps:stretch
+FROM buildpack-deps:disco
 
 ### base.Dockerfile
 ### Generator: https://github.com/zerdos/devcontainer/
@@ -37,32 +37,15 @@ RUN apt-get update \
 && apt-get autoremove -y \
 && apt-get clean -y \
 && rm -rf /var/lib/apt/lists/*
+### git for Ubuntu
 
-### git.Dockerfile
-
-RUN apt-get update && \ 
-    apt-get install --no-install-recommends -y \ 
-    make \
-    libssl-dev \
-    libghc-zlib-dev \
-    libcurl4-gnutls-dev \
-    libexpat1-dev \
-    gettext \
-    gpg \
-&& curl -Lo /usr/src/git.tar.gz  https://github.com/git/git/archive/v2.23.0.tar.gz \
-&& tar -C /usr/src/ -xf /usr/src/git.tar.gz && cd /usr/src/git-* \
-&& make prefix=/usr/local all \
-&& make prefix=/usr/local install \
-&& apt-get remove -y \
-    libssl-dev \
-    libghc-zlib-dev \
-    libcurl4-gnutls-dev \
-    libexpat1-dev \
-    gettext \
-    gpg \
+RUN add-apt-repository ppa:git-core/ppa && apt-get update \
+&& apt-get install --no-install-recommends -y \
+    git \
 && apt-get autoremove -y \
 && apt-get clean -y \
-&& rm -rf /tmp/* /var/lib/apt/lists/* /usr/src/*
+&& rm -rf /var/lib/apt/lists/* 
+
 ### node.Dockerfile
 
 
@@ -200,6 +183,15 @@ ENV ASPNETCORE_URLS=http://+:80 \
 # Trigger first run experience by running arbitrary cmd to populate local package cache
 RUN dotnet help
 
+
+### xfce.Dockerfile
+
+RUN apt-get update \
+    && apt-get install --no-install-recommends -y \
+        xfce4 \
+        xfce4-goodies \
+    && apt-get clean -y \
+    && rm -rf /var/lib/apt/lists/* /root/*
 
 ### noVNC.Dockerfile
 

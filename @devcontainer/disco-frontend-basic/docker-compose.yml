@@ -6,7 +6,6 @@ services:
     ports:
       - "6080:6080"
     shm_size: 1gb
-    command: bash -c "supervisord && sleep infinity"
     volumes: 
       - devhome:/home/developer
 volumes:

@@ -1,4 +1,4 @@
-FROM {DISTRO}
+FROM buildpack-deps:{DISTRO}
 
 ### base.Dockerfile
 ### Generator: https://github.com/zerdos/devcontainer/
@@ -12,12 +12,22 @@ RUN apt-get update \
 && apt-get install --no-install-recommends -y \
   software-properties-common \
   apt-utils \
+  ssh-client \
+  make \
+  gcc \
+  g++ \
+  python2.7 \
+  xz-utils \
+  libx11-dev \
   dirmngr \
   supervisor \
+&& touch /opt/supervisord.log && chmod 777 /opt/supervisord.log \
+&& touch /opt/supervisord.pid && chmod 777 /opt/supervisord.pid \
 && touch $SUPERVISORCONF \
 && echo "[supervisord]"                               >  $SUPERVISORCONF \
-&& echo "logfile=/home/$USERNAME/supervisord.log"     >> $SUPERVISORCONF \
-&& echo "nodemon=false"                               >> $SUPERVISORCONF \
+&& echo "logfile=/opt/supervisord.log"                >> $SUPERVISORCONF \
+&& echo "pidfile=/opt/supervisord.pid"                >> $SUPERVISORCONF \
+&& echo "nodemon=true"                                >> $SUPERVISORCONF \
 && echo ""                                            >> $SUPERVISORCONF \
 && ln -fs /usr/share/zoneinfo/Europce/London /etc/localtime \
 && apt-get update &&  apt-get install --no-install-recommends  -y \

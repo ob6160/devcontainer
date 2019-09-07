@@ -8,9 +8,9 @@
     ]
   },
   "scripts": {
-    "release": "yarn docker:build && lerna publish && yarn docker:push",
-    "docker:build": "yarn xxx build && yarn xxx generate:dockerfile && yarn xxx docker:build",
-    "docker:push": "yarn docker:build && yarn xxx docker:push",
+    "release": "yarn build && lerna publish && yarn push",
+    "build": "yarn xxx build && yarn xxx generate:dockerfile && yarn xxx docker:build",
+    "push": "yarn build && yarn xxx docker:push",
     "xxx": "yarn wsrun --exclude-missing"
   },
   "publicConfig": {

@@ -1,4 +1,4 @@
-FROM ubuntu:eoan
+FROM buildpack-deps:eoan
 
 ### base.Dockerfile
 ### Generator: https://github.com/zerdos/devcontainer/
@@ -12,12 +12,22 @@ RUN apt-get update \
 && apt-get install --no-install-recommends -y \
   software-properties-common \
   apt-utils \
+  ssh-client \
+  make \
+  gcc \
+  g++ \
+  python2.7 \
+  xz-utils \
+  libx11-dev \
   dirmngr \
   supervisor \
+&& touch /opt/supervisord.log && chmod 777 /opt/supervisord.log \
+&& touch /opt/supervisord.pid && chmod 777 /opt/supervisord.pid \
 && touch $SUPERVISORCONF \
 && echo "[supervisord]"                               >  $SUPERVISORCONF \
-&& echo "logfile=/home/$USERNAME/supervisord.log"     >> $SUPERVISORCONF \
-&& echo "nodemon=false"                               >> $SUPERVISORCONF \
+&& echo "logfile=/opt/supervisord.log"                >> $SUPERVISORCONF \
+&& echo "pidfile=/opt/supervisord.pid"                >> $SUPERVISORCONF \
+&& echo "nodemon=true"                                >> $SUPERVISORCONF \
 && echo ""                                            >> $SUPERVISORCONF \
 && ln -fs /usr/share/zoneinfo/Europce/London /etc/localtime \
 && apt-get update &&  apt-get install --no-install-recommends  -y \
@@ -27,19 +37,7 @@ RUN apt-get update \
 && apt-get autoremove -y \
 && apt-get clean -y \
 && rm -rf /var/lib/apt/lists/*
-
-### HAS REALLY BAD INPACT FOR THE IMAGE SIZE!
-###    
-### upgrade.Dockerfile
-
-USER root
-
-ENV DEV_VERSION=2019-7-31
-
-RUN apt-get update && apt-get dist-upgrade -y && \
-	apt-get autoremove -y \
-&& apt-get clean -y \
-&& rm -rf /var/lib/apt/lists/*### git for Ubuntu
+### git for Ubuntu
 
 RUN add-apt-repository ppa:git-core/ppa && apt-get update \
 && apt-get install --no-install-recommends -y \
@@ -113,8 +111,9 @@ RUN set -ex \
   && ln -s /opt/yarn-v$YARN_VERSION/bin/yarnpkg /usr/local/bin/yarnpkg \
   && rm yarn-v$YARN_VERSION.tar.gz.asc yarn-v$YARN_VERSION.tar.gz
 ### cypress.Dockerfile
+ARG CYPRESS_VERION=3.4.1
+ENV CYPRESS_CACHE_FOLDER=/opt/cypress
 
-ENV CYPRESS_INSTALL_BINARY=0
 RUN apt-get update \
 && apt-get install --no-install-recommends -y \
   libgtk-3-0 \
@@ -126,20 +125,11 @@ RUN apt-get update \
   libxtst6 \
   xauth \
   xvfb \
-&& yarn global add cypress@$CYPRESS_VERION --no-cache \
+&& yarn global add cypress@$CYPRESS_VERION stmux --no-cache \
 && yarn cache clean \
 && apt-get autoremove -y \
 && apt-get clean -y \
 && rm -rf /var/lib/apt/lists/* /root/* /tmp/* 
-
-# docker.Dockerfile
-
-RUN apt-get update && apt-get install --no-install-recommends -y \
-    docker-compose \
-    docker.io \ 
-&& apt-get autoremove -y \
-&& apt-get clean -y \
-&& rm -rf /var/lib/apt/lists/*
 
 ### dotnet.Dockerfile
 
@@ -175,8 +165,9 @@ RUN apt-get update \
     && ln /opt/octo/Octo /usr/local/bin/octo \
     && rm -rf /tmp/* \
     && apt-get autoremove -y \
-    && apt-get clean -y \
-    && rm -rf /var/lib/apt/lists/*
+    && apt-get clean -y \   
+    && rm -rf /var/lib/apt/lists/* \
+    dotnet help
 
 # Configure web servers to bind to port 80 when present
 ENV ASPNETCORE_URLS=http://+:80 \
@@ -188,13 +179,14 @@ ENV ASPNETCORE_URLS=http://+:80 \
     NUGET_XMLDOC_MODE=skip \
     # Opting out from telemetry
     DOTNET_CLI_TELEMETRY_OPTOUT=true
+    
+# Trigger first run experience by running arbitrary cmd to populate local package cache
+RUN dotnet help
 
 
 ### xfce.Dockerfile
 
-RUN curl -L https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
-    && sh -c 'echo "deb https://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list' \
-    && apt-get update \
+RUN apt-get update \
     && apt-get install --no-install-recommends -y \
         xfce4 \
         xfce4-goodies \
@@ -233,22 +225,32 @@ RUN  apt-get update \
   && sed -i -e 's/iconic/nowin/g' /etc/X11/Xvnc-session \
   && sed -i -e 's/workspace_count=4/workspace_count=1/g' /usr/share/xfwm4/defaults \
   && sed -i -e 's/use_compositing=true/use_compositing=false/g' /usr/share/xfwm4/defaults \
-  && sed -i -e '1 axterm &' /etc/X11/Xvnc-session \
+  && sed -i -e '1 aterminator &' /etc/X11/Xvnc-session \
   && apt-get autoremove -y \
   && apt-get clean -y \
   && rm -rf /var/lib/apt/lists/* /root/*
 
 ### zsh.Dockerfile
+ARG ENTRY=/opt/devcontainer-entrypoint.sh
 
 RUN apt-get update \ 
     && apt-get install --no-install-recommends -y \ 
         zsh \
     && apt-get clean -y \
     && rm -rf /var/lib/apt/lists/* \
-    && groupadd --gid 1000 dev \
-    && useradd --uid 1000 --gid dev --shell /bin/zsh --create-home developer
+    && curl -Lo /opt/install-oh-my-zsh.sh https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh \
+    && chmod 555 /opt/install-oh-my-zsh.sh \
+    && echo 'test -f ~/.zshrc || SHELL=/usr/bin/zsh sh /opt/install-oh-my-zsh.sh; \n\
+            sysctl fs.inotify.max_user_watches=524288 && sysctl -p \n\
+            supervisord; \n\
+            test -f ~/.zshrc && sleep 10 && sed -i -e '\''s/robbyrussell/sunaku/g'\'' ~/.zshrc \n\    
+            (apt-get update && apt-get install --no-install-recommends locales) || true \n\
+            echo "export LC_ALL=en_US.UTF-8" >>  ~/.zshrc \n\
+            echo "export LANG=en_US.UTF-8" >>  ~/.zshrc \n\
+            trap : TERM INT; \n\
+            sleep infinity & wait\n' >> $ENTRY \
+    && chmod 555 $ENTRY
 
-USER developer
-RUN curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh
+ENV SHELL /usr/bin/zsh
 
-CMD [ "supervisord" ]
+CMD bash /opt/devcontainer-entrypoint.sh
