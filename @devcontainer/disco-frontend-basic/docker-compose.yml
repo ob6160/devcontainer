@@ -11,4 +11,4 @@ services:
       - devhome:/home/developer
 volumes:
   devhome:
-    local: true
+    driver: local
