@@ -66,7 +66,7 @@ RUN apt-get update && \
 ### node.Dockerfile
 
 
-ENV NODE_VERSION=12.9.1 \
+ENV NODE_VERSION=12.10.0 \
     YARN_VERSION=1.17.3
 
 RUN buildDeps='xz-utils' \
