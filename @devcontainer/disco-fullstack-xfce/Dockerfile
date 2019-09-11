@@ -132,7 +132,6 @@ RUN apt-get update \
 && rm -rf /var/lib/apt/lists/* /root/* /tmp/* 
 
 ### dotnet.Dockerfile
-FROM buildpack-deps:stretch-scm
 
 # Install .NET CLI dependencies
 RUN apt-get update \
