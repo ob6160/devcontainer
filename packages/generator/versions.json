@@ -6,12 +6,12 @@
     "git": "2.23.0",
     "cypress": "3.4.1",
     "yarn": "1.17.3",
-    "dotnet": "2.2.401",
-    "dotnet3": "3.0.100-preview8-013656",
+    "dotnet": "2.2.402",
+    "dotnet3": "3.0.100-preview9-014004",
     "sha": {
         "dotnet_sha512": {
-            "2.2.401": "08e1fcafa4f898c80ff5e88eeb40c7497b4f5651af3b8ec85f65a3daa2f1509a766d833477358d3ff83d179e014034ab0c48120847ef24736c8d1a5b67fec10b",
-            "3.0.100-preview8-013656": "448c740418f0ab43b3a8d9f7ccb532e71e590692d3b64239c3f21d46df3a46788b5b824e1a10236e5abe51d4a5143c27b90d08b342a683c96bd9abebc2d33017"
+            "2.2.402": "81937de0874ee837e3b42e36d1cf9e04bd9deff6ba60d0162ae7ca9336a78f733e624136d27f559728df3f681a72a669869bf91d02db47c5331398c0cfda9b44",
+            "3.0.100-preview9-014004": "b4e4580250f172c7b14cbce96d2de54d13a0b312ed71f86986cc53a9392491347e83cdefc2805a23bd652fc2cc0658c2e74fc8c05212c3983c19e2adbc1fe9a3    "
         }
     }
 }
