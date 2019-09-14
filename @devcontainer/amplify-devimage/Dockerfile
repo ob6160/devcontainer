@@ -143,7 +143,7 @@ RUN apt-get update \
   libx11-dev \
   dirmngr 
 
-RUN npm install -g @aws-amplify/cli@3.2.0
+RUN npm install -g @aws-amplify/cli@{AMPLIFY_VERSION}
 ### zsh.Dockerfile
 ARG ENTRY=/opt/devcontainer-entrypoint.sh
 
