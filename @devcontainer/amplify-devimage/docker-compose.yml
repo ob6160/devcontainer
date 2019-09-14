@@ -1,0 +1,13 @@
+version: "3.7"
+services:
+  devcontainer:
+    image: devimages/amplify-devimage
+    privileged: true
+    ports:
+      - "6080:6080"
+    shm_size: 1gb
+    volumes: 
+      - devhome:/root/
+volumes:
+  devhome:
+    driver: local

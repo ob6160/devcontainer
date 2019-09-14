@@ -20,9 +20,10 @@ export class DevcontainerGenerator {
     private _dockerTemplates: { [key: string]: string } = {};
     private _readmeTemplates: { [key: string]: string } = {};
     
-    private _templateInputs = ['base', 'upgrade', 'git', 'gitUbuntu', 'node', 'cypress', 'dotnet', 'docker', 'dotnet3', 'xfce', 'noVNC', 'zsh'];
+    private _templateInputs = ['base', 'upgrade', 'git', 'amplify', 'gitUbuntu', 'node', 'cypress', 'dotnet', 'docker', 'dotnet3', 'xfce', 'noVNC', 'zsh'];
     private _nodeVesion: NodeVesion | null = null;
     private _gitVersion = '';
+    private _amplify = false;
     private _cypressVersion = '';
     private _dotnet: null | "2" | "3" = null;
     private _upgrade = false;
@@ -59,11 +60,15 @@ export class DevcontainerGenerator {
     }
 
     public setXfce() {
-        this._xfce = true
+        this._xfce = true;
+    }
+
+    public setAmplify() {
+        this._amplify = true;
     }
 
     public setNoVNC() {
-        this._noVNC = true
+        this._noVNC = true;
     }
 
     public setUpgraded(){
@@ -117,6 +122,11 @@ export class DevcontainerGenerator {
 
         if (this._docker) {
             this._dockerfile += dockerTemplates['docker'];
+        }
+
+
+        if (this._amplify) {
+            this._dockerfile += dockerTemplates['amplify'].replace('{AMPLIFY_VERSION}', softwareVersions.amplify)
         }
 
         if (this._dotnet) {
