@@ -1,4 +1,4 @@
-FROM buildpack-deps:disco
+FROM buildpack-deps:buster
 
 ### base.Dockerfile
 ### Generator: https://github.com/zerdos/devcontainer/
@@ -37,15 +37,32 @@ RUN apt-get update \
 && apt-get autoremove -y \
 && apt-get clean -y \
 && rm -rf /var/lib/apt/lists/*
-### git for Ubuntu
 
-RUN add-apt-repository ppa:git-core/ppa && apt-get update \
-&& apt-get install --no-install-recommends -y \
-    git \
+### git.Dockerfile
+
+RUN apt-get update && \ 
+    apt-get install --no-install-recommends -y \ 
+    make \
+    libssl-dev \
+    libghc-zlib-dev \
+    libcurl4-gnutls-dev \
+    libexpat1-dev \
+    gettext \
+    gpg \
+&& curl -Lo /usr/src/git.tar.gz  https://github.com/git/git/archive/v2.23.0.tar.gz \
+&& tar -C /usr/src/ -xf /usr/src/git.tar.gz && cd /usr/src/git-* \
+&& make prefix=/usr/local all \
+&& make prefix=/usr/local install \
+&& apt-get remove -y \
+    libssl-dev \
+    libghc-zlib-dev \
+    libcurl4-gnutls-dev \
+    libexpat1-dev \
+    gettext \
+    gpg \
 && apt-get autoremove -y \
 && apt-get clean -y \
-&& rm -rf /var/lib/apt/lists/* 
-
+&& rm -rf /tmp/* /var/lib/apt/lists/* /usr/src/*
 ### node.Dockerfile
 
 
@@ -113,7 +130,20 @@ RUN set -ex \
 ### amplify.Dockerfile
 ARG AMPLIFY_VERSION=3.2.0
 
-RUN npm install -g @aws-amplify/cli
+RUN apt-get update \
+&& apt-get install --no-install-recommends -y \
+  software-properties-common \
+  apt-utils \
+  ssh-client \
+  make \
+  gcc \
+  g++ \
+  python2.7 \
+  xz-utils \
+  libx11-dev \
+  dirmngr 
+
+RUN npm install -g @aws-amplify/cli@3.2.0
 ### zsh.Dockerfile
 ARG ENTRY=/opt/devcontainer-entrypoint.sh
 

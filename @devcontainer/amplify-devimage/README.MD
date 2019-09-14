@@ -1,4 +1,4 @@
 ## Devcontainer
 
-Base image: buildpack-deps:disco
+Base image: buildpack-deps:buster
 
