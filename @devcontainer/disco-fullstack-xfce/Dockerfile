@@ -181,7 +181,7 @@ RUN apt-get update \
 
 ### noVNC.Dockerfile
 
-ARG PORT=${PORT}
+ARG PORT=6080
 EXPOSE ${PORT}
 
 RUN  apt-get update \

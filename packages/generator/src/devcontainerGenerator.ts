@@ -171,7 +171,7 @@ export class DevcontainerGenerator {
 
         if (this._noVNC) {
             this._dockerfile += dockerTemplates['noVNC'];
-            this._readme+=readmeTemplates['noVNV'];
+            this._readme+=readmeTemplates['noVNC'];
 
         }
 
