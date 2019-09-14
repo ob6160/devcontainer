@@ -10,17 +10,23 @@
   "scripts": {
     "release": "yarn build && yarn docker:build && lerna publish && yarn push",
     "build": "yarn xxx build && yarn xxx generate:dockerfile",
-    "docker:build": "yarn xxx docker:build", 
+    "docker:build": "yarn xxx docker:build",
     "push": "yarn build && yarn docker:build && yarn xxx docker:push",
     "xxx": "yarn wsrun --exclude-missing"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn build"
+    }
   },
   "publicConfig": {
     "access": "public"
   },
   "name": "devcontainer",
   "devDependencies": {
-    "eslint": "^6.3.0",
-    "eslint-config-google": "^0.13.0",
+    "eslint": "^6.4.0",
+    "eslint-config-google": "^0.14.0",
+    "husky": "^3.0.5",
     "lerna": "^3.16.4",
     "wsrun": "^5.0.0"
   }

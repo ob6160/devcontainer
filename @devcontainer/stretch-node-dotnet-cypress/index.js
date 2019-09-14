@@ -11,10 +11,16 @@ const run = async () => {
   devGenerator.setNoVNC();
   devGenerator.setZsh();
 
+  const {
+    Dockerfile,
+    README,
+  } = await devGenerator.generate();
+
   await writeFile(
-      `${__dirname}/Dockerfile`,
-      await devGenerator.generateDockerfile()
+      `${__dirname}/Dockerfile`, Dockerfile
   );
+
+  await writeFile(`${__dirname}/README.MD`, README);
 };
 
 run();

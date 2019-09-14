@@ -13,8 +13,8 @@
     "build": "yarn tsc"
   },
   "devDependencies": {
-    "@types/node": "^12.7.3",
-    "typescript": "^3.6.2"
+    "@types/node": "^12.7.5",
+    "typescript": "^3.6.3"
   },
   "publishConfig": {
     "access": "public"

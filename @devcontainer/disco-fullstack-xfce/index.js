@@ -3,8 +3,6 @@ const {writeFile} = require('fs').promises;
 
 const run = async () => {
   const devGenerator = new DevcontainerGenerator('disco');
-  
-  
   devGenerator.setNodeVersion('current');
   devGenerator.updateGit();
   devGenerator.setDotnet('2');
@@ -13,10 +11,16 @@ const run = async () => {
   devGenerator.setNoVNC();
   devGenerator.setZsh();
 
+  const {
+    Dockerfile,
+    README,
+  } = await devGenerator.generate();
+
   await writeFile(
-      `${__dirname}/Dockerfile`,
-      await devGenerator.generateDockerfile()
+      `${__dirname}/Dockerfile`, Dockerfile
   );
+
+  await writeFile(`${__dirname}/README.MD`, README);
 };
 
 run();

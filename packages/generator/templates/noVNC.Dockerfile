@@ -26,7 +26,7 @@ RUN  apt-get update \
   &&  echo "autostart=true"                                                     >> $SUPERVISORCONF \
   &&  echo ""                                                                   >> $SUPERVISORCONF \
   &&  echo "[program:novnc]"                                                    >> $SUPERVISORCONF \
-  &&  echo "command=websockify -D --web=/usr/share/novnc/ 6080 localhost:5901"  >> $SUPERVISORCONF \
+  &&  echo "command=websockify -D --web=/usr/share/novnc/ \$PORT localhost:5901"  >> $SUPERVISORCONF \
   &&  echo "autostart=true"                                                     >> $SUPERVISORCONF \
   &&  echo ""                                                                   >> $SUPERVISORCONF \
   && sed -i -e '1 aautocutsel -fork' /etc/X11/Xvnc-session \
