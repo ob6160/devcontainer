@@ -1,14 +1,9 @@
 ## Devcontainer
 
-Base image: buildpack-deps:buster
+- Base image: buildpack-deps:buster
+- GIT updated
+- Node: 10.16.3 \
+- Yarn: 1.17.3
 
-With the newest GIT
-
-
-
-NODE_VERSION=10.16.3 \
-YARN_VERSION=1.17.3
-
-
-
-Aws amplify 3.2.0
+- Installed trough npm: @aws-amplify/cli - 3.2.0
+- Zsh + Oh my zsh!

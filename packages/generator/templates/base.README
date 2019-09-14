@@ -1,4 +1,3 @@
 ## Devcontainer
 
-Base image: buildpack-deps:{DISTRO}
-
+- Base image: buildpack-deps:{DISTRO}
