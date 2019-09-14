@@ -1,7 +1,7 @@
 FROM devimage
 
 ### amplify.Dockerfile
-ARG AMPLIFY_VERSION=3.2.0
+ARG AMPLIFY_VERSION={AMPLIFY_VERSION}
 
 RUN apt-get update \
 && apt-get install --no-install-recommends -y \

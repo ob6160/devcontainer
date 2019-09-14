@@ -102,6 +102,8 @@ export class DevcontainerGenerator {
         if(this._upgrade) {
             const now = new Date();
             this._dockerfile += dockerTemplates['upgrade'].replace('{DEV_VERSION}', `${now.getFullYear()}-${now.getMonth()}-${now.getDate()}`);
+            this._readme += readmeTemplates['upgrade'].replace('{DEV_VERSION}', `${now.getFullYear()}-${now.getMonth()}-${now.getDate()}`);
+
         }
 
         if (this._gitVersion) {
@@ -109,24 +111,39 @@ export class DevcontainerGenerator {
             else {
                 this._dockerfile += dockerTemplates['git'].replace('{GIT_VERSION}', this._gitVersion)
             }
+
+            if (getDistro(this.base)==="Ubuntu") {this._readme += readmeTemplates['gitUbuntu']}
+            else {
+                this._readme += readmeTemplates['git'].replace('{GIT_VERSION}', this._gitVersion)
+            }
         }
 
         if (this._nodeVesion) {
             this._dockerfile += dockerTemplates['node'].replace('{NODE_VERSION}', softwareVersions.node[this._nodeVesion])
                 .replace('{YARN_VERSION}', softwareVersions.yarn);
+
+            this._readme += readmeTemplates['node'].replace('{NODE_VERSION}', softwareVersions.node[this._nodeVesion])
+                .replace('{YARN_VERSION}', softwareVersions.yarn);
+
+
         }
 
         if (this._cypressVersion) {
             this._dockerfile += dockerTemplates['cypress'].replace('{CYPRESS_VERION}', this._cypressVersion)
+            this._readme += readmeTemplates['cypress'].replace('{CYPRESS_VERION}', this._cypressVersion)
+   
         }
 
         if (this._docker) {
             this._dockerfile += dockerTemplates['docker'];
+            this._readme += readmeTemplates['docker'];
         }
 
 
         if (this._amplify) {
             this._dockerfile += dockerTemplates['amplify'].replace('{AMPLIFY_VERSION}', softwareVersions.amplify)
+            this._readme += readmeTemplates['amplify'].replace('{AMPLIFY_VERSION}', softwareVersions.amplify)
+       
         }
 
         if (this._dotnet) {
@@ -137,18 +154,30 @@ export class DevcontainerGenerator {
                 this._dockerfile += dockerTemplates['dotnet'].replace('{DOTNET_SDK_VERSION}', softwareVersions.dotnet3)
                 .replace('{dotnet_sha512}', softwareVersions.sha.dotnet_sha512["3.0.100-preview9-014004"]);
             }
+
+            if (this._dotnet === "2") 
+                this._readme += readmeTemplates['dotnet'].replace('{DOTNET_SDK_VERSION}', softwareVersions.dotnet)
+                    .replace('{dotnet_sha512}', softwareVersions.sha.dotnet_sha512["2.2.402"]);
+            else {
+                this._readme += readmeTemplates['dotnet'].replace('{DOTNET_SDK_VERSION}', softwareVersions.dotnet3)
+                .replace('{dotnet_sha512}', softwareVersions.sha.dotnet_sha512["3.0.100-preview9-014004"]);
+            }
         }
 
         if (this._xfce) {
             this._dockerfile += dockerTemplates['xfce'];
+            this._readme+=readmeTemplates['xfce'];
         }
 
         if (this._noVNC) {
             this._dockerfile += dockerTemplates['noVNC'];
+            this._readme+=readmeTemplates['noVNV'];
+
         }
 
         if (this._zsh) {
             this._dockerfile += dockerTemplates['zsh'];
+            this._readme+=readmeTemplates['zsh'];
         }
 
         this._dockerfile = this._dockerfile.replace(/FROM devimage\n/g, "");
