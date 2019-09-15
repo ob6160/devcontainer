@@ -2,8 +2,8 @@
   "name": "@devcontainer/eoan-xfce",
   "tagname": "eoan-xfce",
   "scripts": {
-    "docker:build": "docker-compose -f tags.yml build",
-    "docker:push": "docker-compose -f tags.yml push",
+    "broken.docker:build": "docker-compose -f tags.yml build",
+    "broken.docker:push": "docker-compose -f tags.yml push",
     "generate:dockerfile": "node index.js"
   },
   "files": [

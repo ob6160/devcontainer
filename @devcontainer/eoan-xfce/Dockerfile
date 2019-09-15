@@ -175,47 +175,52 @@ RUN  ((curl https://xpra.org/gpg.asc | apt-key add - \
 ) || (rm -rf /etc/apt/sources.list.d/xpra.list  \
 && apt-get autoremove -y \
   && apt-get clean -y \
-  && rm -rf /var/lib/apt/lists/* /root/* ))
-RUN apt-get update \
-&& apt-get install -y xpra \
-&& apt-get install --no-install-recommends -y \
-  xfwm4 \
-  libgtk-3-0 \
-  xvfb \
-  dbus-x11 \
-  nano \
-  mc \
-  htop \
-  terminator \
-  procps \  
-  && touch /usr/bin/startx && chmod +x /usr/bin/startx \ 
-  && echo "xpra --start=terminator --html=on --bind-tcp=0.0.0.0:6080; sleep infinity" > /usr/bin/startx \   
-  && sed -i -e 's/workspace_count=4/workspace_count=1/g' /usr/share/xfwm4/defaults \
-  && sed -i -e 's/use_compositing=true/use_compositing=false/g' /usr/share/xfwm4/defaults \
-  && apt-get autoremove -y \
-  && apt-get clean -y \
-  && rm -rf /var/lib/apt/lists/* /root/* 
-### xfce.Dockerfile
+  && rm -rf /var/lib/apt/lists/* /root/* \
+  && apt-get update  \
+  && wget https://launchpad.net/ubuntu/+source/xpra/2.4.3+dfsg1-1/+build/16300338/+files/xpra_2.4.3+dfsg1-1_amd64.deb \
+  && dpkg -i xpra*.deb || apt-get install -f || apt --fix-broken install -y ))
 
-RUN apt-get update \
-    && apt-get install --no-install-recommends -y \
-        xfce4 \
-        xfce4-goodies \
-    && apt-get clean -y \
-    && rm -rf /var/lib/apt/lists/* /root/* \
-    && echo "xpra start-desktop --start=xfce4-session --html=on --bind-tcp=0.0.0.0:6080; sleep infinity" > /usr/bin/startx  
+  
+# RUN apt-get update \
+# && apt-get install -y xpra \
+# && apt-get install --no-install-recommends -y \
+#   xfwm4 \
+#   libgtk-3-0 \
+#   xvfb \
+#   dbus-x11 \
+#   nano \
+#   mc \
+#   htop \
+#   terminator \
+#   procps \  
+#   && touch /usr/bin/startx && chmod +x /usr/bin/startx \ 
+#   && echo "xpra --start=terminator --html=on --bind-tcp=0.0.0.0:6080; sleep infinity" > /usr/bin/startx \   
+#   && sed -i -e 's/workspace_count=4/workspace_count=1/g' /usr/share/xfwm4/defaults \
+#   && sed -i -e 's/use_compositing=true/use_compositing=false/g' /usr/share/xfwm4/defaults \
+#   && apt-get autoremove -y \
+#   && apt-get clean -y \
+#   && rm -rf /var/lib/apt/lists/* /root/* 
+# ### xfce.Dockerfile
 
-### zsh.Dockerfile
-ARG ENTRY=/opt/devcontainer-entrypoint.sh
+# RUN apt-get update \
+#     && apt-get install --no-install-recommends -y \
+#         xfce4 \
+#         xfce4-goodies \
+#     && apt-get clean -y \
+#     && rm -rf /var/lib/apt/lists/* /root/* \
+#     && echo "xpra start-desktop --start=xfce4-session --html=on --bind-tcp=0.0.0.0:6080; sleep infinity" > /usr/bin/startx  
 
-RUN apt-get update \ 
-    && apt-get install --no-install-recommends -y \ 
-        zsh \
-    && apt-get clean -y \
-    && rm -rf /var/lib/apt/lists/* \
-    && sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)" \
-    && sed -i -e 's/robbyrussell/sunaku/g' ~/.zshrc
+# ### zsh.Dockerfile
+# ARG ENTRY=/opt/devcontainer-entrypoint.sh
 
-ENV SHELL /usr/bin/zsh
+# RUN apt-get update \ 
+#     && apt-get install --no-install-recommends -y \ 
+#         zsh \
+#     && apt-get clean -y \
+#     && rm -rf /var/lib/apt/lists/* \
+#     && sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)" \
+#     && sed -i -e 's/robbyrussell/sunaku/g' ~/.zshrc
 
-CMD startx
+# ENV SHELL /usr/bin/zsh
+
+# CMD startx
