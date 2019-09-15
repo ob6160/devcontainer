@@ -20,7 +20,7 @@ export class DevcontainerGenerator {
     private _dockerTemplates: { [key: string]: string } = {};
     private _readmeTemplates: { [key: string]: string } = {};
     
-    private _templateInputs = ['base', 'upgrade', 'git', 'amplify', 'gitUbuntu', 'node', 'cypress', 'dotnet', 'docker', 'dotnet3', 'xfce', 'noVNC', 'zsh'];
+    private _templateInputs = ['base', 'upgrade', 'git', 'amplify', 'gitUbuntu', 'node', 'cypress', 'dotnet', 'docker', 'dotnet3', 'xfce', 'remoteDesktop', 'zsh'];
     private _nodeVesion: NodeVesion | null = null;
     private _gitVersion = '';
     private _amplify = false;
@@ -29,7 +29,7 @@ export class DevcontainerGenerator {
     private _upgrade = false;
     private _xfce = false;
     private _docker = false;
-    private _noVNC = false;
+    private _remoteDesktop = false;
     private _zsh = false;
 
     constructor(private base: Base) {
@@ -67,8 +67,8 @@ export class DevcontainerGenerator {
         this._amplify = true;
     }
 
-    public setNoVNC() {
-        this._noVNC = true;
+    public setremoteDesktop() {
+        this._remoteDesktop = true;
     }
 
     public setUpgraded(){
@@ -164,9 +164,9 @@ export class DevcontainerGenerator {
             }
         }
 
-        if (this._noVNC) {
-            this._dockerfile += dockerTemplates['noVNC'].replace('{XPRADISTRO}', this.base === "eoan"? "disco":this.base);
-            this._readme+=readmeTemplates['noVNC'];
+        if (this._remoteDesktop) {
+            this._dockerfile += dockerTemplates['remoteDesktop'].replace('{XPRADISTRO}', this.base === "eoan"? "disco":this.base);
+            this._readme+=readmeTemplates['remoteDesktop'];
         }
 
         if (this._xfce) {

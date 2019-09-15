@@ -161,7 +161,7 @@ ENV ASPNETCORE_URLS=http://+:80 \
 RUN dotnet help
 
 
-### noVNC.Dockerfile
+### remoteDesktop.Dockerfile
 
 ARG XPRADISTRO=disco
 

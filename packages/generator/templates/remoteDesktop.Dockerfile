@@ -1,6 +1,6 @@
 FROM devimage
 
-### noVNC.Dockerfile
+### remoteDesktop.Dockerfile
 
 ARG XPRADISTRO={XPRADISTRO}
 

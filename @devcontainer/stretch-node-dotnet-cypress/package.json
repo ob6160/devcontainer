@@ -17,7 +17,7 @@
     "load-text-file": "^1.2.0"
   },
   "version": "1.4.0",
-  "description": "devcontainer vscode docker xfce novnc",
+  "description": "devcontainer vscode docker xfce remoteDesktop",
   "main": "index.js",
   "repository": "git@github.com:zerdos/devcontainer.git",
   "author": "Zoltan Erdos <zolika84@gmail.com>",

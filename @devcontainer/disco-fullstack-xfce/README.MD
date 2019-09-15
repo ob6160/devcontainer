@@ -6,6 +6,6 @@
 - Yarn: 1.17.3
 - Cypress 3.4.1
 - With Dotnet SDK 2.2!
-- noVNC set up on: http://localhost:6080
-- XFCE trought noVNC
+- Remote Desktop (Xpra) set up o: http://localhost:6080
+- XFCE trought remoteDesktop
 - Zsh + Oh my zsh!

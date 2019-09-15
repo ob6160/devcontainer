@@ -22,7 +22,7 @@ Make sure, that your VScode istance contains the [Remote Containers](https://mar
     - Node 12.10.0
     - Cypress 3.4.1
     - .NET Core SDK 2.2
-    - noVNC 
+    - remote Desktop 
     - Zsh + Oh my zsh
 
-After the devcontainer started, you can access the noVNC window from the browser on the [http://localhost:6080](http://localhost:6080)
+After the devcontainer started, you can access the remoteDesktop window from the browser on the [http://localhost:6080](http://localhost:6080)

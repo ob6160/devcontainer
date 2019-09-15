@@ -8,7 +8,7 @@ const run = async () => {
   devGenerator.setDotnet('2');
   devGenerator.setCypress();
   devGenerator.setXfce();
-  devGenerator.setNoVNC();
+  devGenerator.setremoteDesktop();
   devGenerator.setZsh();
 
   const {
