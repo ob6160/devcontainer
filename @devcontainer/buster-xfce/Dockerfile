@@ -1,4 +1,4 @@
-FROM buildpack-deps:eoan
+FROM buildpack-deps:buster
 
 ### base.Dockerfile
 ### Generator: https://github.com/zerdos/devcontainer/
@@ -40,15 +40,32 @@ ENV DEV_VERSION=2019-8-15
 RUN apt-get update && apt-get dist-upgrade -y && \
 	apt-get autoremove -y \
 && apt-get clean -y \
-&& rm -rf /var/lib/apt/lists/*### git for Ubuntu
+&& rm -rf /var/lib/apt/lists/*
+### git.Dockerfile
 
-RUN add-apt-repository ppa:git-core/ppa && apt-get update \
-&& apt-get install --no-install-recommends -y \
-    git \
+RUN apt-get update && \ 
+    apt-get install --no-install-recommends -y \ 
+    make \
+    libssl-dev \
+    libghc-zlib-dev \
+    libcurl4-gnutls-dev \
+    libexpat1-dev \
+    gettext \
+    gpg \
+&& curl -Lo /usr/src/git.tar.gz  https://github.com/git/git/archive/v2.23.0.tar.gz \
+&& tar -C /usr/src/ -xf /usr/src/git.tar.gz && cd /usr/src/git-* \
+&& make prefix=/usr/local all \
+&& make prefix=/usr/local install \
+&& apt-get remove -y \
+    libssl-dev \
+    libghc-zlib-dev \
+    libcurl4-gnutls-dev \
+    libexpat1-dev \
+    gettext \
+    gpg \
 && apt-get autoremove -y \
 && apt-get clean -y \
-&& rm -rf /var/lib/apt/lists/* 
-
+&& rm -rf /tmp/* /var/lib/apt/lists/* /usr/src/*
 ### node.Dockerfile
 
 
@@ -175,7 +192,7 @@ RUN dotnet help
 
 ### remoteDesktop.Dockerfile
 
-ARG XPRADISTRO=disco
+ARG XPRADISTRO=buster
 
 RUN  ((curl https://xpra.org/gpg.asc | apt-key add - \
   && curl https://xpra.org/repos/${XPRADISTRO}/xpra.list > /etc/apt/sources.list.d/xpra.list \

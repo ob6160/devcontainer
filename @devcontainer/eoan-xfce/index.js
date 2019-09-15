@@ -5,11 +5,12 @@ const run = async () => {
   const devGenerator = new DevcontainerGenerator('eoan');
 
   devGenerator.setNodeVersion('current');
+  devGenerator.setUpgraded();
   devGenerator.updateGit();
   devGenerator.setDotnet();
   devGenerator.setCypress();
   devGenerator.setXfce();
-  devGenerator.setremoteDesktop();
+  devGenerator.setRemoteDesktop();
   devGenerator.setZsh();
 
   const {

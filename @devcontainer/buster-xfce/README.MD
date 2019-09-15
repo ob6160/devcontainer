@@ -1,8 +1,8 @@
 ## Devcontainer
 
-- Base image: buildpack-deps:eoan
+- Base image: buildpack-deps:buster
 - Built with apt-get update && apt-get upgrade 
-- Git is updated via apt-get
+- GIT updated
 - Node: 12.10.0 \
 - Yarn: 1.17.3
 - Cypress 3.4.1

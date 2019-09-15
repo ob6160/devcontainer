@@ -2,12 +2,14 @@ const {DevcontainerGenerator} = require('@devcontainer/generator');
 const {writeFile} = require('fs').promises;
 
 const run = async () => {
-  const devGenerator = new DevcontainerGenerator('stretch');
+  const devGenerator = new DevcontainerGenerator('buster');
 
-  devGenerator.updateGit();
   devGenerator.setNodeVersion('current');
-  devGenerator.setCypress();
+  devGenerator.setUpgraded();
+  devGenerator.updateGit();
   devGenerator.setDotnet();
+  devGenerator.setCypress();
+  devGenerator.setXfce();
   devGenerator.setRemoteDesktop();
   devGenerator.setZsh();
 

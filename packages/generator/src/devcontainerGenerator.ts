@@ -67,7 +67,7 @@ export class DevcontainerGenerator {
         this._amplify = true;
     }
 
-    public setremoteDesktop() {
+    public setRemoteDesktop() {
         this._remoteDesktop = true;
     }
 
@@ -101,8 +101,8 @@ export class DevcontainerGenerator {
 
         if(this._upgrade) {
             const now = new Date();
-            this._dockerfile += dockerTemplates['upgrade'].replace('{DEV_VERSION}', `${now.getFullYear()}-${now.getMonth()}-${now.getDate()}`);
-            this._readme += readmeTemplates['upgrade'].replace('{DEV_VERSION}', `${now.getFullYear()}-${now.getMonth()}-${now.getDate()}`);
+            this._dockerfile += dockerTemplates['upgrade'].replace('{DEV_VERSION}', `${now.getFullYear()}-${now.getMonth()+1}-${now.getDate()}`);
+            this._readme += readmeTemplates['upgrade'].replace('{DEV_VERSION}', `${now.getFullYear()}-${now.getMonth()+1}-${now.getDate()}`);
 
         }
 
