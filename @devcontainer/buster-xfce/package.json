@@ -8,9 +8,8 @@
     "generate:dockerfile": "node index.js"
   },
   "files": [
-    ".devcontainer/**/*",
-    "Dockerfile",
-    "README.md"
+    ".devcontainer/*",
+    ".devimage/*"
   ],
   "dependencies": {
     "@devcontainer/generator": "^1.5.1",
