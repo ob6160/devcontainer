@@ -20,7 +20,7 @@ const run = async () => {
       `${__dirname}/Dockerfile`, Dockerfile
   );
 
-  await writeFile(`${__dirname}/README.MD`, README);
+  await writeFile(`${__dirname}/README.md`, README);
 };
 
 run();

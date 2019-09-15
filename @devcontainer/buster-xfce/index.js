@@ -25,7 +25,7 @@ const run = async () => {
       `${__dirname}/.devimage/Dockerfile`, Dockerfile
   );
 
-  await writeFile(`${__dirname}/.devimage/README.MD`, README);
+  await writeFile(`${__dirname}/.devimage/README.md`, README);
 
   const devComposeFile =
     await readFile(`${__dirname}/.devcontainer/Dockerfile`)
