@@ -20,15 +20,6 @@ RUN apt-get update \
   xz-utils \
   libx11-dev \
   dirmngr \
-  supervisor \
-&& touch /opt/supervisord.log && chmod 777 /opt/supervisord.log \
-&& touch /opt/supervisord.pid && chmod 777 /opt/supervisord.pid \
-&& touch $SUPERVISORCONF \
-&& echo "[supervisord]"                               >  $SUPERVISORCONF \
-&& echo "logfile=/opt/supervisord.log"                >> $SUPERVISORCONF \
-&& echo "pidfile=/opt/supervisord.pid"                >> $SUPERVISORCONF \
-&& echo "nodemon=true"                                >> $SUPERVISORCONF \
-&& echo ""                                            >> $SUPERVISORCONF \
 && ln -fs /usr/share/zoneinfo/Europce/London /etc/localtime \
 && apt-get update &&  apt-get install --no-install-recommends  -y \
   curl \
@@ -177,46 +168,37 @@ RUN apt-get update \
         xfce4 \
         xfce4-goodies \
     && apt-get clean -y \
-    && rm -rf /var/lib/apt/lists/* /root/*
+    && rm -rf /var/lib/apt/lists/* /root/* \
+    && echo "xpra start-desktop --start=xfce4-session --html=on --bind-tcp=0.0.0.0:6080; sleep infinity" > /usr/bin/startx  
 
 ### noVNC.Dockerfile
 
-ARG PORT=${PORT}
-EXPOSE ${PORT}
+ARG XPRADISTRO={XPRADISTRO}
 
-RUN  apt-get update \
-  && apt-get install --no-install-recommends -y \
-  autocutsel \
+RUN  curl https://xpra.org/gpg.asc | apt-key add - \
+  && curl https://xpra.org/repos/${XPRADISTRO}/xpra.list > /etc/apt/sources.list.d/xpra.list \
+&& curl https://xpra.org/repos/${XPRADISTRO}/xpra-beta.list >> /etc/apt/sources.list.d/xpra.list \
+&& apt-get install -y software-properties-common \
+&& add-apt-repository universe \
+&& apt-get update \
+&& apt-get install -y xpra \
+&& apt-get install --no-install-recommends -y \
   xfwm4 \
   libgtk-3-0 \
   xvfb \
-  novnc \
-  websockify \
   dbus-x11 \
   nano \
   mc \
   htop \
   terminator \
   procps \  
-  vnc4server \
-  &&  cp /usr/share/novnc/vnc.html /usr/share/novnc/index.html \
-  &&  echo "[program:vncserver]"                                                >> $SUPERVISORCONF \
-  &&  echo "command=vncserver -SecurityTypes none -cleanstale -useold"          >> $SUPERVISORCONF \
-  &&  echo "autostart=true"                                                     >> $SUPERVISORCONF \
-  &&  echo ""                                                                   >> $SUPERVISORCONF \
-  &&  echo "[program:novnc]"                                                    >> $SUPERVISORCONF \
-  &&  echo "command=websockify -D --web=/usr/share/novnc/ \$PORT localhost:5901"  >> $SUPERVISORCONF \
-  &&  echo "autostart=true"                                                     >> $SUPERVISORCONF \
-  &&  echo ""                                                                   >> $SUPERVISORCONF \
-  && sed -i -e '1 aautocutsel -fork' /etc/X11/Xvnc-session \
-  && sed -i -e 's/iconic/nowin/g' /etc/X11/Xvnc-session \
+  && touch /usr/bin/startx && chmod +x /usr/bin/startx \ 
+  && echo "xpra --start=terminator --html=on --bind-tcp=0.0.0.0:6080; sleep infinity" > /usr/bin/startx \   
   && sed -i -e 's/workspace_count=4/workspace_count=1/g' /usr/share/xfwm4/defaults \
   && sed -i -e 's/use_compositing=true/use_compositing=false/g' /usr/share/xfwm4/defaults \
-  && sed -i -e '1 aterminator &' /etc/X11/Xvnc-session \
   && apt-get autoremove -y \
   && apt-get clean -y \
-  && rm -rf /var/lib/apt/lists/* /root/*
-
+  && rm -rf /var/lib/apt/lists/* /root/* 
 ### zsh.Dockerfile
 ARG ENTRY=/opt/devcontainer-entrypoint.sh
 
@@ -225,19 +207,9 @@ RUN apt-get update \
         zsh \
     && apt-get clean -y \
     && rm -rf /var/lib/apt/lists/* \
-    && curl -Lo /opt/install-oh-my-zsh.sh https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh \
-    && chmod 555 /opt/install-oh-my-zsh.sh \
-    && echo 'test -f ~/.zshrc || SHELL=/usr/bin/zsh sh /opt/install-oh-my-zsh.sh; \n\
-            sysctl fs.inotify.max_user_watches=524288 && sysctl -p \n\
-            supervisord; \n\
-            test -f ~/.zshrc && sleep 10 && sed -i -e '\''s/robbyrussell/sunaku/g'\'' ~/.zshrc \n\    
-            (apt-get update && apt-get install --no-install-recommends locales) || true \n\
-            echo "export LC_ALL=en_US.UTF-8" >>  ~/.zshrc \n\
-            echo "export LANG=en_US.UTF-8" >>  ~/.zshrc \n\
-            trap : TERM INT; \n\
-            sleep infinity & wait\n' >> $ENTRY \
-    && chmod 555 $ENTRY
+    && sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)" \
+    && sed -i -e 's/robbyrussell/sunaku/g' ~/.zshrc
 
 ENV SHELL /usr/bin/zsh
 
-CMD bash /opt/devcontainer-entrypoint.sh
+CMD startx

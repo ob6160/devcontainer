@@ -2,38 +2,29 @@ FROM devimage
 
 ### noVNC.Dockerfile
 
-ARG PORT=${PORT}
-EXPOSE ${PORT}
+ARG XPRADISTRO={XPRADISTRO}
 
-RUN  apt-get update \
-  && apt-get install --no-install-recommends -y \
-  autocutsel \
+RUN  curl https://xpra.org/gpg.asc | apt-key add - \
+  && curl https://xpra.org/repos/${XPRADISTRO}/xpra.list > /etc/apt/sources.list.d/xpra.list \
+&& curl https://xpra.org/repos/${XPRADISTRO}/xpra-beta.list >> /etc/apt/sources.list.d/xpra.list \
+&& apt-get install -y software-properties-common \
+&& add-apt-repository universe \
+&& apt-get update \
+&& apt-get install -y xpra \
+&& apt-get install --no-install-recommends -y \
   xfwm4 \
   libgtk-3-0 \
   xvfb \
-  novnc \
-  websockify \
   dbus-x11 \
   nano \
   mc \
   htop \
   terminator \
   procps \  
-  vnc4server \
-  &&  cp /usr/share/novnc/vnc.html /usr/share/novnc/index.html \
-  &&  echo "[program:vncserver]"                                                >> $SUPERVISORCONF \
-  &&  echo "command=vncserver -SecurityTypes none -cleanstale -useold"          >> $SUPERVISORCONF \
-  &&  echo "autostart=true"                                                     >> $SUPERVISORCONF \
-  &&  echo ""                                                                   >> $SUPERVISORCONF \
-  &&  echo "[program:novnc]"                                                    >> $SUPERVISORCONF \
-  &&  echo "command=websockify -D --web=/usr/share/novnc/ \$PORT localhost:5901"  >> $SUPERVISORCONF \
-  &&  echo "autostart=true"                                                     >> $SUPERVISORCONF \
-  &&  echo ""                                                                   >> $SUPERVISORCONF \
-  && sed -i -e '1 aautocutsel -fork' /etc/X11/Xvnc-session \
-  && sed -i -e 's/iconic/nowin/g' /etc/X11/Xvnc-session \
+  && touch /usr/bin/startx && chmod +x /usr/bin/startx \ 
+  && echo "xpra --start=terminator --html=on --bind-tcp=0.0.0.0:6080; sleep infinity" > /usr/bin/startx \   
   && sed -i -e 's/workspace_count=4/workspace_count=1/g' /usr/share/xfwm4/defaults \
   && sed -i -e 's/use_compositing=true/use_compositing=false/g' /usr/share/xfwm4/defaults \
-  && sed -i -e '1 aterminator &' /etc/X11/Xvnc-session \
   && apt-get autoremove -y \
   && apt-get clean -y \
-  && rm -rf /var/lib/apt/lists/* /root/*
+  && rm -rf /var/lib/apt/lists/* /root/* 

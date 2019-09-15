@@ -20,15 +20,6 @@ RUN apt-get update \
   xz-utils \
   libx11-dev \
   dirmngr \
-  supervisor \
-&& touch /opt/supervisord.log && chmod 777 /opt/supervisord.log \
-&& touch /opt/supervisord.pid && chmod 777 /opt/supervisord.pid \
-&& touch $SUPERVISORCONF \
-&& echo "[supervisord]"                               >  $SUPERVISORCONF \
-&& echo "logfile=/opt/supervisord.log"                >> $SUPERVISORCONF \
-&& echo "pidfile=/opt/supervisord.pid"                >> $SUPERVISORCONF \
-&& echo "nodemon=true"                                >> $SUPERVISORCONF \
-&& echo ""                                            >> $SUPERVISORCONF \
 && ln -fs /usr/share/zoneinfo/Europce/London /etc/localtime \
 && apt-get update &&  apt-get install --no-install-recommends  -y \
   curl \
@@ -130,20 +121,8 @@ RUN set -ex \
 ### amplify.Dockerfile
 ARG AMPLIFY_VERSION=3.2.0
 
-RUN apt-get update \
-&& apt-get install --no-install-recommends -y \
-  software-properties-common \
-  apt-utils \
-  ssh-client \
-  make \
-  gcc \
-  g++ \
-  python2.7 \
-  xz-utils \
-  libx11-dev \
-  dirmngr 
+RUN npm install -g --unsafe-perm @aws-amplify/cli@{AMPLIFY_VERSION}
 
-RUN npm install -g @aws-amplify/cli@{AMPLIFY_VERSION}
 ### zsh.Dockerfile
 ARG ENTRY=/opt/devcontainer-entrypoint.sh
 
@@ -152,19 +131,9 @@ RUN apt-get update \
         zsh \
     && apt-get clean -y \
     && rm -rf /var/lib/apt/lists/* \
-    && curl -Lo /opt/install-oh-my-zsh.sh https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh \
-    && chmod 555 /opt/install-oh-my-zsh.sh \
-    && echo 'test -f ~/.zshrc || SHELL=/usr/bin/zsh sh /opt/install-oh-my-zsh.sh; \n\
-            sysctl fs.inotify.max_user_watches=524288 && sysctl -p \n\
-            supervisord; \n\
-            test -f ~/.zshrc && sleep 10 && sed -i -e '\''s/robbyrussell/sunaku/g'\'' ~/.zshrc \n\    
-            (apt-get update && apt-get install --no-install-recommends locales) || true \n\
-            echo "export LC_ALL=en_US.UTF-8" >>  ~/.zshrc \n\
-            echo "export LANG=en_US.UTF-8" >>  ~/.zshrc \n\
-            trap : TERM INT; \n\
-            sleep infinity & wait\n' >> $ENTRY \
-    && chmod 555 $ENTRY
+    && sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)" \
+    && sed -i -e 's/robbyrussell/sunaku/g' ~/.zshrc
 
 ENV SHELL /usr/bin/zsh
 
-CMD bash /opt/devcontainer-entrypoint.sh
+CMD startx

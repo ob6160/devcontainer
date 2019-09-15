@@ -176,7 +176,7 @@ export class DevcontainerGenerator {
         }
 
         if (this._zsh) {
-            this._dockerfile += dockerTemplates['zsh'];
+            this._dockerfile += dockerTemplates['zsh'].replace('{XPRADISTRO}', this.base === "eoan"? "disco":this.base);
             this._readme+=readmeTemplates['zsh'];
         }
 
