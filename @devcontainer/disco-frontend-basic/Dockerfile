@@ -27,7 +27,9 @@ RUN apt-get update \
   apt-transport-https \
 && apt-get autoremove -y \
 && apt-get clean -y \
-&& rm -rf /var/lib/apt/lists/*
+&& rm -rf /var/lib/apt/lists/* \
+&& touch /usr/bin/startx \
+&& chmod +x /usr/bin/startx 
 ### git for Ubuntu
 
 RUN add-apt-repository ppa:git-core/ppa && apt-get update \
@@ -109,12 +111,12 @@ RUN apt-get update \
         zsh \
     && apt-get clean -y \
     && rm -rf /var/lib/apt/lists/* \
-    && sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)" \
-    && sed -i -e 's/robbyrussell/sunaku/g' ~/.zshrc \
+    && git clone --depth 1 https://github.com/robbyrussell/oh-my-zsh.git /etc/skel/.oh-my-zsh \
+    && git clone --depth 1 https://github.com/zsh-users/zsh-autosuggestions.git /etc/skel/.oh-my-zsh/plugins/zsh-autosuggestions \
+    && git clone --depth 1 https://github.com/zsh-users/zsh-syntax-highlighting.git /etc/skel/.oh-my-zsh/plugins/zsh-syntax-highlighting \
+    && cp /etc/skel/.oh-my-zsh/templates/zshrc.zsh-template  /etc/skel/.zshrc \
+    && sed -i -e 's/robbyrussell/sunaku/g' /etc/skel/.zshrc \
+    && sed -i -e 's/plugins=(git)/plugins=(git zsh-autosuggestions zsh-syntax-highlighting)/g' /etc/skel/.zshrc \
     && echo "sleep infinity" >> /usr/bin/startx 
-
-
-ENV SHELL /usr/bin/zsh
-
 
 CMD startx

@@ -1,14 +1,22 @@
 version: "3.7"
 services:
   devcontainer:
-    image: devimages/buster-xfce
-    build: .
+    build: 
+      dockerfile: devcontainer.Dockerfile
+      context: .
+      args:
+        - UID=${UID}
+        - GID=${GID}
     privileged: true
+    environment:
+      - UID=${UID}
+      - GID=${GID}
+    user: "${UID}:${GID}"
     ports:
       - "6080:6080"
     shm_size: 1gb
     volumes: 
-      - devhome:/root/workspace
+      - devhome:/home/dev/workspace
 volumes:
   devhome:
     driver: local
