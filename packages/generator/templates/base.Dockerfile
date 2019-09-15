@@ -27,4 +27,6 @@ RUN apt-get update \
   apt-transport-https \
 && apt-get autoremove -y \
 && apt-get clean -y \
-&& rm -rf /var/lib/apt/lists/*
+&& rm -rf /var/lib/apt/lists/* \
+&& touch /usr/bin/startx \
+&& chmod +x /usr/bin/startx 

@@ -128,23 +128,11 @@ export class DevcontainerGenerator {
 
         }
 
-        if (this._cypressVersion) {
-            this._dockerfile += dockerTemplates['cypress'].replace('{CYPRESS_VERION}', this._cypressVersion)
-            this._readme += readmeTemplates['cypress'].replace('{CYPRESS_VERION}', this._cypressVersion)
-   
-        }
-
         if (this._docker) {
             this._dockerfile += dockerTemplates['docker'];
             this._readme += readmeTemplates['docker'];
         }
 
-
-        if (this._amplify) {
-            this._dockerfile += dockerTemplates['amplify'].replace('{AMPLIFY}', softwareVersions.amplify)
-            this._readme += readmeTemplates['amplify'].replace('{AMPLIFY}', softwareVersions.amplify)
-       
-        }
 
         if (this._dotnet) {
             if (this._dotnet === "2") 
@@ -165,13 +153,23 @@ export class DevcontainerGenerator {
         }
 
         if (this._remoteDesktop) {
-            this._dockerfile += dockerTemplates['remoteDesktop'].replace('{XPRADISTRO}', this.base === "eoan"? "disco":this.base);
+            this._dockerfile += dockerTemplates['remoteDesktop'].replace(/{XPRADISTRO}/g, this.base === "eoan"? "disco":this.base);
             this._readme+=readmeTemplates['remoteDesktop'];
         }
 
         if (this._xfce) {
             this._dockerfile += dockerTemplates['xfce'];
             this._readme+=readmeTemplates['xfce'];
+        }
+
+        if (this._amplify) {
+            this._dockerfile += dockerTemplates['amplify'].replace('{AMPLIFY}', softwareVersions.amplify)
+            this._readme += readmeTemplates['amplify'].replace('{AMPLIFY}', softwareVersions.amplify)
+        }
+
+        if (this._cypressVersion) {
+            this._dockerfile += dockerTemplates['cypress'].replace('{CYPRESS_VERION}', this._cypressVersion)
+            this._readme += readmeTemplates['cypress'].replace('{CYPRESS_VERION}', this._cypressVersion)
         }
 
         if (this._zsh) {

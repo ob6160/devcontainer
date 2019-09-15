@@ -118,27 +118,6 @@ RUN set -ex \
   && ln -s /opt/yarn-v$YARN_VERSION/bin/yarn /usr/local/bin/yarn \
   && ln -s /opt/yarn-v$YARN_VERSION/bin/yarnpkg /usr/local/bin/yarnpkg \
   && rm yarn-v$YARN_VERSION.tar.gz.asc yarn-v$YARN_VERSION.tar.gz
-### cypress.Dockerfile
-ARG CYPRESS_VERION=3.4.1
-ENV CYPRESS_CACHE_FOLDER=/opt/cypress
-
-RUN apt-get update \
-&& apt-get install --no-install-recommends -y \
-  libgtk-3-0 \
-  libnotify-dev \
-  libgconf-2-4 \
-  libnss3 \
-  libxss1 \
-  libasound2 \
-  libxtst6 \
-  xauth \
-  xvfb \
-&& yarn global add cypress@$CYPRESS_VERION stmux --no-cache \
-&& yarn cache clean \
-&& apt-get autoremove -y \
-&& apt-get clean -y \
-&& rm -rf /var/lib/apt/lists/* /root/* /tmp/* 
-
 ### dotnet.Dockerfile
 
 # Install .NET CLI dependencies
@@ -180,11 +159,9 @@ RUN dotnet help
 
 ### remoteDesktop.Dockerfile
 
-ARG XPRADISTRO=stretch
-
 RUN curl https://xpra.org/gpg.asc | apt-key add - \
-  && curl https://xpra.org/repos/${XPRADISTRO}/xpra.list > /etc/apt/sources.list.d/xpra.list \
-&& curl https://xpra.org/repos/${XPRADISTRO}/xpra-beta.list >> /etc/apt/sources.list.d/xpra.list \
+  && curl https://xpra.org/repos/stretch/xpra.list > /etc/apt/sources.list.d/xpra.list \
+&& curl https://xpra.org/repos/stretch/xpra-beta.list >> /etc/apt/sources.list.d/xpra.list \
 && apt-get update \
 && apt-get install -y xpra \
 && apt-get install --no-install-recommends -y \
@@ -198,12 +175,31 @@ RUN curl https://xpra.org/gpg.asc | apt-key add - \
   terminator \
   procps \  
   && touch /usr/bin/startx && chmod +x /usr/bin/startx \ 
-  && echo "xpra --start=terminator --html=on --bind-tcp=0.0.0.0:6080; sleep infinity" > /usr/bin/startx \   
+  && echo "xpra --start=terminator --html=on --bind-tcp=0.0.0.0:6080" > /usr/bin/startx \   
   && sed -i -e 's/workspace_count=4/workspace_count=1/g' /usr/share/xfwm4/defaults \
   && sed -i -e 's/use_compositing=true/use_compositing=false/g' /usr/share/xfwm4/defaults \
   && apt-get autoremove -y \
   && apt-get clean -y \
-  && rm -rf /var/lib/apt/lists/* /root/* 
+  && rm -rf /var/lib/apt/lists/*
+### cypress.Dockerfile
+
+RUN apt-get update \
+&& apt-get install --no-install-recommends -y \
+  libgtk-3-0 \
+  libnotify-dev \
+  libgconf-2-4 \
+  libnss3 \
+  libxss1 \
+  libasound2 \
+  libxtst6 \
+  xauth \
+  xvfb \
+&& yarn global add cypress@3.4.1 stmux \
+&& yarn cache clean \
+&& apt-get autoremove -y \
+&& apt-get clean -y \
+&& rm -rf /var/lib/apt/lists/* /tmp/* 
+
 ### zsh.Dockerfile
 ARG ENTRY=/opt/devcontainer-entrypoint.sh
 
@@ -213,8 +209,11 @@ RUN apt-get update \
     && apt-get clean -y \
     && rm -rf /var/lib/apt/lists/* \
     && sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)" \
-    && sed -i -e 's/robbyrussell/sunaku/g' ~/.zshrc
+    && sed -i -e 's/robbyrussell/sunaku/g' ~/.zshrc \
+    && echo "sleep infinity" >> /usr/bin/startx 
+
 
 ENV SHELL /usr/bin/zsh
+
 
 CMD startx
