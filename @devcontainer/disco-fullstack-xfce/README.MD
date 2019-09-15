@@ -6,6 +6,6 @@
 - Yarn: 1.17.3
 - Cypress 3.4.1
 - With Dotnet SDK 2.2!
-- XFCE trought noVNC
 - noVNC set up on: http://localhost:6080
+- XFCE trought noVNC
 - Zsh + Oh my zsh!

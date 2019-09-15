@@ -164,19 +164,18 @@ export class DevcontainerGenerator {
             }
         }
 
+        if (this._noVNC) {
+            this._dockerfile += dockerTemplates['noVNC'].replace('{XPRADISTRO}', this.base === "eoan"? "disco":this.base);
+            this._readme+=readmeTemplates['noVNC'];
+        }
+
         if (this._xfce) {
             this._dockerfile += dockerTemplates['xfce'];
             this._readme+=readmeTemplates['xfce'];
         }
 
-        if (this._noVNC) {
-            this._dockerfile += dockerTemplates['noVNC'];
-            this._readme+=readmeTemplates['noVNC'];
-
-        }
-
         if (this._zsh) {
-            this._dockerfile += dockerTemplates['zsh'].replace('{XPRADISTRO}', this.base === "eoan"? "disco":this.base);
+            this._dockerfile += dockerTemplates['zsh'];
             this._readme+=readmeTemplates['zsh'];
         }
 

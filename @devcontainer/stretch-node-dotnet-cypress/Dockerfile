@@ -180,7 +180,7 @@ RUN dotnet help
 
 ### noVNC.Dockerfile
 
-ARG XPRADISTRO={XPRADISTRO}
+ARG XPRADISTRO=stretch
 
 RUN  curl https://xpra.org/gpg.asc | apt-key add - \
   && curl https://xpra.org/repos/${XPRADISTRO}/xpra.list > /etc/apt/sources.list.d/xpra.list \

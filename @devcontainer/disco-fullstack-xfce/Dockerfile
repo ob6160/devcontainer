@@ -161,19 +161,9 @@ ENV ASPNETCORE_URLS=http://+:80 \
 RUN dotnet help
 
 
-### xfce.Dockerfile
-
-RUN apt-get update \
-    && apt-get install --no-install-recommends -y \
-        xfce4 \
-        xfce4-goodies \
-    && apt-get clean -y \
-    && rm -rf /var/lib/apt/lists/* /root/* \
-    && echo "xpra start-desktop --start=xfce4-session --html=on --bind-tcp=0.0.0.0:6080; sleep infinity" > /usr/bin/startx  
-
 ### noVNC.Dockerfile
 
-ARG XPRADISTRO={XPRADISTRO}
+ARG XPRADISTRO=disco
 
 RUN  curl https://xpra.org/gpg.asc | apt-key add - \
   && curl https://xpra.org/repos/${XPRADISTRO}/xpra.list > /etc/apt/sources.list.d/xpra.list \
@@ -199,6 +189,16 @@ RUN  curl https://xpra.org/gpg.asc | apt-key add - \
   && apt-get autoremove -y \
   && apt-get clean -y \
   && rm -rf /var/lib/apt/lists/* /root/* 
+### xfce.Dockerfile
+
+RUN apt-get update \
+    && apt-get install --no-install-recommends -y \
+        xfce4 \
+        xfce4-goodies \
+    && apt-get clean -y \
+    && rm -rf /var/lib/apt/lists/* /root/* \
+    && echo "xpra start-desktop --start=xfce4-session --html=on --bind-tcp=0.0.0.0:6080; sleep infinity" > /usr/bin/startx  
+
 ### zsh.Dockerfile
 ARG ENTRY=/opt/devcontainer-entrypoint.sh
 
