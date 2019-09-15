@@ -1,8 +1,7 @@
 version: "3.7"
 services:
   devcontainer:
-    build: 
-      dockerfile: devcontainer.Dockerfile
+    build:
       context: .
       args:
         - UID=${UID}

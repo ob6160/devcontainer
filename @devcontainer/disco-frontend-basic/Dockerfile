@@ -103,7 +103,7 @@ RUN set -ex \
   && ln -s /opt/yarn-v$YARN_VERSION/bin/yarn /usr/local/bin/yarn \
   && ln -s /opt/yarn-v$YARN_VERSION/bin/yarnpkg /usr/local/bin/yarnpkg \
   && rm yarn-v$YARN_VERSION.tar.gz.asc yarn-v$YARN_VERSION.tar.gz
-### zsh.Dockerfile
+### zsh.Dockerfie
 ARG ENTRY=/opt/devcontainer-entrypoint.sh
 
 RUN apt-get update \ 

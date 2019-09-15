@@ -183,6 +183,7 @@ RUN curl https://xpra.org/gpg.asc | apt-key add - \
   && apt-get clean -y \
   && rm -rf /var/lib/apt/lists/*
 ### cypress.Dockerfile
+ENV CYPRESS_CACHE_FOLDER /usr/local/share/cypress
 
 RUN apt-get update \
 && apt-get install --no-install-recommends -y \
@@ -201,7 +202,7 @@ RUN apt-get update \
 && apt-get clean -y \
 && rm -rf /var/lib/apt/lists/* /tmp/* 
 
-### zsh.Dockerfile
+### zsh.Dockerfie
 ARG ENTRY=/opt/devcontainer-entrypoint.sh
 
 RUN apt-get update \ 

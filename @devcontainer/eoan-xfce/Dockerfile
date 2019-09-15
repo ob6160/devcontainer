@@ -188,6 +188,7 @@ RUN apt-get update \
     && echo "xpra start-desktop --start=xfce4-session --html=on --bind-tcp=0.0.0.0:6080" > /usr/bin/startx  
 
 ### cypress.Dockerfile
+ENV CYPRESS_CACHE_FOLDER /usr/local/share/cypress
 
 RUN apt-get update \
 && apt-get install --no-install-recommends -y \
@@ -206,7 +207,7 @@ RUN apt-get update \
 && apt-get clean -y \
 && rm -rf /var/lib/apt/lists/* /tmp/* 
 
-### zsh.Dockerfile
+### zsh.Dockerfie
 ARG ENTRY=/opt/devcontainer-entrypoint.sh
 
 RUN apt-get update \ 

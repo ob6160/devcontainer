@@ -1,6 +1,6 @@
 FROM devimage
 
-### zsh.Dockerfile
+### zsh.Dockerfie
 ARG ENTRY=/opt/devcontainer-entrypoint.sh
 
 RUN apt-get update \ 

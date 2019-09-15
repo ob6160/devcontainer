@@ -1,6 +1,7 @@
 FROM devimage
 
 ### cypress.Dockerfile
+ENV CYPRESS_CACHE_FOLDER /usr/local/share/cypress
 
 RUN apt-get update \
 && apt-get install --no-install-recommends -y \

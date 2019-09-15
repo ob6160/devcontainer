@@ -4,11 +4,11 @@
   "scripts": {
     "docker:build": "docker-compose -f tags.yml build",
     "docker:push": "docker-compose -f tags.yml push",
+    "udpate:devcontainer": "ls -la && sh ./update_devcontainer.sh",
     "generate:dockerfile": "node index.js"
   },
   "files": [
     ".devcontainer/**/*",
-    "docker-compose.yml",
     "Dockerfile",
     "README.md"
   ],

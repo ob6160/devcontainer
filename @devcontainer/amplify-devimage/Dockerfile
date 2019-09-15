@@ -123,7 +123,7 @@ RUN set -ex \
 ### amplify.Dockerfile
 RUN npm install -g --unsafe-perm @aws-amplify/cli@3.2.0
 
-### zsh.Dockerfile
+### zsh.Dockerfie
 ARG ENTRY=/opt/devcontainer-entrypoint.sh
 
 RUN apt-get update \ 
