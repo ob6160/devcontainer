@@ -34,7 +34,7 @@ const run = async () => {
   const [, ...rest] = [...devComposeFile.toString().split('\n')];
 
   const dockerfileForcompose =
-    [`FROM devimages\\${tagname}:${version}`,
+    [`FROM devimages/${tagname}:${version}`,
       ...rest].join(('\n'));
   await writeFile(`${__dirname}/.devcontainer/Dockerfile`,
       dockerfileForcompose);

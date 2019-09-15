@@ -1,4 +1,4 @@
-FROM devimages\buster-xfce:1.5.1
+FROM devimages/buster-xfce:1.6.0
 
 ARG GID
 ARG UID
