@@ -1,6 +1,9 @@
 const {DevcontainerGenerator} = require('@devcontainer/generator');
 const {writeFile, readFile} = require('fs').promises;
 
+const tagname = process.env.npm_package_tagname;
+const version = process.env.npm_package_version;
+
 const run = async () => {
   const devGenerator = new DevcontainerGenerator('buster');
 
@@ -24,12 +27,17 @@ const run = async () => {
 
   await writeFile(`${__dirname}/README.MD`, README);
 
+  const devComposeFile =
+    await readFile(`${__dirname}/.devcontainer/Dockerfile`)
+        .catch((e) => console.error({e}));
 
-
-  const devComposeFile = await readFile(`${__dirname}/.devcontainer/Dockerfile`).catch((e)=>console.error({e}));
   const [, ...rest] = [...devComposeFile.toString().split('\n')];
-  const dockerfileForcompose = [`FROM devimages\\${process.env.npm_package_tagname}:${process.env.npm_package_version}`, ...rest].join(('\n'));
-  await writeFile(`${__dirname}/.devcontainer/Dockerfile`, dockerfileForcompose)
+
+  const dockerfileForcompose =
+    [`FROM devimages\\${tagname}:${version}`,
+      ...rest].join(('\n'));
+  await writeFile(`${__dirname}/.devcontainer/Dockerfile`,
+      dockerfileForcompose);
 };
 
 run();
