@@ -119,9 +119,7 @@ RUN set -ex \
   && ln -s /opt/yarn-v$YARN_VERSION/bin/yarnpkg /usr/local/bin/yarnpkg \
   && rm yarn-v$YARN_VERSION.tar.gz.asc yarn-v$YARN_VERSION.tar.gz
 ### amplify.Dockerfile
-ARG AMPLIFY_VERSION=3.2.0
-
-RUN npm install -g --unsafe-perm @aws-amplify/cli@{AMPLIFY_VERSION}
+RUN npm install -g --unsafe-perm @aws-amplify/cli@3.2.0
 
 ### zsh.Dockerfile
 ARG ENTRY=/opt/devcontainer-entrypoint.sh

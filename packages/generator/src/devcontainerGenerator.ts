@@ -141,8 +141,8 @@ export class DevcontainerGenerator {
 
 
         if (this._amplify) {
-            this._dockerfile += dockerTemplates['amplify'].replace('{AMPLIFY_VERSION}', softwareVersions.amplify)
-            this._readme += readmeTemplates['amplify'].replace('{AMPLIFY_VERSION}', softwareVersions.amplify)
+            this._dockerfile += dockerTemplates['amplify'].replace('{AMPLIFY}', softwareVersions.amplify)
+            this._readme += readmeTemplates['amplify'].replace('{AMPLIFY}', softwareVersions.amplify)
        
         }
 

@@ -165,12 +165,18 @@ RUN dotnet help
 
 ARG XPRADISTRO=disco
 
-RUN  curl https://xpra.org/gpg.asc | apt-key add - \
+RUN  ((curl https://xpra.org/gpg.asc | apt-key add - \
   && curl https://xpra.org/repos/${XPRADISTRO}/xpra.list > /etc/apt/sources.list.d/xpra.list \
 && curl https://xpra.org/repos/${XPRADISTRO}/xpra-beta.list >> /etc/apt/sources.list.d/xpra.list \
 && apt-get install -y software-properties-common \
 && add-apt-repository universe \
 && apt-get update \
+&& apt-get install -y xpra \
+) || (rm -rf /etc/apt/sources.list.d/xpra.list  \
+&& apt-get autoremove -y \
+  && apt-get clean -y \
+  && rm -rf /var/lib/apt/lists/* /root/* ))
+RUN apt-get update \
 && apt-get install -y xpra \
 && apt-get install --no-install-recommends -y \
   xfwm4 \
