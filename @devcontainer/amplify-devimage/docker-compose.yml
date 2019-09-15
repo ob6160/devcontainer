@@ -7,7 +7,7 @@ services:
       - "6080:6080"
     shm_size: 1gb
     volumes: 
-      - devhome:/root/
+      - devhome:/root/workspace
 volumes:
   devhome:
     driver: local

@@ -1,5 +1,6 @@
 {
     "dockerComposeFile": "../docker-compose.yml",
     "service": "devcontainer",
-    "shutdownAction": "stopCompose"
+    "shutdownAction": "stopCompose",
+    "workspaceFolder": "~/workspace"
 }

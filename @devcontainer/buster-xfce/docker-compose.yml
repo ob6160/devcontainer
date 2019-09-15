@@ -2,12 +2,13 @@ version: "3.7"
 services:
   devcontainer:
     image: devimages/buster-xfce
+    build: .
     privileged: true
     ports:
       - "6080:6080"
     shm_size: 1gb
     volumes: 
-      - devhome:/home/developer
+      - devhome:/root/workspace
 volumes:
   devhome:
     driver: local
