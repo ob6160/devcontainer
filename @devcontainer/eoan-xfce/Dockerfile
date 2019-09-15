@@ -35,7 +35,7 @@ RUN apt-get update \
 
 USER root
 
-ENV DEV_VERSION=2019-8-15
+ENV DEV_VERSION=2019-9-15
 
 RUN apt-get update && apt-get dist-upgrade -y && \
 	apt-get autoremove -y \
