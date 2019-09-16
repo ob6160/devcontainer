@@ -1,11 +1,13 @@
 FROM devimages/buster-xfce:1.6.0
 
-ARG GID
-ARG UID
+RUN groupadd --gid 1000 dev \
+  && useradd --uid 1000 --gid dev --shell /usr/bin/zsh --create-home dev \
+  && mkdir -p /run/user/1000 \
+  && chown -R dev:dev /run/user/1000 \
+  && mkdir -p  /tmp/.X11-unix \
+  && chown -R dev:dev /tmp/.X11-unix 
 
-RUN echo "$UID"
+USER dev
+WORKDIR /home/dev
 
-RUN groupadd --gid ${GID} dev \
-  && useradd --uid ${UID} --gid dev --shell /usr/bin/zsh --create-home dev \
-  && mkdir -p /run/user/${UID} \
-  && chown -R dev:dev /run/user/${UID}
+RUN mkdir workspace

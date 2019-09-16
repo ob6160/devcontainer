@@ -20,7 +20,7 @@ export class DevcontainerGenerator {
     private _dockerTemplates: { [key: string]: string } = {};
     private _readmeTemplates: { [key: string]: string } = {};
     
-    private _templateInputs = ['base', 'upgrade', 'git', 'amplify', 'gitUbuntu', 'node', 'cypress', 'dotnet', 'docker', 'dotnet3', 'xfce', 'remoteDesktop', 'zsh'];
+    private _templateInputs = ['base', 'upgrade', 'git', 'amplify', 'chromium', 'gitUbuntu', 'node', 'cypress', 'dotnet', 'docker', 'dotnet3', 'xfce', 'remoteDesktop', 'zsh'];
     private _nodeVesion: NodeVesion | null = null;
     private _gitVersion = '';
     private _amplify = false;
@@ -31,6 +31,7 @@ export class DevcontainerGenerator {
     private _docker = false;
     private _remoteDesktop = false;
     private _zsh = false;
+    private _chrome = false;
 
     constructor(private base: Base) {
     };
@@ -62,6 +63,11 @@ export class DevcontainerGenerator {
     public setXfce() {
         this._xfce = true;
     }
+
+    public setChrome() {
+        this._chrome = true;
+    }
+
 
     public setAmplify() {
         this._amplify = true;
@@ -170,6 +176,12 @@ export class DevcontainerGenerator {
         if (this._cypressVersion) {
             this._dockerfile += dockerTemplates['cypress'].replace('{CYPRESS_VERION}', this._cypressVersion)
             this._readme += readmeTemplates['cypress'].replace('{CYPRESS_VERION}', this._cypressVersion)
+        }
+
+
+        if (this._chrome) {
+            this._dockerfile += dockerTemplates['chromium'];
+            this._readme+=readmeTemplates['chromium'];
         }
 
         if (this._zsh) {

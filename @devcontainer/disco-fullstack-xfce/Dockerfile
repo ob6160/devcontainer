@@ -202,6 +202,7 @@ ARG ENTRY=/opt/devcontainer-entrypoint.sh
 
 RUN apt-get update \ 
     && apt-get install --no-install-recommends -y \ 
+        terminator \
         zsh \
     && apt-get clean -y \
     && rm -rf /var/lib/apt/lists/* \

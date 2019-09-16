@@ -1,21 +1,26 @@
 version: "3.7"
 services:
-  devcontainer:
-    build:
-      context: .
-      args:
-        - UID=${UID}
-        - GID=${GID}
-    privileged: true
-    environment:
-      - UID=${UID}
-      - GID=${GID}
-    user: "${UID}:${GID}"
+  x11-bridge:
+    image: jare/x11-bridge
     ports:
-      - "6080:6080"
-    shm_size: 1gb
+      - "10000:10000"
+    volumes:
+      - x11:/tmp/.X11-unix
+    environment:
+      - MODE=tcp
+      - XPRA_HTML=yes
+      - DISPLAY=:14 
+  devcontainer:
+    build: .
+    privileged: true
+    shm_size: 1gbc
+    environment: 
+      - DISPLAY=:14
     volumes: 
       - devhome:/home/dev/workspace
+      - x11:/tmp/.X11-unix
 volumes:
   devhome:
+    driver: local
+  x11:
     driver: local

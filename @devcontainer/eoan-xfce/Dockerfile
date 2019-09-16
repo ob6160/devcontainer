@@ -34,7 +34,7 @@ RUN apt-get update \
 ### HAS REALLY BAD INPACT FOR THE IMAGE SIZE!
 ###    
 ### upgrade.Dockerfile
-ENV DEV_VERSION=2019-9-15
+ENV DEV_VERSION=2019-9-16
 
 RUN apt-get update \
 	&& apt-get dist-upgrade -y \
@@ -213,6 +213,7 @@ ARG ENTRY=/opt/devcontainer-entrypoint.sh
 
 RUN apt-get update \ 
     && apt-get install --no-install-recommends -y \ 
+        terminator \
         zsh \
     && apt-get clean -y \
     && rm -rf /var/lib/apt/lists/* \

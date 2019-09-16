@@ -8,12 +8,11 @@ const run = async () => {
   const devGenerator = new DevcontainerGenerator('buster');
 
   devGenerator.setNodeVersion('current');
-  devGenerator.setUpgraded();
   devGenerator.updateGit();
   devGenerator.setDotnet();
   devGenerator.setCypress();
+  devGenerator.setChrome();
   devGenerator.setXfce();
-  devGenerator.setRemoteDesktop();
   devGenerator.setZsh();
 
   const {
