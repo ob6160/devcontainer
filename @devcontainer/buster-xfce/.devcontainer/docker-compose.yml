@@ -13,7 +13,7 @@ services:
   devcontainer:
     build: .
     privileged: true
-    shm_size: 1gbc
+    shm_size: 1gb
     environment: 
       - DISPLAY=:14
     volumes: 
