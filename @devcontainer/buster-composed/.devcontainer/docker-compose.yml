@@ -1,9 +1,9 @@
 version: "3.7"
 services:
   x11-bridge:
-    image: jare/x11-bridge
+    image: devimages/x11-xpra-html5:latest
     ports:
-      - "10000:10000"
+      - "10000:14500"
     volumes:
       - x11:/tmp/.X11-unix
     environment:
