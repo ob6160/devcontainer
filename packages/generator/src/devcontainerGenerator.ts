@@ -2,7 +2,7 @@ import { promises as fs, Dirent } from 'fs';
 
 type Base = "stretch" | "buster" | "disco" | "eoan";
 
-type NodeVesion = "lts" | "current" ; 
+type NodeVesion = "lts" | "current";
 
 const getVersion = (b: Base) => b === "stretch" ? '9' :
     b === "buster" ? '10' :
@@ -16,10 +16,10 @@ import { ENGINE_METHOD_DIGESTS } from 'constants';
 export class DevcontainerGenerator {
     private _dockerfile: string = "";
     private _readme: string = "";
-    
+
     private _dockerTemplates: { [key: string]: string } = {};
     private _readmeTemplates: { [key: string]: string } = {};
-    
+
     private _templateInputs = ['base', 'upgrade', 'git', 'amplify', 'chromium', 'gitUbuntu', 'node', 'cypress', 'dotnet', 'docker', 'dotnet3', 'xfce', 'remoteDesktop', 'zsh'];
     private _nodeVesion: NodeVesion | null = null;
     private _gitVersion = '';
@@ -40,14 +40,14 @@ export class DevcontainerGenerator {
 
         const bufferDockerfiles = await Promise.all(this._templateInputs.map(async fileName => await this.loadTemplate(fileName, 'Dockerfile')))
         const bufferReadmefiles = await Promise.all(this._templateInputs.map(async fileName => await this.loadTemplate(fileName, 'README')))
-            
+
 
         this._templateInputs.forEach((input, index) => this._dockerTemplates[input] = String(bufferDockerfiles[index]));
         this._templateInputs.forEach((input, index) => this._readmeTemplates[input] = String(bufferReadmefiles[index]));
-       
+
 
         return {
-            dockerTemplates :this._dockerTemplates,
+            dockerTemplates: this._dockerTemplates,
             readmeTemplates: this._readmeTemplates
         };
     }
@@ -77,7 +77,7 @@ export class DevcontainerGenerator {
         this._remoteDesktop = true;
     }
 
-    public setUpgraded(){
+    public setUpgraded() {
         this._upgrade = true;
     }
 
@@ -98,27 +98,27 @@ export class DevcontainerGenerator {
     }
 
     public async generate() {
-        const {dockerTemplates,
-        readmeTemplates} = await this.init();
+        const { dockerTemplates,
+            readmeTemplates } = await this.init();
 
 
         this._dockerfile += dockerTemplates['base'].replace('{DISTRO}', this.base);
         this._readme += readmeTemplates['base'].replace('{DISTRO}', this.base);
 
-        if(this._upgrade) {
+        if (this._upgrade) {
             const now = new Date();
-            this._dockerfile += dockerTemplates['upgrade'].replace('{DEV_VERSION}', `${now.getFullYear()}-${now.getMonth()+1}-${now.getDate()}`);
-            this._readme += readmeTemplates['upgrade'].replace('{DEV_VERSION}', `${now.getFullYear()}-${now.getMonth()+1}-${now.getDate()}`);
+            this._dockerfile += dockerTemplates['upgrade'].replace('{DEV_VERSION}', `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`);
+            this._readme += readmeTemplates['upgrade'].replace('{DEV_VERSION}', `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`);
 
         }
 
         if (this._gitVersion) {
-            if (getDistro(this.base)==="Ubuntu") {this._dockerfile += dockerTemplates['gitUbuntu']}
+            if (getDistro(this.base) === "Ubuntu") { this._dockerfile += dockerTemplates['gitUbuntu'] }
             else {
                 this._dockerfile += dockerTemplates['git'].replace('{GIT_VERSION}', this._gitVersion)
             }
 
-            if (getDistro(this.base)==="Ubuntu") {this._readme += readmeTemplates['gitUbuntu']}
+            if (getDistro(this.base) === "Ubuntu") { this._readme += readmeTemplates['gitUbuntu'] }
             else {
                 this._readme += readmeTemplates['git'].replace('{GIT_VERSION}', this._gitVersion)
             }
@@ -141,31 +141,31 @@ export class DevcontainerGenerator {
 
 
         if (this._dotnet) {
-            if (this._dotnet === "2") 
+            if (this._dotnet === "2")
                 this._dockerfile += dockerTemplates['dotnet'].replace('{DOTNET_SDK_VERSION}', softwareVersions.dotnet)
                     .replace('{dotnet_sha512}', softwareVersions.sha.dotnet_sha512["2.2.402"]);
             else {
                 this._dockerfile += dockerTemplates['dotnet'].replace('{DOTNET_SDK_VERSION}', softwareVersions.dotnet3)
-                .replace('{dotnet_sha512}', softwareVersions.sha.dotnet_sha512["3.0.100-rc1-014190"]);
+                    .replace('{dotnet_sha512}', softwareVersions.sha.dotnet_sha512["3.0.100-rc1-014190"]);
             }
 
-            if (this._dotnet === "2") 
+            if (this._dotnet === "2")
                 this._readme += readmeTemplates['dotnet'].replace('{DOTNET_SDK_VERSION}', softwareVersions.dotnet)
                     .replace('{dotnet_sha512}', softwareVersions.sha.dotnet_sha512["2.2.402"]);
             else {
                 this._readme += readmeTemplates['dotnet'].replace('{DOTNET_SDK_VERSION}', softwareVersions.dotnet3)
-                .replace('{dotnet_sha512}', softwareVersions.sha.dotnet_sha512["3.0.100-rc1-014190"]);
+                    .replace('{dotnet_sha512}', softwareVersions.sha.dotnet_sha512["3.0.100-rc1-014190"]);
             }
         }
 
         if (this._remoteDesktop) {
-            this._dockerfile += dockerTemplates['remoteDesktop'].replace(/{XPRADISTRO}/g, this.base === "eoan"? "disco":this.base);
-            this._readme+=readmeTemplates['remoteDesktop'];
+            this._dockerfile += dockerTemplates['remoteDesktop'].replace(/{XPRADISTRO}/g, this.base === "eoan" ? "disco" : this.base);
+            this._readme += readmeTemplates['remoteDesktop'];
         }
 
         if (this._xfce) {
             this._dockerfile += dockerTemplates['xfce'];
-            this._readme+=readmeTemplates['xfce'];
+            this._readme += readmeTemplates['xfce'];
         }
 
         if (this._amplify) {
@@ -181,12 +181,12 @@ export class DevcontainerGenerator {
 
         if (this._chrome) {
             this._dockerfile += dockerTemplates['chromium'];
-            this._readme+=readmeTemplates['chromium'];
+            this._readme += readmeTemplates['chromium'];
         }
 
         if (this._zsh) {
             this._dockerfile += dockerTemplates['zsh'];
-            this._readme+=readmeTemplates['zsh'];
+            this._readme += readmeTemplates['zsh'];
         }
 
         this._dockerfile = this._dockerfile.replace(/FROM devimage\n/g, "");
@@ -197,5 +197,5 @@ export class DevcontainerGenerator {
         }
     }
 
-    private loadTemplate = async (filename: string, extension: 'Dockerfile' | 'README') => await fs.readFile(`${__dirname}/../../templates/${filename}.${extension}`).catch(e=>{console.error({e}); return ""})
+    private loadTemplate = async (filename: string, extension: 'Dockerfile' | 'README') => await fs.readFile(`${__dirname}/../../templates/${filename}.${extension}`).catch(e => { console.error({ e }); return "" })
 }
