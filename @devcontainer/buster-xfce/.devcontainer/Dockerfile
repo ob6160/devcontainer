@@ -1,4 +1,4 @@
-FROM devimages/buster-xfce:1.6.0
+FROM devimages/buster-xfce:1.6.1
 
 RUN groupadd --gid 1000 dev \
   && useradd --uid 1000 --gid dev --shell /usr/bin/zsh --create-home dev \

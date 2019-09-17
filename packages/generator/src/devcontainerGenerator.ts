@@ -146,7 +146,7 @@ export class DevcontainerGenerator {
                     .replace('{dotnet_sha512}', softwareVersions.sha.dotnet_sha512["2.2.402"]);
             else {
                 this._dockerfile += dockerTemplates['dotnet'].replace('{DOTNET_SDK_VERSION}', softwareVersions.dotnet3)
-                .replace('{dotnet_sha512}', softwareVersions.sha.dotnet_sha512["3.0.100-preview9-014004"]);
+                .replace('{dotnet_sha512}', softwareVersions.sha.dotnet_sha512["3.0.100-rc1-014190"]);
             }
 
             if (this._dotnet === "2") 
@@ -154,7 +154,7 @@ export class DevcontainerGenerator {
                     .replace('{dotnet_sha512}', softwareVersions.sha.dotnet_sha512["2.2.402"]);
             else {
                 this._readme += readmeTemplates['dotnet'].replace('{DOTNET_SDK_VERSION}', softwareVersions.dotnet3)
-                .replace('{dotnet_sha512}', softwareVersions.sha.dotnet_sha512["3.0.100-preview9-014004"]);
+                .replace('{dotnet_sha512}', softwareVersions.sha.dotnet_sha512["3.0.100-rc1-014190"]);
             }
         }
 

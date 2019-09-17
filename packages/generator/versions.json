@@ -8,11 +8,11 @@
     "cypress": "3.4.1",
     "yarn": "1.17.3",
     "dotnet": "2.2.402",
-    "dotnet3": "3.0.100-preview9-014004",
+    "dotnet3": "3.0.100-rc1-014190",
     "sha": {
         "dotnet_sha512": {
             "2.2.402": "81937de0874ee837e3b42e36d1cf9e04bd9deff6ba60d0162ae7ca9336a78f733e624136d27f559728df3f681a72a669869bf91d02db47c5331398c0cfda9b44",
-            "3.0.100-preview9-014004": "b4e4580250f172c7b14cbce96d2de54d13a0b312ed71f86986cc53a9392491347e83cdefc2805a23bd652fc2cc0658c2e74fc8c05212c3983c19e2adbc1fe9a3    "
+            "3.0.100-rc1-014190": "a1f4fbea9d015494f4301184d6780c5fd0ddae2baa49e67c94c6f5f4281a2d3c73abf2ceeec57a37a257e389df8f6fce753e0292cf2c1c6b463a8e15287d7939    "
         }
     }
 }
