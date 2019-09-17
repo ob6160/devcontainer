@@ -1,27 +1,26 @@
 {
-    "name": "@devcontainer/x11-xpra-html5",
-    "tagname": "x11-xpra-html5",
-    "scripts": {
-      "docker:build": "docker-compose -f tags.yml build",
-      "docker:push": "docker-compose -f tags.yml push"
-    },
-    "files": [
-      "docker-compose.yml",
-      "Dockerfile",
-      "README.md"
-    ],
-    "dependencies": {
-      "@devcontainer/generator": "^1.6.1"
-    },
-    "version": "1.6.1",
-    "description": "devcontainer vscode docker xfce xpra html5",
-    "repository": "git@github.com:zerdos/devcontainer.git",
-    "author": "Zoltan Erdos <zolika84@gmail.com>",
-    "license": "BSD-3-Clause",
-    "private": false,
-    "gitHead": "076c2882fd7a2b34739eb512c50274916452ad1d",
-    "publishConfig": {
-      "access": "public"
-    }
+  "name": "@devcontainer/x11-xpra-html5",
+  "tagname": "x11-xpra-html5",
+  "scripts": {
+    "docker:build": "docker-compose -f tags.yml build",
+    "docker:push": "docker-compose -f tags.yml push"
+  },
+  "files": [
+    "docker-compose.yml",
+    "Dockerfile",
+    "README.md"
+  ],
+  "dependencies": {
+    "@devcontainer/generator": "^1.7.0"
+  },
+  "version": "1.7.0",
+  "description": "devcontainer vscode docker xfce xpra html5",
+  "repository": "git@github.com:zerdos/devcontainer.git",
+  "author": "Zoltan Erdos <zolika84@gmail.com>",
+  "license": "BSD-3-Clause",
+  "private": false,
+  "gitHead": "076c2882fd7a2b34739eb512c50274916452ad1d",
+  "publishConfig": {
+    "access": "public"
   }
-  
+}
