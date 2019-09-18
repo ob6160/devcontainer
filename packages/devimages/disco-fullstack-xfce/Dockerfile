@@ -190,7 +190,7 @@ RUN apt-get update \
 # && 
 RUN yarn global add cypress@3.4.1 stmux \
 && yarn cache clean \
-&& mv /root/.cache /etc/skel/ -y \
+&& mv /root/.cache /etc/skel/ \
 && apt-get autoremove -y \
 && apt-get clean -y \
 && rm -rf /var/lib/apt/lists/* /tmp/* 
