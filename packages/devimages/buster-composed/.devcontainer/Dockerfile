@@ -1,4 +1,4 @@
-FROM devimages/buster-composed:1.7.1-rc
+FROM devimages/buster-composed:1.7.1
 
 RUN groupadd dev \
   && useradd -g dev --shell /usr/bin/zsh --create-home dev \
