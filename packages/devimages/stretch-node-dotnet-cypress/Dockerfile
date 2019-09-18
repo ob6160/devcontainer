@@ -160,9 +160,9 @@ ENV ASPNETCORE_URLS=http://+:80 \
 RUN dotnet help
 
 
-### remoteDesktop.Dockerfile
+### xpra.Dockerfile
 
-RUN RUN apt-get update \
+RUN apt-get update \
 && apt-get install -y --no-install-recommends ca-certificates curl gnupg2 \
 && curl https://xpra.org/gpg.asc | apt-key add - \
 && curl https://xpra.org/repos/stretch/xpra.list > /etc/apt/sources.list.d/xpra.list \
