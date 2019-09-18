@@ -19,5 +19,3 @@ RUN yarn global add cypress@{CYPRESS_VERION} stmux \
 && apt-get autoremove -y \
 && apt-get clean -y \
 && rm -rf /var/lib/apt/lists/* /tmp/* 
-
-RUN ls -la /root
