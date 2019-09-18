@@ -12,7 +12,6 @@ const run = async () => {
   devGenerator.setDotnet();
   devGenerator.setCypress();
   devGenerator.setChrome();
-  devGenerator.setXfce();
   devGenerator.setZsh();
 
   const {
