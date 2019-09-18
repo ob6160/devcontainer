@@ -11,9 +11,9 @@
     "README.md"
   ],
   "dependencies": {
-    "@devcontainer/generator": "^1.7.0"
+    "@devcontainer/generator": "^1.7.1"
   },
-  "version": "1.7.0",
+  "version": "1.7.1",
   "description": "devcontainer vscode docker xfce xpra html5",
   "repository": "git@github.com:zerdos/devcontainer.git",
   "author": "Zoltan Erdos <zolika84@gmail.com>",
