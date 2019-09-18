@@ -7,5 +7,5 @@
 - With Dotnet SDK 2.2!
 - XFCE trought remoteDesktop
 - Cypress 3.4.1
-- Width chromium
+- With chromium
 - Zsh + Oh my zsh!

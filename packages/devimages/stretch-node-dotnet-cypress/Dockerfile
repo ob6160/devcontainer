@@ -201,9 +201,6 @@ RUN yarn global add cypress@3.4.1 stmux \
 && apt-get autoremove -y \
 && apt-get clean -y \
 && rm -rf /var/lib/apt/lists/* /tmp/* 
-
-RUN ls -la /root
-
 ### zsh.Dockerfie
 ARG STARTCMD="sleep infinity"
 

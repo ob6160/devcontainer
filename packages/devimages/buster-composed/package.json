@@ -1,6 +1,6 @@
 {
-  "name": "@devcontainer/buster-xfce",
-  "tagname": "buster-xfce",
+  "name": "@devcontainer/buster-composed",
+  "tagname": "buster-composed",
   "scripts": {
     "docker:build": "docker-compose -f tags.yml build",
     "docker:push": "docker-compose -f tags.yml push",

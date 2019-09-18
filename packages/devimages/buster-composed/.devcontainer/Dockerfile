@@ -1,4 +1,4 @@
-FROM devimages/buster-xfce:1.7.0
+FROM devimages/buster-composed:1.7.0
 
 RUN groupadd dev \
   && useradd -g dev --shell /usr/bin/zsh --create-home dev \
