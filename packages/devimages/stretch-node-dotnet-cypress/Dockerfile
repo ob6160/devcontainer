@@ -183,31 +183,32 @@ RUN curl https://xpra.org/gpg.asc | apt-key add - \
   && apt-get clean -y \
   && rm -rf /var/lib/apt/lists/*
 ### cypress.Dockerfile
-ENV CYPRESS_CACHE_FOLDER /usr/local/share/cypress
-
-RUN apt-get update \
-&& apt-get install --no-install-recommends -y \
-  libgtk-3-0 \
-  libnotify-dev \
-  libgconf-2-4 \
-  libnss3 \
-  libxss1 \
-  libasound2 \
-  libxtst6 \
-  xauth \
-  xvfb \
-&& yarn global add cypress@3.4.1 stmux \
+# RUN apt-get update \
+# && apt-get install --no-install-recommends -y \
+#   libgtk-3-0 \
+#   libnotify-dev \
+#   libgconf-2-4 \
+#   libnss3 \
+#   libxss1 \
+#   libasound2 \
+#   libxtst6 \
+#   xauth \
+#   xvfb \
+# && 
+RUN yarn global add cypress@3.4.1 stmux \
 && yarn cache clean \
+&& mv /root/.cache /etc/skel/ -y \
 && apt-get autoremove -y \
 && apt-get clean -y \
 && rm -rf /var/lib/apt/lists/* /tmp/* 
 
+RUN ls -la /root
+
 ### zsh.Dockerfie
-ARG ENTRY=/opt/devcontainer-entrypoint.sh
+ARG STARTCMD="sleep infinity"
 
 RUN apt-get update \ 
     && apt-get install --no-install-recommends -y \ 
-        terminator \
         zsh \
     && apt-get clean -y \
     && rm -rf /var/lib/apt/lists/* \
@@ -216,7 +217,6 @@ RUN apt-get update \
     && git clone --depth 1 https://github.com/zsh-users/zsh-syntax-highlighting.git /etc/skel/.oh-my-zsh/plugins/zsh-syntax-highlighting \
     && cp /etc/skel/.oh-my-zsh/templates/zshrc.zsh-template  /etc/skel/.zshrc \
     && sed -i -e 's/robbyrussell/sunaku/g' /etc/skel/.zshrc \
-    && sed -i -e 's/plugins=(git)/plugins=(git zsh-autosuggestions zsh-syntax-highlighting)/g' /etc/skel/.zshrc \
-    && echo "sleep infinity" >> /usr/bin/startx 
-
-CMD startx
+    && sed -i -e 's/plugins=(git)/plugins=(git zsh-autosuggestions zsh-syntax-highlighting)/g' /etc/skel/.zshrc 
+  
+CMD STARTCMD

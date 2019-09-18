@@ -59,7 +59,7 @@ RUN apt-get update && \
 ### node.Dockerfile
 
 
-ENV NODE_VERSION=12.10.0 \
+ENV NODE_VERSION=10.16.3 \
     YARN_VERSION=1.17.3
 
 RUN buildDeps='xz-utils' \
@@ -120,88 +120,14 @@ RUN set -ex \
   && ln -s /opt/yarn-v$YARN_VERSION/bin/yarn /usr/local/bin/yarn \
   && ln -s /opt/yarn-v$YARN_VERSION/bin/yarnpkg /usr/local/bin/yarnpkg \
   && rm yarn-v$YARN_VERSION.tar.gz.asc yarn-v$YARN_VERSION.tar.gz
-### dotnet.Dockerfile
+### amplify.Dockerfile
+RUN npm install -g --unsafe-perm @aws-amplify/cli@3.2.0
 
-# Install .NET CLI dependencies
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends \
-        libc6 \
-        libgcc1 \
-        libgssapi-krb5-2 \
-        libicu-dev \
-        liblttng-ust0 \
-        libssl-dev \
-        libstdc++6 \
-        zlib1g \
-    && rm -rf /var/lib/apt/lists/*
-
-# Install .NET Core SDK
-ENV DOTNET_SDK_VERSION 2.2.402
-
-RUN curl -SL --output dotnet.tar.gz https://dotnetcli.blob.core.windows.net/dotnet/Sdk/$DOTNET_SDK_VERSION/dotnet-sdk-$DOTNET_SDK_VERSION-linux-x64.tar.gz \
-    && dotnet_sha512='81937de0874ee837e3b42e36d1cf9e04bd9deff6ba60d0162ae7ca9336a78f733e624136d27f559728df3f681a72a669869bf91d02db47c5331398c0cfda9b44' \
-    && echo "$dotnet_sha512 dotnet.tar.gz" | sha512sum -c - \
-    && mkdir -p /usr/share/dotnet \
-    && tar -zxf dotnet.tar.gz -C /usr/share/dotnet \
-    && rm dotnet.tar.gz \
-    && ln -s /usr/share/dotnet/dotnet /usr/bin/dotnet
-
-# Configure web servers to bind to port 80 when present
-ENV ASPNETCORE_URLS=http://+:80 \
-    # Enable detection of running in a container
-    DOTNET_RUNNING_IN_CONTAINER=true \
-    # Enable correct mode for dotnet watch (only mode supported in a container)
-    DOTNET_USE_POLLING_FILE_WATCHER=true \
-    # Skip extraction of XML docs - generally not useful within an image/container - helps performance
-    NUGET_XMLDOC_MODE=skip
-
-# Trigger first run experience by running arbitrary cmd to populate local package cache
-RUN dotnet help
-
-
-### xfce.Dockerfile
-
-RUN apt-get update \
-    && apt-get install --no-install-recommends -y \
-        xfce4 \
-        xfce4-goodies \
-    && apt-get clean -y \
-    && rm -rf /var/lib/apt/lists/* 
-    # && echo "xpra start-desktop --start=xfce4-session > /usr/bin/startx  
-
-### cypress.Dockerfile
-ENV CYPRESS_CACHE_FOLDER /usr/local/share/cypress
-
-RUN apt-get update \
-&& apt-get install --no-install-recommends -y \
-  libgtk-3-0 \
-  libnotify-dev \
-  libgconf-2-4 \
-  libnss3 \
-  libxss1 \
-  libasound2 \
-  libxtst6 \
-  xauth \
-  xvfb \
-&& yarn global add cypress@3.4.1 stmux \
-&& yarn cache clean \
-&& apt-get autoremove -y \
-&& apt-get clean -y \
-&& rm -rf /var/lib/apt/lists/* /tmp/* 
-
-### chromium.Dockerfile
-
-RUN apt-get update \
-    && (apt-get install --no-install-recommends -y chromium \
-        || apt-get install --no-install-recommends -y chromium-browser) \
-    && apt-get clean -y \
-    && rm -rf /var/lib/apt/lists/* \
 ### zsh.Dockerfie
-ARG ENTRY=/opt/devcontainer-entrypoint.sh
+ARG STARTCMD="sleep infinity"
 
 RUN apt-get update \ 
     && apt-get install --no-install-recommends -y \ 
-        terminator \
         zsh \
     && apt-get clean -y \
     && rm -rf /var/lib/apt/lists/* \
@@ -210,7 +136,6 @@ RUN apt-get update \
     && git clone --depth 1 https://github.com/zsh-users/zsh-syntax-highlighting.git /etc/skel/.oh-my-zsh/plugins/zsh-syntax-highlighting \
     && cp /etc/skel/.oh-my-zsh/templates/zshrc.zsh-template  /etc/skel/.zshrc \
     && sed -i -e 's/robbyrussell/sunaku/g' /etc/skel/.zshrc \
-    && sed -i -e 's/plugins=(git)/plugins=(git zsh-autosuggestions zsh-syntax-highlighting)/g' /etc/skel/.zshrc \
-    && echo "sleep infinity" >> /usr/bin/startx 
-
-CMD startx
+    && sed -i -e 's/plugins=(git)/plugins=(git zsh-autosuggestions zsh-syntax-highlighting)/g' /etc/skel/.zshrc 
+  
+CMD STARTCMD

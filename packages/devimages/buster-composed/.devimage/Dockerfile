@@ -1,4 +1,4 @@
-FROM buildpack-deps:eoan
+FROM buildpack-deps:buster
 
 ### base.Dockerfile
 ### Generator: https://github.com/zerdos/devcontainer/
@@ -31,25 +31,31 @@ RUN apt-get update \
 && touch /usr/bin/startx \
 && chmod +x /usr/bin/startx 
 
-### HAS REALLY BAD INPACT FOR THE IMAGE SIZE!
-###    
-### upgrade.Dockerfile
-ENV DEV_VERSION=2019-9-18
+### git.Dockerfile
 
-RUN apt-get update \
-	&& apt-get dist-upgrade -y \
-	&& apt-get autoremove -y \
-	&& apt-get clean -y \
-	&& rm -rf /var/lib/apt/lists/*
-	### git for Ubuntu
-
-RUN add-apt-repository ppa:git-core/ppa && apt-get update \
-&& apt-get install --no-install-recommends -y \
-    git \
+RUN apt-get update && \ 
+    apt-get install --no-install-recommends -y \ 
+    make \
+    libssl-dev \
+    libghc-zlib-dev \
+    libcurl4-gnutls-dev \
+    libexpat1-dev \
+    gettext \
+    gpg \
+&& curl -Lo /usr/src/git.tar.gz  https://github.com/git/git/archive/v2.23.0.tar.gz \
+&& tar -C /usr/src/ -xf /usr/src/git.tar.gz && cd /usr/src/git-* \
+&& make prefix=/usr/local all \
+&& make prefix=/usr/local install \
+&& apt-get remove -y \
+    libssl-dev \
+    libghc-zlib-dev \
+    libcurl4-gnutls-dev \
+    libexpat1-dev \
+    gettext \
+    gpg \
 && apt-get autoremove -y \
 && apt-get clean -y \
-&& rm -rf /var/lib/apt/lists/* 
-
+&& rm -rf /tmp/* /var/lib/apt/lists/* /usr/src/*
 ### node.Dockerfile
 
 
@@ -153,29 +159,6 @@ ENV ASPNETCORE_URLS=http://+:80 \
 RUN dotnet help
 
 
-### remoteDesktop.Dockerfile
-
-RUN curl https://xpra.org/gpg.asc | apt-key add - \
-  && curl https://xpra.org/repos/disco/xpra.list > /etc/apt/sources.list.d/xpra.list \
-&& curl https://xpra.org/repos/disco/xpra-beta.list >> /etc/apt/sources.list.d/xpra.list \
-&& apt-get update \
-&& apt-get install -y xpra \
-&& apt-get install --no-install-recommends -y \
-  xfwm4 \
-  libgtk-3-0 \
-  xvfb \
-  dbus-x11 \
-  nano \
-  mc \
-  htop \
-  terminator \
-  procps \  
-  && echo "xpra --start=terminator --html=on --bind-tcp=0.0.0.0:6080" > /usr/bin/startx \   
-  && sed -i -e 's/workspace_count=4/workspace_count=1/g' /usr/share/xfwm4/defaults \
-  && sed -i -e 's/use_compositing=true/use_compositing=false/g' /usr/share/xfwm4/defaults \
-  && apt-get autoremove -y \
-  && apt-get clean -y \
-  && rm -rf /var/lib/apt/lists/*
 ### xfce.Dockerfile
 
 RUN apt-get update \
@@ -187,31 +170,39 @@ RUN apt-get update \
     # && echo "xpra start-desktop --start=xfce4-session > /usr/bin/startx  
 
 ### cypress.Dockerfile
-ENV CYPRESS_CACHE_FOLDER /usr/local/share/cypress
-
-RUN apt-get update \
-&& apt-get install --no-install-recommends -y \
-  libgtk-3-0 \
-  libnotify-dev \
-  libgconf-2-4 \
-  libnss3 \
-  libxss1 \
-  libasound2 \
-  libxtst6 \
-  xauth \
-  xvfb \
-&& yarn global add cypress@3.4.1 stmux \
+# RUN apt-get update \
+# && apt-get install --no-install-recommends -y \
+#   libgtk-3-0 \
+#   libnotify-dev \
+#   libgconf-2-4 \
+#   libnss3 \
+#   libxss1 \
+#   libasound2 \
+#   libxtst6 \
+#   xauth \
+#   xvfb \
+# && 
+RUN yarn global add cypress@3.4.1 stmux \
 && yarn cache clean \
+&& mv /root/.cache /etc/skel/ -y \
 && apt-get autoremove -y \
 && apt-get clean -y \
 && rm -rf /var/lib/apt/lists/* /tmp/* 
 
+RUN ls -la /root
+
+### chromium.Dockerfile
+
+RUN apt-get update \
+    && (apt-get install --no-install-recommends -y chromium \
+        || apt-get install --no-install-recommends -y chromium-browser) \
+    && apt-get clean -y \
+    && rm -rf /var/lib/apt/lists/* \
 ### zsh.Dockerfie
-ARG ENTRY=/opt/devcontainer-entrypoint.sh
+ARG STARTCMD="sleep infinity"
 
 RUN apt-get update \ 
     && apt-get install --no-install-recommends -y \ 
-        terminator \
         zsh \
     && apt-get clean -y \
     && rm -rf /var/lib/apt/lists/* \
@@ -220,7 +211,6 @@ RUN apt-get update \
     && git clone --depth 1 https://github.com/zsh-users/zsh-syntax-highlighting.git /etc/skel/.oh-my-zsh/plugins/zsh-syntax-highlighting \
     && cp /etc/skel/.oh-my-zsh/templates/zshrc.zsh-template  /etc/skel/.zshrc \
     && sed -i -e 's/robbyrussell/sunaku/g' /etc/skel/.zshrc \
-    && sed -i -e 's/plugins=(git)/plugins=(git zsh-autosuggestions zsh-syntax-highlighting)/g' /etc/skel/.zshrc \
-    && echo "sleep infinity" >> /usr/bin/startx 
-
-CMD startx
+    && sed -i -e 's/plugins=(git)/plugins=(git zsh-autosuggestions zsh-syntax-highlighting)/g' /etc/skel/.zshrc 
+  
+CMD STARTCMD

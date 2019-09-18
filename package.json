@@ -2,9 +2,8 @@
   "private": true,
   "workspaces": {
     "packages": [
-      "@devcontainer/*",
-      "packages/*",
-      "website"
+      "packages/devimages/*",
+      "packages/generator"
     ]
   },
   "scripts": {

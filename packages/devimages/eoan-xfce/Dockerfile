@@ -1,4 +1,4 @@
-FROM buildpack-deps:buster
+FROM buildpack-deps:eoan
 
 ### base.Dockerfile
 ### Generator: https://github.com/zerdos/devcontainer/
@@ -31,35 +31,29 @@ RUN apt-get update \
 && touch /usr/bin/startx \
 && chmod +x /usr/bin/startx 
 
-### git.Dockerfile
+### HAS REALLY BAD INPACT FOR THE IMAGE SIZE!
+###    
+### upgrade.Dockerfile
+ENV DEV_VERSION=2019-9-18
 
-RUN apt-get update && \ 
-    apt-get install --no-install-recommends -y \ 
-    make \
-    libssl-dev \
-    libghc-zlib-dev \
-    libcurl4-gnutls-dev \
-    libexpat1-dev \
-    gettext \
-    gpg \
-&& curl -Lo /usr/src/git.tar.gz  https://github.com/git/git/archive/v2.23.0.tar.gz \
-&& tar -C /usr/src/ -xf /usr/src/git.tar.gz && cd /usr/src/git-* \
-&& make prefix=/usr/local all \
-&& make prefix=/usr/local install \
-&& apt-get remove -y \
-    libssl-dev \
-    libghc-zlib-dev \
-    libcurl4-gnutls-dev \
-    libexpat1-dev \
-    gettext \
-    gpg \
+RUN apt-get update \
+	&& apt-get dist-upgrade -y \
+	&& apt-get autoremove -y \
+	&& apt-get clean -y \
+	&& rm -rf /var/lib/apt/lists/*
+	### git for Ubuntu
+
+RUN add-apt-repository ppa:git-core/ppa && apt-get update \
+&& apt-get install --no-install-recommends -y \
+    git \
 && apt-get autoremove -y \
 && apt-get clean -y \
-&& rm -rf /tmp/* /var/lib/apt/lists/* /usr/src/*
+&& rm -rf /var/lib/apt/lists/* 
+
 ### node.Dockerfile
 
 
-ENV NODE_VERSION=10.16.3 \
+ENV NODE_VERSION=12.10.0 \
     YARN_VERSION=1.17.3
 
 RUN buildDeps='xz-utils' \
@@ -120,15 +114,105 @@ RUN set -ex \
   && ln -s /opt/yarn-v$YARN_VERSION/bin/yarn /usr/local/bin/yarn \
   && ln -s /opt/yarn-v$YARN_VERSION/bin/yarnpkg /usr/local/bin/yarnpkg \
   && rm yarn-v$YARN_VERSION.tar.gz.asc yarn-v$YARN_VERSION.tar.gz
-### amplify.Dockerfile
-RUN npm install -g --unsafe-perm @aws-amplify/cli@3.2.0
+### dotnet.Dockerfile
+
+# Install .NET CLI dependencies
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        libc6 \
+        libgcc1 \
+        libgssapi-krb5-2 \
+        libicu-dev \
+        liblttng-ust0 \
+        libssl-dev \
+        libstdc++6 \
+        zlib1g \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install .NET Core SDK
+ENV DOTNET_SDK_VERSION 2.2.402
+
+RUN curl -SL --output dotnet.tar.gz https://dotnetcli.blob.core.windows.net/dotnet/Sdk/$DOTNET_SDK_VERSION/dotnet-sdk-$DOTNET_SDK_VERSION-linux-x64.tar.gz \
+    && dotnet_sha512='81937de0874ee837e3b42e36d1cf9e04bd9deff6ba60d0162ae7ca9336a78f733e624136d27f559728df3f681a72a669869bf91d02db47c5331398c0cfda9b44' \
+    && echo "$dotnet_sha512 dotnet.tar.gz" | sha512sum -c - \
+    && mkdir -p /usr/share/dotnet \
+    && tar -zxf dotnet.tar.gz -C /usr/share/dotnet \
+    && rm dotnet.tar.gz \
+    && ln -s /usr/share/dotnet/dotnet /usr/bin/dotnet
+
+# Configure web servers to bind to port 80 when present
+ENV ASPNETCORE_URLS=http://+:80 \
+    # Enable detection of running in a container
+    DOTNET_RUNNING_IN_CONTAINER=true \
+    # Enable correct mode for dotnet watch (only mode supported in a container)
+    DOTNET_USE_POLLING_FILE_WATCHER=true \
+    # Skip extraction of XML docs - generally not useful within an image/container - helps performance
+    NUGET_XMLDOC_MODE=skip
+
+# Trigger first run experience by running arbitrary cmd to populate local package cache
+RUN dotnet help
+
+
+### remoteDesktop.Dockerfile
+
+RUN curl https://xpra.org/gpg.asc | apt-key add - \
+  && curl https://xpra.org/repos/disco/xpra.list > /etc/apt/sources.list.d/xpra.list \
+&& curl https://xpra.org/repos/disco/xpra-beta.list >> /etc/apt/sources.list.d/xpra.list \
+&& apt-get update \
+&& apt-get install -y xpra \
+&& apt-get install --no-install-recommends -y \
+  xfwm4 \
+  libgtk-3-0 \
+  xvfb \
+  dbus-x11 \
+  nano \
+  mc \
+  htop \
+  terminator \
+  procps \  
+  && echo "xpra --start=terminator --html=on --bind-tcp=0.0.0.0:6080" > /usr/bin/startx \   
+  && sed -i -e 's/workspace_count=4/workspace_count=1/g' /usr/share/xfwm4/defaults \
+  && sed -i -e 's/use_compositing=true/use_compositing=false/g' /usr/share/xfwm4/defaults \
+  && apt-get autoremove -y \
+  && apt-get clean -y \
+  && rm -rf /var/lib/apt/lists/*
+### xfce.Dockerfile
+
+RUN apt-get update \
+    && apt-get install --no-install-recommends -y \
+        xfce4 \
+        xfce4-goodies \
+    && apt-get clean -y \
+    && rm -rf /var/lib/apt/lists/* 
+    # && echo "xpra start-desktop --start=xfce4-session > /usr/bin/startx  
+
+### cypress.Dockerfile
+# RUN apt-get update \
+# && apt-get install --no-install-recommends -y \
+#   libgtk-3-0 \
+#   libnotify-dev \
+#   libgconf-2-4 \
+#   libnss3 \
+#   libxss1 \
+#   libasound2 \
+#   libxtst6 \
+#   xauth \
+#   xvfb \
+# && 
+RUN yarn global add cypress@3.4.1 stmux \
+&& yarn cache clean \
+&& mv /root/.cache /etc/skel/ -y \
+&& apt-get autoremove -y \
+&& apt-get clean -y \
+&& rm -rf /var/lib/apt/lists/* /tmp/* 
+
+RUN ls -la /root
 
 ### zsh.Dockerfie
-ARG ENTRY=/opt/devcontainer-entrypoint.sh
+ARG STARTCMD="sleep infinity"
 
 RUN apt-get update \ 
     && apt-get install --no-install-recommends -y \ 
-        terminator \
         zsh \
     && apt-get clean -y \
     && rm -rf /var/lib/apt/lists/* \
@@ -137,7 +221,6 @@ RUN apt-get update \
     && git clone --depth 1 https://github.com/zsh-users/zsh-syntax-highlighting.git /etc/skel/.oh-my-zsh/plugins/zsh-syntax-highlighting \
     && cp /etc/skel/.oh-my-zsh/templates/zshrc.zsh-template  /etc/skel/.zshrc \
     && sed -i -e 's/robbyrussell/sunaku/g' /etc/skel/.zshrc \
-    && sed -i -e 's/plugins=(git)/plugins=(git zsh-autosuggestions zsh-syntax-highlighting)/g' /etc/skel/.zshrc \
-    && echo "sleep infinity" >> /usr/bin/startx 
-
-CMD startx
+    && sed -i -e 's/plugins=(git)/plugins=(git zsh-autosuggestions zsh-syntax-highlighting)/g' /etc/skel/.zshrc 
+  
+CMD STARTCMD
