@@ -1,8 +1,6 @@
 FROM devimage
 
 ### zsh.Dockerfie
-ARG STARTCMD="sleep infinity"
-
 RUN apt-get update \ 
     && apt-get install --no-install-recommends -y \ 
         zsh \
@@ -14,5 +12,3 @@ RUN apt-get update \
     && cp /etc/skel/.oh-my-zsh/templates/zshrc.zsh-template  /etc/skel/.zshrc \
     && sed -i -e 's/robbyrussell/sunaku/g' /etc/skel/.zshrc \
     && sed -i -e 's/plugins=(git)/plugins=(git zsh-autosuggestions zsh-syntax-highlighting)/g' /etc/skel/.zshrc 
-  
-CMD STARTCMD

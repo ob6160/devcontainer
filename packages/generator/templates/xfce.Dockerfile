@@ -8,4 +8,3 @@ RUN apt-get update \
         xfce4-goodies \
     && apt-get clean -y \
     && rm -rf /var/lib/apt/lists/* 
-    # && echo "xpra start-desktop --start=xfce4-session > /usr/bin/startx  

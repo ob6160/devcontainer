@@ -8,3 +8,6 @@
 - Remote Desktop (Xpra) set up o: http://localhost:6080
 - Cypress 3.4.1
 - Zsh + Oh my zsh!
+
+
+Git repository: https://github.com/zerdos/devcontainer

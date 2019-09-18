@@ -2,6 +2,7 @@ FROM buildpack-deps:stretch
 
 ### base.Dockerfile
 ### Generator: https://github.com/zerdos/devcontainer/
+ENV STARTCMD "echo ENV STARTCMD is running"
 
 LABEL maintainer=zoltan.erdos@me.com
 
@@ -161,49 +162,38 @@ RUN dotnet help
 
 ### remoteDesktop.Dockerfile
 
-RUN curl https://xpra.org/gpg.asc | apt-key add - \
-  && curl https://xpra.org/repos/stretch/xpra.list > /etc/apt/sources.list.d/xpra.list \
+RUN RUN apt-get update \
+&& apt-get install -y --no-install-recommends ca-certificates curl gnupg2 \
+&& curl https://xpra.org/gpg.asc | apt-key add - \
+&& curl https://xpra.org/repos/stretch/xpra.list > /etc/apt/sources.list.d/xpra.list \
 && curl https://xpra.org/repos/stretch/xpra-beta.list >> /etc/apt/sources.list.d/xpra.list \
-&& apt-get update \
-&& apt-get install -y xpra \
+&& apt-get update \   
+&& apt-get install --no-install-recommends -y xpra xpra-html5 x264 python3 python-paramiko python-pyinotify python-xdg dbus dbus-x11 \
+&& apt-get autoremove -y \
+&& apt-get clean -y \
+&& rm -rf /var/lib/apt/lists/*
+
+ENV STARTCMD "${STARTCMD} && xpra start --html=on --bind-tcp=0.0.0.0:6080 --daemon=no"
+## cypress.Dockerfile
+
+RUN apt-get update \
 && apt-get install --no-install-recommends -y \
-  xfwm4 \
   libgtk-3-0 \
+  libnotify-dev \
+  libgconf-2-4 \
+  libnss3 \
+  libxss1 \
+  libasound2 \
+  libxtst6 \
+  xauth \
   xvfb \
-  dbus-x11 \
-  nano \
-  mc \
-  htop \
-  terminator \
-  procps \  
-  && echo "xpra --start=terminator --html=on --bind-tcp=0.0.0.0:6080" > /usr/bin/startx \   
-  && sed -i -e 's/workspace_count=4/workspace_count=1/g' /usr/share/xfwm4/defaults \
-  && sed -i -e 's/use_compositing=true/use_compositing=false/g' /usr/share/xfwm4/defaults \
-  && apt-get autoremove -y \
-  && apt-get clean -y \
-  && rm -rf /var/lib/apt/lists/*
-### cypress.Dockerfile
-# RUN apt-get update \
-# && apt-get install --no-install-recommends -y \
-#   libgtk-3-0 \
-#   libnotify-dev \
-#   libgconf-2-4 \
-#   libnss3 \
-#   libxss1 \
-#   libasound2 \
-#   libxtst6 \
-#   xauth \
-#   xvfb \
-# && 
-RUN yarn global add cypress@3.4.1 stmux \
+&& yarn global add cypress@3.4.1 stmux \
 && yarn cache clean \
 && mv /root/.cache /etc/skel/ \
 && apt-get autoremove -y \
 && apt-get clean -y \
 && rm -rf /var/lib/apt/lists/* /tmp/* 
 ### zsh.Dockerfie
-ARG STARTCMD="sleep infinity"
-
 RUN apt-get update \ 
     && apt-get install --no-install-recommends -y \ 
         zsh \
@@ -215,5 +205,7 @@ RUN apt-get update \
     && cp /etc/skel/.oh-my-zsh/templates/zshrc.zsh-template  /etc/skel/.zshrc \
     && sed -i -e 's/robbyrussell/sunaku/g' /etc/skel/.zshrc \
     && sed -i -e 's/plugins=(git)/plugins=(git zsh-autosuggestions zsh-syntax-highlighting)/g' /etc/skel/.zshrc 
-  
-CMD STARTCMD
+### suffix.Dockerfie
+
+ENV STARTCMD "${STARTCMD} || true && sleep infinity"
+CMD ${STARTCMD}

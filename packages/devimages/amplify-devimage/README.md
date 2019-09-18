@@ -7,3 +7,6 @@
 
 - Installed trough npm: @aws-amplify/cli - {AMPLIFY_VERSION}
 - Zsh + Oh my zsh!
+
+
+Git repository: https://github.com/zerdos/devcontainer

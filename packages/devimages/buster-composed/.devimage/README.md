@@ -8,3 +8,6 @@
 - Cypress 3.4.1
 - With chromium
 - Zsh + Oh my zsh!
+
+
+Git repository: https://github.com/zerdos/devcontainer

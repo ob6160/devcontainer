@@ -2,6 +2,7 @@ FROM buildpack-deps:{DISTRO}
 
 ### base.Dockerfile
 ### Generator: https://github.com/zerdos/devcontainer/
+ENV STARTCMD "echo ENV STARTCMD is running"
 
 LABEL maintainer=zoltan.erdos@me.com
 

@@ -9,3 +9,6 @@
 - XFCE trought remoteDesktop
 - Cypress 3.4.1
 - Zsh + Oh my zsh!
+
+
+Git repository: https://github.com/zerdos/devcontainer

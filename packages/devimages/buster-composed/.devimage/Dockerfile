@@ -2,6 +2,7 @@ FROM buildpack-deps:buster
 
 ### base.Dockerfile
 ### Generator: https://github.com/zerdos/devcontainer/
+ENV STARTCMD "echo ENV STARTCMD is running"
 
 LABEL maintainer=zoltan.erdos@me.com
 
@@ -159,20 +160,20 @@ ENV ASPNETCORE_URLS=http://+:80 \
 RUN dotnet help
 
 
-### cypress.Dockerfile
-# RUN apt-get update \
-# && apt-get install --no-install-recommends -y \
-#   libgtk-3-0 \
-#   libnotify-dev \
-#   libgconf-2-4 \
-#   libnss3 \
-#   libxss1 \
-#   libasound2 \
-#   libxtst6 \
-#   xauth \
-#   xvfb \
-# && 
-RUN yarn global add cypress@3.4.1 stmux \
+## cypress.Dockerfile
+
+RUN apt-get update \
+&& apt-get install --no-install-recommends -y \
+  libgtk-3-0 \
+  libnotify-dev \
+  libgconf-2-4 \
+  libnss3 \
+  libxss1 \
+  libasound2 \
+  libxtst6 \
+  xauth \
+  xvfb \
+&& yarn global add cypress@3.4.1 stmux \
 && yarn cache clean \
 && mv /root/.cache /etc/skel/ \
 && apt-get autoremove -y \
@@ -186,8 +187,6 @@ RUN apt-get update \
     && apt-get clean -y \
     && rm -rf /var/lib/apt/lists/* \
 ### zsh.Dockerfie
-ARG STARTCMD="sleep infinity"
-
 RUN apt-get update \ 
     && apt-get install --no-install-recommends -y \ 
         zsh \
@@ -199,5 +198,7 @@ RUN apt-get update \
     && cp /etc/skel/.oh-my-zsh/templates/zshrc.zsh-template  /etc/skel/.zshrc \
     && sed -i -e 's/robbyrussell/sunaku/g' /etc/skel/.zshrc \
     && sed -i -e 's/plugins=(git)/plugins=(git zsh-autosuggestions zsh-syntax-highlighting)/g' /etc/skel/.zshrc 
-  
-CMD STARTCMD
+### suffix.Dockerfie
+
+ENV STARTCMD "${STARTCMD} || true && sleep infinity"
+CMD ${STARTCMD}

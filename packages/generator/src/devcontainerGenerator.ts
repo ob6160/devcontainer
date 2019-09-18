@@ -20,7 +20,7 @@ export class DevcontainerGenerator {
     private _dockerTemplates: { [key: string]: string } = {};
     private _readmeTemplates: { [key: string]: string } = {};
 
-    private _templateInputs = ['base', 'upgrade', 'git', 'amplify', 'chromium', 'gitUbuntu', 'node', 'cypress', 'dotnet', 'docker', 'dotnet3', 'xfce', 'remoteDesktop', 'zsh'];
+    private _templateInputs = ['base', 'upgrade', 'git', 'amplify', 'chromium', 'gitUbuntu', 'node', 'cypress', 'dotnet', 'docker', 'dotnet3', 'xfce', 'noVNC', 'xpra', 'zsh', 'suffix'];
     private _nodeVesion: NodeVesion | null = null;
     private _gitVersion = '';
     private _amplify = false;
@@ -29,7 +29,8 @@ export class DevcontainerGenerator {
     private _upgrade = false;
     private _xfce = false;
     private _docker = false;
-    private _remoteDesktop = false;
+    private _xpra = false;
+    private _noVNC = false;
     private _zsh = false;
     private _chrome = false;
 
@@ -73,8 +74,16 @@ export class DevcontainerGenerator {
         this._amplify = true;
     }
 
-    public setRemoteDesktop() {
-        this._remoteDesktop = true;
+    public setRemoteDesktop( type: 'xpra' | 'noVNC' = 'xpra') {
+        if (type === 'xpra') {
+            this._xpra = true;
+        }
+        else {
+            this._noVNC = true
+        }
+
+        if (this._noVNC===true && this._xpra===true) throw new Error("You can't have VNC and Xpra on the same image");
+        
     }
 
     public setUpgraded() {
@@ -158,14 +167,21 @@ export class DevcontainerGenerator {
             }
         }
 
-        if (this._remoteDesktop) {
-            this._dockerfile += dockerTemplates['remoteDesktop'].replace(/{XPRADISTRO}/g, this.base === "eoan" ? "disco" : this.base);
-            this._readme += readmeTemplates['remoteDesktop'];
+        if (this._xpra) {
+            this._dockerfile += dockerTemplates['xpra'].replace(/{XPRADISTRO}/g, this.base === "eoan" ? "disco" : this.base);
+            this._readme += readmeTemplates['xpra'];
         }
 
         if (this._xfce) {
             this._dockerfile += dockerTemplates['xfce'];
             this._readme += readmeTemplates['xfce'];
+
+            if (this._xpra) {
+                
+                this._dockerfile += `
+                ENV STARTCMD="xpra start-desktop --start=xfce4-session --html=on --bind-tcp=0.0.0.0:6080 --daemon=no"
+                `;
+            }
         }
 
         if (this._amplify) {
@@ -184,10 +200,18 @@ export class DevcontainerGenerator {
             this._readme += readmeTemplates['chromium'];
         }
 
+        if (this._noVNC) {
+            this._dockerfile += dockerTemplates['noVNC'];
+            this._readme += readmeTemplates['noVNC'];
+        }
+
         if (this._zsh) {
             this._dockerfile += dockerTemplates['zsh'];
             this._readme += readmeTemplates['zsh'];
         }
+
+        this._dockerfile += dockerTemplates['suffix'];
+        this._readme += readmeTemplates['suffix'];
 
         this._dockerfile = this._dockerfile.replace(/FROM devimage\n/g, "");
 

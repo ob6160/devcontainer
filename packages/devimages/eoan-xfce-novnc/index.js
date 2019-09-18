@@ -6,11 +6,8 @@ const run = async () => {
 
   devGenerator.setNodeVersion('current');
   devGenerator.setUpgraded();
-  devGenerator.updateGit();
-  devGenerator.setDotnet();
-  devGenerator.setCypress();
   devGenerator.setXfce();
-  devGenerator.setRemoteDesktop();
+  devGenerator.setRemoteDesktop('noVNC');
   devGenerator.setZsh();
 
   const {

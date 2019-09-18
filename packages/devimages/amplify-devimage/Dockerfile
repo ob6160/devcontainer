@@ -2,6 +2,7 @@ FROM buildpack-deps:buster
 
 ### base.Dockerfile
 ### Generator: https://github.com/zerdos/devcontainer/
+ENV STARTCMD "echo ENV STARTCMD is running"
 
 LABEL maintainer=zoltan.erdos@me.com
 
@@ -124,8 +125,6 @@ RUN set -ex \
 RUN npm install -g --unsafe-perm @aws-amplify/cli@3.2.0
 
 ### zsh.Dockerfie
-ARG STARTCMD="sleep infinity"
-
 RUN apt-get update \ 
     && apt-get install --no-install-recommends -y \ 
         zsh \
@@ -137,5 +136,7 @@ RUN apt-get update \
     && cp /etc/skel/.oh-my-zsh/templates/zshrc.zsh-template  /etc/skel/.zshrc \
     && sed -i -e 's/robbyrussell/sunaku/g' /etc/skel/.zshrc \
     && sed -i -e 's/plugins=(git)/plugins=(git zsh-autosuggestions zsh-syntax-highlighting)/g' /etc/skel/.zshrc 
-  
-CMD STARTCMD
+### suffix.Dockerfie
+
+ENV STARTCMD "${STARTCMD} || true && sleep infinity"
+CMD ${STARTCMD}
