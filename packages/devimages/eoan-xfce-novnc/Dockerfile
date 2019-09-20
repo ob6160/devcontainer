@@ -20,6 +20,9 @@ RUN apt-get update \
   python2.7 \
   xz-utils \
   libx11-dev \
+  wget \
+  unzip \
+  qt5-default \
   dirmngr \
 && ln -fs /usr/share/zoneinfo/Europce/London /etc/localtime \
 && apt-get update &&  apt-get install --no-install-recommends  -y \
@@ -35,7 +38,7 @@ RUN apt-get update \
 ### HAS REALLY BAD INPACT FOR THE IMAGE SIZE!
 ###    
 ### upgrade.Dockerfile
-ENV DEV_VERSION=2019-9-18
+ENV DEV_VERSION=2019-9-20
 
 RUN apt-get update \
 	&& apt-get dist-upgrade -y \

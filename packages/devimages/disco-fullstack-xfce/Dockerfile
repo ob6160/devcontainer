@@ -2,6 +2,7 @@ FROM buildpack-deps:disco
 
 ### base.Dockerfile
 ### Generator: https://github.com/zerdos/devcontainer/
+ENV STARTCMD "echo ENV STARTCMD is running"
 
 LABEL maintainer=zoltan.erdos@me.com
 
@@ -19,6 +20,9 @@ RUN apt-get update \
   python2.7 \
   xz-utils \
   libx11-dev \
+  wget \
+  unzip \
+  qt5-default \
   dirmngr \
 && ln -fs /usr/share/zoneinfo/Europce/London /etc/localtime \
 && apt-get update &&  apt-get install --no-install-recommends  -y \
@@ -155,6 +159,7 @@ RUN apt-get update \
 && apt-get clean -y \
 && rm -rf /var/lib/apt/lists/*
 
+ENV STARTCMD "${STARTCMD} && xpra start --html=on --bind-tcp=0.0.0.0:6080 --daemon=no"
 ### xfce.Dockerfile
 
 RUN apt-get update \
@@ -164,6 +169,8 @@ RUN apt-get update \
     && apt-get clean -y \
     && rm -rf /var/lib/apt/lists/* 
 
+                ENV STARTCMD="xpra start-desktop --start=xfce4-session --html=on --bind-tcp=0.0.0.0:6080 --daemon=no"
+                
 ## cypress.Dockerfile
 
 RUN apt-get update \
@@ -197,5 +204,5 @@ RUN apt-get update \
     && sed -i -e 's/plugins=(git)/plugins=(git zsh-autosuggestions zsh-syntax-highlighting)/g' /etc/skel/.zshrc 
 ### suffix.Dockerfie
 
-ENV STARTCMD "sleep infinity"
+ENV STARTCMD "${STARTCMD} || true && sleep infinity"
 CMD ${STARTCMD}

@@ -6,10 +6,13 @@ const run = async () => {
   devGenerator.setNodeVersion('current');
   devGenerator.updateGit();
   devGenerator.setDotnet('2');
-  devGenerator.setCypress();
   devGenerator.setXfce();
   devGenerator.setRemoteDesktop();
   devGenerator.setZsh();
+  devGenerator.setJava();
+  devGenerator.setGradle();
+  devGenerator.setKotlin();
+  devGenerator.setAndroidsdk();
 
   const {
     Dockerfile,

@@ -2,6 +2,7 @@ FROM buildpack-deps:disco
 
 ### base.Dockerfile
 ### Generator: https://github.com/zerdos/devcontainer/
+ENV STARTCMD "echo ENV STARTCMD is running"
 
 LABEL maintainer=zoltan.erdos@me.com
 
@@ -19,6 +20,9 @@ RUN apt-get update \
   python2.7 \
   xz-utils \
   libx11-dev \
+  wget \
+  unzip \
+  qt5-default \
   dirmngr \
 && ln -fs /usr/share/zoneinfo/Europce/London /etc/localtime \
 && apt-get update &&  apt-get install --no-install-recommends  -y \
@@ -155,6 +159,7 @@ RUN apt-get update \
 && apt-get clean -y \
 && rm -rf /var/lib/apt/lists/*
 
+ENV STARTCMD "${STARTCMD} && xpra start --html=on --bind-tcp=0.0.0.0:6080 --daemon=no"
 ### xfce.Dockerfile
 
 RUN apt-get update \
@@ -164,25 +169,8 @@ RUN apt-get update \
     && apt-get clean -y \
     && rm -rf /var/lib/apt/lists/* 
 
-## cypress.Dockerfile
-
-RUN apt-get update \
-&& apt-get install --no-install-recommends -y \
-  libgtk-3-0 \
-  libnotify-dev \
-  libgconf-2-4 \
-  libnss3 \
-  libxss1 \
-  libasound2 \
-  libxtst6 \
-  xauth \
-  xvfb \
-&& yarn global add cypress@3.4.1 stmux \
-&& yarn cache clean \
-&& mv /root/.cache /etc/skel/ \
-&& apt-get autoremove -y \
-&& apt-get clean -y \
-&& rm -rf /var/lib/apt/lists/* /tmp/* 
+                ENV STARTCMD="xpra start-desktop --start=xfce4-session --html=on --bind-tcp=0.0.0.0:6080 --daemon=no"
+                
 ### zsh.Dockerfie
 RUN apt-get update \ 
     && apt-get install --no-install-recommends -y \ 
@@ -195,7 +183,51 @@ RUN apt-get update \
     && cp /etc/skel/.oh-my-zsh/templates/zshrc.zsh-template  /etc/skel/.zshrc \
     && sed -i -e 's/robbyrussell/sunaku/g' /etc/skel/.zshrc \
     && sed -i -e 's/plugins=(git)/plugins=(git zsh-autosuggestions zsh-syntax-highlighting)/g' /etc/skel/.zshrc 
+### gradle.Dockerfile
+
+# download and install Gradle
+# https://services.gradle.org/distributions/
+RUN cd /opt && \
+    wget -q https://services.gradle.org/distributions/gradle-{5.2.1}-bin.zip && \
+    unzip gradle*.zip && \
+    ls -d */ | sed 's/\/*$//g' | xargs -I{} mv {} gradle && \
+    rm gradle*.zip
+
+# ENV variables
+ENV GRADLE_HOME /opt/gradle
+ENV PATH ${PATH}:${GRADLE_HOME}/bin
+# download and install Kotlin compiler
+# https://github.com/JetBrains/kotlin/releases/latest
+RUN cd /opt && \
+    wget -q https://github.com/JetBrains/kotlin/releases/download/v{1.3.21}/kotlin-compiler-${KOTLIN_VERSION}.zip && \
+    unzip *kotlin*.zip && \
+    rm *kotlin*.zip
+
+ENV KOTLIN_HOME /opt/kotlinc
+
+ENV PATH ${PATH}:${KOTLIN_HOME}/binFROM baseimage
+
+# download and install Android SDK
+# https://developer.android.com/studio/#downloads
+ENV ANDROID_HOME /opt/android-sdk
+RUN mkdir -p ${ANDROID_HOME} && cd ${ANDROID_HOME} && \
+    wget -q https://dl.google.com/android/repository/sdk-tools-linux-{4333796}.zip && \
+    unzip *tools*linux*.zip && \
+    rm *tools*linux*.zip
+
+ENV PATH ${PATH}:${ANDROID_HOME}/emulator:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools:${ANDROID_HOME}/tools/bin
+ENV LD_LIBRARY_PATH ${ANDROID_HOME}/emulator/lib64:${ANDROID_HOME}/emulator/lib64/qt/lib
+
+# accept the license agreements of the SDK components
+ADD license_accepter.sh /opt/
+RUN chmod +x /opt/license_accepter.sh && /opt/license_accepter.sh $ANDROID_HOME
+
+# Install android-28 SDK elements
+RUN echo yes | sdkmanager "platform-tools" "platforms;android-28"
+
+# setup adb server -- docker-compose handled?
+# EXPOSE 5037
 ### suffix.Dockerfie
 
-ENV STARTCMD "sleep infinity"
+ENV STARTCMD "${STARTCMD} || true && sleep infinity"
 CMD ${STARTCMD}

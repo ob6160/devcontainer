@@ -20,7 +20,7 @@ export class DevcontainerGenerator {
     private _dockerTemplates: { [key: string]: string } = {};
     private _readmeTemplates: { [key: string]: string } = {};
 
-    private _templateInputs = ['base', 'upgrade', 'git', 'amplify', 'chromium', 'gitUbuntu', 'node', 'cypress', 'dotnet', 'docker', 'dotnet3', 'xfce', 'noVNC', 'xpra', 'zsh', 'suffix'];
+    private _templateInputs = ['base', 'upgrade', 'git', 'amplify', 'chromium', 'gitUbuntu', 'node', 'cypress', 'dotnet', 'docker', 'dotnet3', 'xfce', 'noVNC', 'xpra', 'zsh', 'suffix', 'androidsdk', 'kotlin', 'java', 'gradle'];
     private _nodeVesion: NodeVesion | null = null;
     private _gitVersion = '';
     private _amplify = false;
@@ -33,10 +33,10 @@ export class DevcontainerGenerator {
     private _noVNC = false;
     private _zsh = false;
     private _chrome = false;
-    private _androidsdk = false;
-    private _gradle = false;
-    private _kotlin = false;
-    
+    private _androidsdkVersion = '';
+    private _gradleVersion = '';
+    private _kotlinVersion = '';
+    private _java = false;
 
     constructor(private base: Base) {
     };
@@ -96,6 +96,22 @@ export class DevcontainerGenerator {
 
     public setZsh() {
         this._zsh = true
+    }
+
+    public setJava() {
+        this._java = true;
+    }
+
+    public setGradle() {
+        this._gradleVersion = '5.2.1';
+    }
+
+    public setKotlin() {
+        this._kotlinVersion = '1.3.21';
+    }
+
+    public setAndroidsdk() {
+        this._androidsdkVersion = '4333796';
     }
 
     public setDocker() {
@@ -212,6 +228,23 @@ export class DevcontainerGenerator {
         if (this._zsh) {
             this._dockerfile += dockerTemplates['zsh'];
             this._readme += readmeTemplates['zsh'];
+        }
+
+        if(this._java) {
+            if(this._gradleVersion) {
+                this._dockerfile += dockerTemplates['gradle'].replace('GRADLE_VERSION', this._gradleVersion);
+                this._readme += readmeTemplates['gradle'];
+            }
+
+            if(this._kotlinVersion) {
+                this._dockerfile += dockerTemplates['kotlin'].replace('KOTLIN_VERSION', this._kotlinVersion);
+                this._readme += readmeTemplates['kotlin'];
+            }
+
+            if(this._androidsdkVersion) {
+                this._dockerfile += dockerTemplates['androidsdk'].replace('ANDROID_SDK_VERSION', this._androidsdkVersion);
+                this._readme += readmeTemplates['androidsdk'];
+            }
         }
 
         this._dockerfile += dockerTemplates['suffix'];

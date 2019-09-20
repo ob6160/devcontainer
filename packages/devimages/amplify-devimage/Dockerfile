@@ -20,6 +20,9 @@ RUN apt-get update \
   python2.7 \
   xz-utils \
   libx11-dev \
+  wget \
+  unzip \
+  qt5-default \
   dirmngr \
 && ln -fs /usr/share/zoneinfo/Europce/London /etc/localtime \
 && apt-get update &&  apt-get install --no-install-recommends  -y \
