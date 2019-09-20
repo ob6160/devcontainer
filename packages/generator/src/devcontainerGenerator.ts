@@ -33,6 +33,10 @@ export class DevcontainerGenerator {
     private _noVNC = false;
     private _zsh = false;
     private _chrome = false;
+    private _androidsdk = false;
+    private _gradle = false;
+    private _kotlin = false;
+    
 
     constructor(private base: Base) {
     };

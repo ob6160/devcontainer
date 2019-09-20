@@ -1,6 +1,7 @@
 {
     "dockerComposeFile": "../docker-compose.yml",
     "service": "devcontainer",
+    "user": "root",
     "shutdownAction": "stopCompose",
-    "workspaceFolder": "~/workspace"
+    "workspaceFolder": "/root"
 }

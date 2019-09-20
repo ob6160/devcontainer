@@ -1,0 +1,30 @@
+{
+  "name": "@devcontainer/disco-fullstack-xfce",
+  "tagname": "disco-android-xfce",
+  "scripts": {
+    "docker:build": "docker-compose -f tags.yml build",
+    "docker:push": "docker-compose -f tags.yml push",
+    "generate:dockerfile": "node index.js"
+  },
+  "files": [
+    ".devcontainer/**/*",
+    "docker-compose.yml",
+    "Dockerfile",
+    "README.md"
+  ],
+  "dependencies": {
+    "@devcontainer/generator": "^1.7.1",
+    "load-text-file": "^1.2.0"
+  },
+  "version": "1.7.1",
+  "description": "devcontainer vscode node zsh",
+  "main": "index.js",
+  "repository": "git@github.com:zerdos/devcontainer.git",
+  "author": "Oliver Barnwell <barnwelloliver@gmail.com>",
+  "license": "BSD-3-Clause",
+  "private": false,
+  "gitHead": "076c2882fd7a2b34739eb512c50274916452ad1d",
+  "publishConfig": {
+    "access": "public"
+  }
+}
