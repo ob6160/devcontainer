@@ -38,7 +38,7 @@ RUN apt-get update \
 ### HAS REALLY BAD INPACT FOR THE IMAGE SIZE!
 ###    
 ### upgrade.Dockerfile
-ENV DEV_VERSION=2019-9-20
+ENV DEV_VERSION=2019-9-21
 
 RUN apt-get update \
 	&& apt-get dist-upgrade -y \
