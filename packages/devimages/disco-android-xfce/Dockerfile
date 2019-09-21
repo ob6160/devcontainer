@@ -183,12 +183,22 @@ RUN apt-get update \
     && cp /etc/skel/.oh-my-zsh/templates/zshrc.zsh-template  /etc/skel/.zshrc \
     && sed -i -e 's/robbyrussell/sunaku/g' /etc/skel/.zshrc \
     && sed -i -e 's/plugins=(git)/plugins=(git zsh-autosuggestions zsh-syntax-highlighting)/g' /etc/skel/.zshrc 
+# support multiarch: i386 architecture
+# install Java
+RUN dpkg --add-architecture i386 && \
+    apt-get update -y && \
+    apt-get install -y --no-install-recommends libncurses5:i386 libc6:i386 libstdc++6:i386 lib32gcc1 lib32z1 zlib1g:i386 && \
+    apt-get install -y --no-install-recommends openjdk-8-jdk
+
+# set the environment variables
+ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64
+ENV _JAVA_OPTIONS -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap
 ### gradle.Dockerfile
 
 # download and install Gradle
 # https://services.gradle.org/distributions/
 RUN cd /opt && \
-    wget -q https://services.gradle.org/distributions/gradle-{5.2.1}-bin.zip && \
+    wget -q https://services.gradle.org/distributions/gradle-5.2.1-bin.zip && \
     unzip gradle*.zip && \
     ls -d */ | sed 's/\/*$//g' | xargs -I{} mv {} gradle && \
     rm gradle*.zip
@@ -196,22 +206,23 @@ RUN cd /opt && \
 # ENV variables
 ENV GRADLE_HOME /opt/gradle
 ENV PATH ${PATH}:${GRADLE_HOME}/bin
+ENV KOTLIN_VERSION 1.3.21
+
 # download and install Kotlin compiler
 # https://github.com/JetBrains/kotlin/releases/latest
 RUN cd /opt && \
-    wget -q https://github.com/JetBrains/kotlin/releases/download/v{1.3.21}/kotlin-compiler-${KOTLIN_VERSION}.zip && \
+    wget -q https://github.com/JetBrains/kotlin/releases/download/v${KOTLIN_VERSION}/kotlin-compiler-${KOTLIN_VERSION}.zip && \
     unzip *kotlin*.zip && \
     rm *kotlin*.zip
 
 ENV KOTLIN_HOME /opt/kotlinc
 
-ENV PATH ${PATH}:${KOTLIN_HOME}/binFROM baseimage
-
+ENV PATH ${PATH}:${KOTLIN_HOME}/bin
 # download and install Android SDK
 # https://developer.android.com/studio/#downloads
 ENV ANDROID_HOME /opt/android-sdk
 RUN mkdir -p ${ANDROID_HOME} && cd ${ANDROID_HOME} && \
-    wget -q https://dl.google.com/android/repository/sdk-tools-linux-{4333796}.zip && \
+    wget -q https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip && \
     unzip *tools*linux*.zip && \
     rm *tools*linux*.zip
 

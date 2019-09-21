@@ -231,18 +231,20 @@ export class DevcontainerGenerator {
         }
 
         if(this._java) {
+            this._dockerfile += dockerTemplates['java'];
+            this._readme += readmeTemplates['java'];
             if(this._gradleVersion) {
-                this._dockerfile += dockerTemplates['gradle'].replace('GRADLE_VERSION', this._gradleVersion);
+                this._dockerfile += dockerTemplates['gradle'].replace('{GRADLE_VERSION}', this._gradleVersion);
                 this._readme += readmeTemplates['gradle'];
             }
 
             if(this._kotlinVersion) {
-                this._dockerfile += dockerTemplates['kotlin'].replace('KOTLIN_VERSION', this._kotlinVersion);
+                this._dockerfile += dockerTemplates['kotlin'].replace('{KOTLIN_VERSION}', this._kotlinVersion);
                 this._readme += readmeTemplates['kotlin'];
             }
 
             if(this._androidsdkVersion) {
-                this._dockerfile += dockerTemplates['androidsdk'].replace('ANDROID_SDK_VERSION', this._androidsdkVersion);
+                this._dockerfile += dockerTemplates['androidsdk'].replace('{ANDROID_SDK_VERSION}', this._androidsdkVersion);
                 this._readme += readmeTemplates['androidsdk'];
             }
         }
