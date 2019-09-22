@@ -234,7 +234,7 @@ ADD license_accepter.sh /opt/
 RUN chmod +x /opt/license_accepter.sh && /opt/license_accepter.sh $ANDROID_HOME
 
 # Install android-28 SDK elements & system images + emulator
-RUN echo yes | sdkmanager "platform-tools" "platforms;android-28" "system-images;android-24;default;x86" "emulator"
+RUN echo yes | sdkmanager "platform-tools" "platforms;android-28" "system-images;android-28;default;x86" "emulator"
 
 # Setup android avd
 RUN echo "no" | avdmanager create avd -n test -k "system-images;android-28;default;x86"
