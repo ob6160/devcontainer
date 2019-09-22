@@ -233,11 +233,12 @@ ENV LD_LIBRARY_PATH ${ANDROID_HOME}/emulator/lib64:${ANDROID_HOME}/emulator/lib6
 ADD license_accepter.sh /opt/
 RUN chmod +x /opt/license_accepter.sh && /opt/license_accepter.sh $ANDROID_HOME
 
-# Install android-28 SDK elements
-RUN echo yes | sdkmanager "platform-tools" "platforms;android-28"
+# Install android-28 SDK elements & system images + emulator
+RUN echo yes | sdkmanager "platform-tools" "platforms;android-28" "system-images;android-24;default;x86" "emulator"
 
-# setup adb server -- docker-compose handled?
-# EXPOSE 5037
+# Setup android avd
+RUN echo "no" | avdmanager create avd -n test -k "system-images;android-28;default;x86"
+
 ### suffix.Dockerfie
 
 ENV STARTCMD "${STARTCMD} || true && sleep infinity"
